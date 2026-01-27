@@ -148,6 +148,14 @@ export const adminEndpoints = {
         update: (id: Id) => `/api/admin/contexts/${id}`,
         delete: (id: Id) => `/api/admin/contexts/${id}`,
     },
+    paymentMethods: {
+        list: "/api/admin/payment-methods",
+        create: "/api/admin/payment-methods",
+        show: (id: Id) => `/api/admin/payment-methods/${id}`,
+        update: (id: Id) => `/api/admin/payment-methods/${id}`,
+        delete: (id: Id) => `/api/admin/payment-methods/${id}`,
+        updateStatus: (id: Id) => `/api/admin/payment-methods/${id}/status`,
+    },
     warehouses: {
         list: "/api/admin/warehouses",
         create: "/api/admin/warehouses",
