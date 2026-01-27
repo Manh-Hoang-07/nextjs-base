@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
-import "./birthday.css";
+import "@/styles/birthday.css";
 import { Playfair_Display, Montserrat } from "next/font/google";
 
 const playfair = Playfair_Display({
