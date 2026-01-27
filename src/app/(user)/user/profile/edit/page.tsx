@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/navigation/Button";
 import FormField from "@/components/ui/forms/FormField";
 import { useAuthStore } from "@/lib/store/authStore";
 import ImageUploader from "@/components/ui/forms/ImageUploader";
-import { userService } from "@/services/user.service";
+import { userService } from "@/lib/api/user";
 import { useToastContext } from "@/contexts/ToastContext";
 
 // 1. Define Profile Schema

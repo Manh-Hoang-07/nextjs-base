@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-import { getSystemConfig } from "@/lib/api/public";
+import { getSystemConfig } from "@/lib/api/public/general";
 
 export async function generateMetadata(): Promise<Metadata> {
   const systemConfig = await getSystemConfig("general");

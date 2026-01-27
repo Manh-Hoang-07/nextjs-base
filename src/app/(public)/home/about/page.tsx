@@ -1,4 +1,4 @@
-import { getAboutSections, getStaffList } from "@/lib/api/public";
+import { getAboutSections, getStaffList } from "@/lib/api/public/general";
 import { AboutSection, TeamMember } from "@/types/api";
 import Link from "next/link";
 import { Button } from "@/components/ui/navigation/Button";

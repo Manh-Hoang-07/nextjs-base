@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/navigation/Button";
 import FormField from "@/components/ui/forms/FormField";
-import { submitContact } from "@/lib/api/contact";
+import { submitContact } from "@/lib/api/public/contact";
 import { useToastContext } from "@/contexts/ToastContext";
 
 const contactSchema = z.object({

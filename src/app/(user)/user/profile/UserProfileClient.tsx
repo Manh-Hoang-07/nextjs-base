@@ -8,7 +8,7 @@ import * as z from "zod";
 import { Button } from "@/components/ui/navigation/Button";
 import FormField from "@/components/ui/forms/FormField";
 import Modal from "@/components/ui/feedback/Modal";
-import { userService } from "@/services/user.service";
+import { userService } from "@/lib/api/user";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useToastContext } from "@/contexts/ToastContext";
 

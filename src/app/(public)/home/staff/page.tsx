@@ -1,4 +1,4 @@
-import { getStaffList } from "@/lib/api/public";
+import { getStaffList } from "@/lib/api/public/general";
 import { StaffList } from "@/components/public/staff/StaffList";
 import { Metadata } from "next";
 import Link from "next/link";

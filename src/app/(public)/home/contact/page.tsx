@@ -1,7 +1,7 @@
 import { ContactForm } from "@/components/public/contact/ContactForm";
 import HeroBanner from "@/components/public/banners/HeroBanner";
 import { Metadata } from "next";
-import { getSystemConfig } from "@/lib/api/public";
+import { getSystemConfig } from "@/lib/api/public/general";
 import { SystemConfig } from "@/types/api";
 
 export const metadata: Metadata = {

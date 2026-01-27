@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/navigation/Button";
 import FormField from "@/components/ui/forms/FormField";
-import { userService } from "@/services/user.service";
+import { userService } from "@/lib/api/user";
 import { useToastContext } from "@/contexts/ToastContext";
 
 // 1. Define Change Password Schema

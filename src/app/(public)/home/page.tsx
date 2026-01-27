@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/navigation/Button";
 import Link from "next/link";
-import { getHomepageData } from "@/lib/api/home";
+import { getHomepageData } from "@/lib/api/public/home";
 import { StaffCarousel } from "@/components/public/home/StaffCarousel";
 import { PartnerCarousel } from "@/components/public/home/PartnerCarousel";
 import { FaqAccordion } from "@/components/public/home/FaqAccordion";
 import Image from "next/image";
-import { getSystemConfig } from "@/lib/api/public";
+import { getSystemConfig } from "@/lib/api/public/general";
 import { Metadata } from "next";
 import PageMeta from "@/components/ui/navigation/PageMeta";
 import HeroBanner from "@/components/public/banners/HeroBanner";

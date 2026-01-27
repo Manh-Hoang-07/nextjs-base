@@ -1,4 +1,4 @@
-import { getSystemConfig } from "@/lib/api/public";
+import { getSystemConfig } from "@/lib/api/public/general";
 import { PublicHeader } from "./PublicHeader";
 import { PublicFooter } from "./PublicFooter";
 import { PublicLayoutWrapper } from "@/components/layout/public/PublicLayoutWrapper";
