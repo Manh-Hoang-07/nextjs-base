@@ -174,7 +174,15 @@ export function useAdminListPage(
               ? endpoints.show(item.id)
               : endpoints.show;
           const response = await apiClient.get(showEndpoint);
-          const data = response.data?.data || response.data;
+          // Parse response theo format chuẩn: { success, data: {...}, ... }
+          let data = null;
+          if (response.data?.success && response.data?.data) {
+            data = response.data.data;
+          } else if (response.data?.data) {
+            data = response.data.data;
+          } else {
+            data = response.data;
+          }
           openEditModalBase(data);
         } catch (error: any) {
           toastError(messages.updateError || "Không thể tải thông tin chi tiết");

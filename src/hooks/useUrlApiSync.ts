@@ -38,7 +38,15 @@ export function useUrlApiSync<T extends { id: any } = any>(config: {
 
       try {
         const response = await apiClient.post(createEndpoint, itemData);
-        const payload = response.data?.data ?? response.data;
+        // Parse response theo format chuẩn: { success, data: {...}, ... }
+        let payload = null;
+        if (response.data?.success && response.data?.data) {
+          payload = response.data.data;
+        } else if (response.data?.data) {
+          payload = response.data.data;
+        } else {
+          payload = response.data;
+        }
         const newItem = transformItem ? transformItem(payload) : payload;
 
         // Refresh list to get updated data
@@ -62,7 +70,15 @@ export function useUrlApiSync<T extends { id: any } = any>(config: {
       try {
         const endpointUrl = updateEndpoint(id);
         const response = await apiClient.put(endpointUrl, itemData);
-        const payload = response.data?.data ?? response.data;
+        // Parse response theo format chuẩn: { success, data: {...}, ... }
+        let payload = null;
+        if (response.data?.success && response.data?.data) {
+          payload = response.data.data;
+        } else if (response.data?.data) {
+          payload = response.data.data;
+        } else {
+          payload = response.data;
+        }
         const updatedItem = transformItem ? transformItem(payload) : payload;
 
         // Refresh list to get updated data

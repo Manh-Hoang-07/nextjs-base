@@ -54,21 +54,41 @@ export function useUrlListSync<T extends { id: any } = any>(config: {
       const params = getUrlParams();
       const response = await apiClient.get(endpoint, { params });
 
-      const data = response.data?.data || [];
+      // Parse response theo format chuẩn: { success, data: { items, meta }, ... }
+      let itemsData: any[] = [];
+      let metaData: any = null;
+
+      if (response.data?.success && response.data?.data) {
+        // Format chuẩn: data.data.items và data.data.meta
+        if (response.data.data.items && Array.isArray(response.data.data.items)) {
+          itemsData = response.data.data.items;
+          metaData = response.data.data.meta || null;
+        } else if (Array.isArray(response.data.data)) {
+          // Fallback: nếu data là array trực tiếp
+          itemsData = response.data.data;
+          metaData = response.data.meta || null;
+        }
+      } else if (response.data?.data && Array.isArray(response.data.data)) {
+        // Fallback: format cũ { data: [...], meta: {...} }
+        itemsData = response.data.data;
+        metaData = response.data.meta || null;
+      } else if (Array.isArray(response.data)) {
+        // Fallback: response trực tiếp là array
+        itemsData = response.data;
+      }
+
       const transformedData = transformItem
-        ? data.map(transformItem)
-        : data;
+        ? itemsData.map(transformItem)
+        : itemsData;
       setItems(transformedData);
 
-      const meta = response.data?.meta || response.data?.pagination || null;
-      if (meta) {
+      if (metaData) {
         setPagination((prev) => ({
-          page: meta.page ?? meta.current_page ?? prev.page,
+          page: metaData.page ?? metaData.current_page ?? prev.page,
           totalPages:
-            meta.totalPages ?? meta.lastPage ?? meta.last_page ?? prev.totalPages,
-          limit: meta.limit ?? meta.per_page ?? prev.limit,
-          totalItems: meta.totalItems ?? meta.total ?? prev.totalItems,
-
+            metaData.totalPages ?? metaData.lastPage ?? metaData.last_page ?? prev.totalPages,
+          limit: metaData.limit ?? metaData.per_page ?? prev.limit,
+          totalItems: metaData.totalItems ?? metaData.total ?? prev.totalItems,
         }));
       }
     } catch (err: any) {

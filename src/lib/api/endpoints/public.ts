@@ -80,4 +80,17 @@ export const publicEndpoints = {
         verify: (gateway: string) => `/api/public/payments/verify/${gateway}`,
         show: (id: string | number) => `/api/public/payments/${id}`,
     },
+    shippingMethods: {
+        list: "/api/public/shipping-methods",
+        active: "/api/public/shipping-methods/active",
+        show: (id: Id) => `/api/public/shipping-methods/${id}`,
+        calculate: "/api/public/shipping-methods/calculate",
+    },
+    productCategories: {
+        list: "/api/public/product-categories",
+        tree: "/api/public/product-categories/tree",
+        root: "/api/public/product-categories/root",
+        products: (id: Id) => `/api/public/product-categories/${id}/products`,
+        showBySlug: (slug: string) => `/api/public/product-categories/${slug}`,
+    },
 } as const;
