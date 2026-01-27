@@ -1,6 +1,6 @@
-import { serverFetch } from "./server-client";
+import { serverFetch } from "@/lib/api/server-client";
 import { Project, AboutSection, TeamMember, Partner, FAQ } from "@/types/api";
-import { publicEndpoints } from "./endpoints";
+import { publicEndpoints } from "@/lib/api/endpoints";
 
 export interface Certificate {
   id: string;

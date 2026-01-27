@@ -1,6 +1,6 @@
-import { serverFetch } from "./server-client";
+import { serverFetch } from "@/lib/api/server-client";
 import { AboutSection, TeamMember, SystemConfig } from "@/types/api";
-import { publicEndpoints } from "./endpoints";
+import { publicEndpoints } from "@/lib/api/endpoints";
 
 /**
  * Lấy danh sách giới thiệu
