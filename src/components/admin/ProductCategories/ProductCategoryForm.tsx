@@ -8,7 +8,7 @@ import Modal from "@/components/ui/feedback/Modal";
 import FormField from "@/components/ui/forms/FormField";
 import ImageUploader from "@/components/ui/forms/ImageUploader";
 import CKEditor from "@/components/ui/forms/CKEditor";
-import { userEndpoints } from "@/lib/api/endpoints";
+import { userEndpoints, adminEndpoints } from "@/lib/api/endpoints";
 import SingleSelectEnhanced from "@/components/ui/forms/SingleSelectEnhanced";
 
 const productCategorySchema = z.object({
@@ -283,11 +283,29 @@ export default function ProductCategoryForm({
                 {...register("sort_order")}
                 error={errors.sort_order?.message}
               />
-              <FormField
-                label="ID danh mục cha (nếu có)"
-                type="number"
-                {...register("parent_id")}
-                error={errors.parent_id?.message}
+              <Controller
+                name="parent_id"
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <div className="space-y-1">
+                    <label className="mb-1 block text-sm font-semibold text-gray-700">
+                      Danh mục cha (nếu có)
+                    </label>
+                    <SingleSelectEnhanced
+                      value={value || ""}
+                      searchApi={adminEndpoints.productCategories.simple}
+                      labelField="name"
+                      valueField="id"
+                      onChange={(val) => onChange(val || null)}
+                      placeholder="Chọn danh mục cha..."
+                    />
+                    {errors.parent_id && (
+                      <p className="text-xs text-red-500">
+                        {errors.parent_id.message}
+                      </p>
+                    )}
+                  </div>
+                )}
               />
             </div>
           </div>
@@ -332,21 +350,13 @@ export default function ProductCategoryForm({
               error={errors.canonical_url?.message}
             />
             <div className="md:col-span-2">
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
-                Meta Description
-              </label>
-              <Controller
-                name="meta_description"
-                control={control}
-                render={({ field: { value, onChange } }) => (
-                  <CKEditor
-                    value={value || ""}
-                    onChange={onChange}
-                    height="120px"
-                    placeholder="Mô tả chuẩn SEO (từ 150-160 ký tự)..."
-                    uploadUrl={userEndpoints.uploads.image}
-                  />
-                )}
+              <FormField
+                label="Meta Description"
+                type="textarea"
+                rows={3}
+                {...register("meta_description")}
+                placeholder="Mô tả chuẩn SEO (từ 150-160 ký tự)..."
+                error={errors.meta_description?.message}
               />
             </div>
           </div>
