@@ -234,10 +234,21 @@ export const adminEndpoints = {
     },
     productAttributes: {
         list: "/api/admin/product-attributes",
+        simple: "/api/admin/product-attributes/simple",
         create: "/api/admin/product-attributes",
         show: (id: Id) => `/api/admin/product-attributes/${id}`,
         update: (id: Id) => `/api/admin/product-attributes/${id}`,
         delete: (id: Id) => `/api/admin/product-attributes/${id}`,
+    },
+    productAttributeValues: {
+        list: "/api/admin/product-attribute-values",
+        simple: "/api/admin/product-attribute-values/simple",
+        byAttribute: (attributeId: Id) => `/api/admin/product-attribute-values/attribute/${attributeId}`,
+        create: "/api/admin/product-attribute-values",
+        show: (id: Id) => `/api/admin/product-attribute-values/${id}`,
+        update: (id: Id) => `/api/admin/product-attribute-values/${id}`,
+        delete: (id: Id) => `/api/admin/product-attribute-values/${id}`,
+        restore: (id: Id) => `/api/admin/product-attribute-values/${id}/restore`,
     },
 } as const;
 

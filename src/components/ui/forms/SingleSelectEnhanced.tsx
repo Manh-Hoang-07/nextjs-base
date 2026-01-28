@@ -56,15 +56,30 @@ const SingleSelectEnhanced = forwardRef<HTMLSelectElement, SingleSelectEnhancedP
       setIsLoading(true);
       try {
         const response = await api.get(searchApi);
-        if (response.data?.success) {
-          const data = response.data.data || [];
-          setLocalOptions(
-            data.map((item: any) => ({
-              value: item[valueField],
-              label: item[labelField] || String(item[valueField] || ""),
-            }))
-          );
+        let data: any[] = [];
+        
+        // Hỗ trợ nhiều format response
+        if (response.data?.success && response.data?.data) {
+          // Format: { success: true, data: [...] }
+          data = Array.isArray(response.data.data) 
+            ? response.data.data 
+            : (response.data.data.data || []);
+        } else if (response.data?.data) {
+          // Format: { data: [...] } hoặc { data: { data: [...], meta: {...} } }
+          data = Array.isArray(response.data.data)
+            ? response.data.data
+            : (response.data.data.data || []);
+        } else if (Array.isArray(response.data)) {
+          // Format: [...]
+          data = response.data;
         }
+        
+        setLocalOptions(
+          data.map((item: any) => ({
+            value: item[valueField],
+            label: item[labelField] || String(item[valueField] || ""),
+          }))
+        );
       } catch (error) {
         setLocalOptions([]);
       } finally {
