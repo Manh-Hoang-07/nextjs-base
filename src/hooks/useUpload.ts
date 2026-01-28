@@ -140,7 +140,7 @@ export function useUpload() {
         formData.append("files", file);
       });
 
-      const response = await api.post<UploadResponse[]>(
+      const response = await api.post<any>(
         userEndpoints.uploads.files,
         formData,
         {
@@ -159,7 +159,15 @@ export function useUpload() {
         }
       );
 
-      const responseData = Array.isArray(response.data) ? response.data : [];
+      // Handle different response structures
+      // Case 1: { success: true, data: [...] }
+      // Case 2: [...] (direct array)
+      let responseData: UploadResponse[] = [];
+      if (response.data?.data && Array.isArray(response.data.data)) {
+        responseData = response.data.data;
+      } else if (Array.isArray(response.data)) {
+        responseData = response.data;
+      }
 
       responseData.forEach((result) => {
         options?.onSuccess?.(result);

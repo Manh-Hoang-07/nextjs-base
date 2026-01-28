@@ -250,5 +250,12 @@ export const adminEndpoints = {
         delete: (id: Id) => `/api/admin/product-attribute-values/${id}`,
         restore: (id: Id) => `/api/admin/product-attribute-values/${id}/restore`,
     },
+    products: {
+        list: "/api/admin/products",
+        create: "/api/admin/products",
+        show: (id: Id) => `/api/admin/products/${id}`,
+        update: (id: Id) => `/api/admin/products/${id}`,
+        delete: (id: Id) => `/api/admin/products/${id}`,
+    },
 } as const;
 
