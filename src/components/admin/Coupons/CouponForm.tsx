@@ -5,6 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import FormField from "@/components/ui/forms/FormField";
 import SingleSelectEnhanced from "@/components/ui/forms/SingleSelectEnhanced";
 import Modal from "@/components/ui/feedback/Modal";
+import { CouponType } from "./types";
 
 interface CouponFormProps {
     show: boolean;
@@ -23,7 +24,7 @@ export default function CouponForm({ show, initialData, onSubmit, onCancel, apiE
             code: "",
             name: "",
             description: "",
-            type: "percentage",
+            type: CouponType.PERCENTAGE,
             value: 0,
             min_order_value: 0,
             max_discount: null,
@@ -43,7 +44,7 @@ export default function CouponForm({ show, initialData, onSubmit, onCancel, apiE
                     code: initialData.code || "",
                     name: initialData.name || "",
                     description: initialData.description || "",
-                    type: initialData.type || "percentage",
+                    type: initialData.type || CouponType.PERCENTAGE,
                     value: initialData.value || 0,
                     min_order_value: initialData.min_order_value || 0,
                     max_discount: initialData.max_discount || null,
@@ -57,7 +58,7 @@ export default function CouponForm({ show, initialData, onSubmit, onCancel, apiE
                     code: "",
                     name: "",
                     description: "",
-                    type: "percentage",
+                    type: CouponType.PERCENTAGE,
                     value: 0,
                     min_order_value: 0,
                     max_discount: null,
@@ -80,15 +81,25 @@ export default function CouponForm({ show, initialData, onSubmit, onCancel, apiE
     }, [apiErrors, setError]);
 
     const couponTypeOptions = [
-        { value: "percentage", label: "Phần trăm (%)" },
-        { value: "fixed_amount", label: "Số tiền cố định (VND)" },
-        { value: "free_shipping", label: "Miễn phí vận chuyển" },
+        { value: CouponType.PERCENTAGE, label: "Phần trăm (%)" },
+        { value: CouponType.FIXED_AMOUNT, label: "Số tiền cố định (VND)" },
+        { value: CouponType.FREE_SHIPPING, label: "Miễn phí vận chuyển" },
     ];
 
     const statusOptions = [
         { value: "active", label: "Hoạt động" },
         { value: "inactive", label: "Vô hiệu" },
     ];
+
+    const handleFormSubmit = (data: any) => {
+        // Chuyển đổi các trường ngày tháng rỗng thành null
+        const processedData = {
+            ...data,
+            start_date: data.start_date && data.start_date.trim() !== "" ? data.start_date : null,
+            end_date: data.end_date && data.end_date.trim() !== "" ? data.end_date : null,
+        };
+        onSubmit(processedData);
+    };
 
     if (!show) return null;
 
@@ -100,7 +111,7 @@ export default function CouponForm({ show, initialData, onSubmit, onCancel, apiE
             size="xl"
             loading={loading || isSubmitting}
         >
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 p-1">
+            <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8 p-1">
                 {/* SECTION: THÔNG TIN CƠ BẢN */}
                 <section className="bg-gray-50/50 p-6 rounded-2xl border border-gray-100 space-y-6">
                     <header className="flex items-center space-x-3 mb-2">
@@ -179,12 +190,12 @@ export default function CouponForm({ show, initialData, onSubmit, onCancel, apiE
                             )}
                         />
                         <FormField
-                            label={couponType === "percentage" ? "Giá trị giảm (%)" : "Giá trị giảm (VND)"}
+                            label={couponType === CouponType.PERCENTAGE ? "Giá trị giảm (%)" : "Giá trị giảm (VND)"}
                             type="number"
                             {...register("value")}
                             error={errors.value?.message}
-                            disabled={couponType === "free_shipping"}
-                            required={couponType !== "free_shipping"}
+                            disabled={couponType === CouponType.FREE_SHIPPING}
+                            required={couponType !== CouponType.FREE_SHIPPING}
                             placeholder="Nhập giá trị"
                         />
                         <FormField
@@ -199,7 +210,7 @@ export default function CouponForm({ show, initialData, onSubmit, onCancel, apiE
                             type="number"
                             {...register("max_discount")}
                             error={errors.max_discount?.message}
-                            disabled={couponType !== "percentage"}
+                            disabled={couponType !== CouponType.PERCENTAGE}
                             placeholder="Không giới hạn"
                         />
                     </div>

@@ -9,13 +9,14 @@ import Pagination from "@/components/ui/data-display/Pagination";
 import CouponsFilter from "./CouponsFilter";
 import CreateCoupon from "./CreateCoupon";
 import EditCoupon from "./EditCoupon";
+import { CouponType } from "./types";
 
 interface Coupon {
     id: string | number;
     code: string;
     name: string;
     description?: string;
-    type: "percentage" | "fixed_amount" | "free_shipping";
+    type: CouponType;
     value: string | number;
     usage_limit?: number | null;
     used_count: number;
@@ -75,9 +76,9 @@ export default function AdminCoupons() {
 
     const getDiscountTypeLabel = (type: string) => {
         switch (type) {
-            case "percentage": return "Phần trăm";
-            case "fixed_amount": return "Số tiền cố định";
-            case "free_shipping": return "Miễn phí vận chuyển";
+            case CouponType.PERCENTAGE: return "Phần trăm";
+            case CouponType.FIXED_AMOUNT: return "Số tiền cố định";
+            case CouponType.FREE_SHIPPING: return "Miễn phí vận chuyển";
             default: return type;
         }
     };
@@ -134,7 +135,7 @@ export default function AdminCoupons() {
                                             {getDiscountTypeLabel(coupon.type)}
                                         </td>
                                         <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
-                                            {coupon.type === "percentage"
+                                            {coupon.type === CouponType.PERCENTAGE
                                                 ? `${coupon.value}%`
                                                 : formatCurrency(coupon.value)}
                                         </td>

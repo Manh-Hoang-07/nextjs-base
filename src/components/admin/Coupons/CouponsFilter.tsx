@@ -2,6 +2,7 @@
 
 import AdminFilter from "@/components/admin/Filter/AdminFilter";
 import SelectFilter from "@/components/ui/filters/SelectFilter";
+import { CouponType } from "./types";
 
 interface CouponsFilterProps {
     initialFilters: any;
@@ -30,9 +31,9 @@ export default function CouponsFilter({ initialFilters, onUpdateFilters }: Coupo
                             label="Loại khuyến mãi"
                             value={filters.type || ""}
                             options={[
-                                { value: "percentage", label: "Phần trăm" },
-                                { value: "fixed_amount", label: "Số tiền cố định" },
-                                { value: "free_shipping", label: "Miễn phí vận chuyển" },
+                                { value: CouponType.PERCENTAGE, label: "Phần trăm" },
+                                { value: CouponType.FIXED_AMOUNT, label: "Số tiền cố định" },
+                                { value: CouponType.FREE_SHIPPING, label: "Miễn phí vận chuyển" },
                             ]}
                             placeholder="Tất cả loại"
                             onChange={(val) => {
