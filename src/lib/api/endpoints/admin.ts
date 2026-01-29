@@ -277,5 +277,18 @@ export const adminEndpoints = {
         update: (id: Id) => `/api/admin/products/${id}`,
         delete: (id: Id) => `/api/admin/products/${id}`,
     },
+    orders: {
+        list: "/api/admin/orders",
+        show: (id: Id) => `/api/admin/orders/${id}`,
+        updateStatus: (id: Id) => `/api/admin/orders/${id}/status`,
+        cancel: (id: Id) => `/api/admin/orders/${id}/cancel`,
+    },
+    coupons: {
+        list: "/api/admin/coupons",
+        create: "/api/admin/coupons",
+        show: (id: Id) => `/api/admin/coupons/${id}`,
+        update: (id: Id) => `/api/admin/coupons/${id}`,
+        delete: (id: Id) => `/api/admin/coupons/${id}`,
+    },
 } as const;
 

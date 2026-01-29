@@ -69,10 +69,17 @@ export const publicEndpoints = {
         markHelpful: (id: Id) => `/api/faqs/${id}/helpful`,
     },
     discounts: {
-        applyCoupon: "/api/public/discounts/apply",
-        validateCoupon: "/api/public/discounts/validate",
         available: "/api/public/discounts/coupons/available",
-        remove: (id: string | number) => `/api/public/discounts/remove/${id}`,
+        validate: "/api/public/discounts/validate-coupon",
+        apply: "/api/public/discounts/apply-coupon",
+        remove: (cartId: string | number) => `/api/public/discounts/remove-coupon/${cartId}`,
+    },
+    orders: {
+        checkout: "/api/public/orders",
+        myOrders: "/api/public/orders",
+        detail: (id: Id) => `/api/public/orders/${id}`,
+        access: "/api/public/orders/access",
+        cancel: (id: Id) => `/api/public/orders/${id}/cancel`,
     },
     payments: {
         list: "/api/public/payments",
