@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import PageMeta from "@/components/ui/navigation/PageMeta";
-import WarehouseInventoryClient from "./warehouse-inventory-client";
+import WarehouseInventory from "@/components/admin/Warehouses/WarehouseInventory";
 
 export const metadata: Metadata = {
   title: "Tồn kho | Admin",
@@ -13,8 +13,6 @@ export default function WarehouseInventoryPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // Match the project's Next.js PageProps convention (params is a Promise)
-  // See other dynamic routes in this repo.
   return (
     <div className="w-full p-4">
       <PageMeta
@@ -39,7 +37,7 @@ async function WarehouseInventoryClientAsync({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  return <WarehouseInventoryClient warehouseId={id} />;
+  return <WarehouseInventory warehouseId={id} />;
 }
 
 
