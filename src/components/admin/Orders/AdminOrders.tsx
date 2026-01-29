@@ -17,12 +17,14 @@ const getOrderStatusArray = () => [
     { value: "cancelled", label: "Đã hủy", class: "bg-red-100 text-red-800" },
 ];
 
-const getStatusLabel = (value: string) => {
-    return getOrderStatusArray().find(s => s.value === value)?.label || value;
+const getStatusLabel = (value: any) => {
+    const statusCode = typeof value === 'object' ? value?.code : value;
+    return getOrderStatusArray().find(s => s.value === statusCode)?.label || statusCode || "-";
 };
 
-const getStatusClass = (value: string) => {
-    return getOrderStatusArray().find(s => s.value === value)?.class || "bg-gray-100 text-gray-800";
+const getStatusClass = (value: any) => {
+    const statusCode = typeof value === 'object' ? value?.code : value;
+    return getOrderStatusArray().find(s => s.value === statusCode)?.class || "bg-gray-100 text-gray-800";
 };
 
 export default function AdminOrders() {
@@ -90,12 +92,16 @@ export default function AdminOrders() {
                                         <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{getSerialNumber(index)}</td>
                                         <td className="whitespace-nowrap px-6 py-4">
                                             <span className="font-bold text-indigo-600">
-                                                {order.order_number || `#${order.id}`}
+                                                {typeof order.order_number === 'object' ? order.order_number?.code : (order.order_number || `#${order.id}`)}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="text-sm font-medium text-gray-900">{order.customer_name}</div>
-                                            <div className="text-xs text-gray-500">{order.customer_phone}</div>
+                                            <div className="text-sm font-medium text-gray-900">
+                                                {typeof order.customer_name === 'object' ? order.customer_name?.name : order.customer_name}
+                                            </div>
+                                            <div className="text-xs text-gray-500">
+                                                {typeof order.customer_phone === 'object' ? order.customer_phone?.number : order.customer_phone}
+                                            </div>
                                         </td>
                                         <td className="whitespace-nowrap px-6 py-4 text-sm font-bold text-gray-900">
                                             {formatCurrency(order.total_amount)}
@@ -108,7 +114,7 @@ export default function AdminOrders() {
                                                 {getStatusLabel(order.status)}
                                             </span>
                                         </td>
-                                        <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
+                                        <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-center">
                                             <Actions
                                                 item={order}
                                                 showEdit={false}
