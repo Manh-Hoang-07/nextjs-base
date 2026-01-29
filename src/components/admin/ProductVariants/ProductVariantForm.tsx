@@ -207,7 +207,12 @@ export default function ProductVariantForm({
   }, [apiErrors, setError]);
 
   const handleFormSubmit = (data: FormValues) => {
+    console.log("[ProductVariantForm] Valid Submit:", data);
     onSubmit?.(data);
+  };
+
+  const handleFormErrors = (errors: any) => {
+    console.log("[ProductVariantForm] Validation Errors:", errors);
   };
 
   if (!show) return null;
@@ -221,7 +226,7 @@ export default function ProductVariantForm({
       // We show loading state on the modal if we are initializing or submitting
       loading={isSubmitting || loadingInitial}
     >
-      <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(handleFormSubmit, handleFormErrors)} className="space-y-6">
         {/* Product & SKU */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="col-span-1 md:col-span-2">
