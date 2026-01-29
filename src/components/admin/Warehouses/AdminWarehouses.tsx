@@ -75,16 +75,28 @@ export default function AdminWarehouses({
     router.push(`/admin/warehouses/${warehouse.id}/inventory`);
   };
 
+  const viewTransfers = () => {
+    router.push(`/admin/warehouses/transfers`);
+  };
+
   return (
     <div className="admin-warehouses">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">{title}</h1>
-        <button
-          onClick={openCreateModal}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none"
-        >
-          {createButtonText}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={viewTransfers}
+            className="px-4 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 focus:outline-none"
+          >
+            Chuyển kho
+          </button>
+          <button
+            onClick={openCreateModal}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none"
+          >
+            {createButtonText}
+          </button>
+        </div>
       </div>
 
       <WarehousesFilter initialFilters={filters} onUpdateFilters={updateFilters} />

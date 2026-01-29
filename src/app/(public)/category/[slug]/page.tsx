@@ -155,7 +155,7 @@ export default function PublicCategoryPage() {
                               style: "currency",
                               currency: "VND",
                             }).format(
-                              Number(product.sale_price ?? product.price || 0)
+                              Number((product.sale_price ?? product.price) || 0)
                             )
                           : null}
                       </div>

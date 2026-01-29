@@ -19,6 +19,7 @@ import {
   TruckIcon,
   CurrencyDollarIcon,
   ArchiveBoxIcon,
+  Squares2X2Icon,
   ClipboardDocumentListIcon,
   BellIcon,
   GlobeAltIcon,
@@ -144,6 +145,11 @@ const adminLinks = [
     name: "Warehouses",
     href: "/admin/warehouses",
     icon: ArchiveBoxIcon,
+  },
+  {
+    name: "Product Variants",
+    href: "/admin/product-variants",
+    icon: Squares2X2Icon,
   },
 ];
 
