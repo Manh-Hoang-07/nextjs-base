@@ -25,7 +25,7 @@ export interface WarehouseTransfer {
     created_at: string;
     from_warehouse?: { name: string; id: number };
     to_warehouse?: { name: string; id: number };
-    product_variant?: { name: string; sku: string; id: number };
+    variant?: { name: string; sku: string; id: number };
     updated_user_id?: number;
 }
 
@@ -156,8 +156,8 @@ export default function WarehouseTransferList() {
                                             {transfer.to_warehouse?.name || `ID: ${transfer.to_warehouse_id}`}
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-900">{transfer.product_variant?.name || `ID: ${transfer.product_variant_id}`}</div>
-                                            {transfer.product_variant?.sku && <div className="text-xs text-gray-500">SKU: {transfer.product_variant.sku}</div>}
+                                            <div className="text-sm text-gray-900">{transfer.variant?.name || `ID: ${transfer.product_variant_id}`}</div>
+                                            {transfer.variant?.sku && <div className="text-xs text-gray-500">SKU: {transfer.variant.sku}</div>}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">
                                             {transfer.quantity}
