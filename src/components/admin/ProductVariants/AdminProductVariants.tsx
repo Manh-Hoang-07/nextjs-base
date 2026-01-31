@@ -199,9 +199,6 @@ export default function AdminProductVariants({
                     Tên
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                    Product ID
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                     Giá
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
@@ -233,12 +230,6 @@ export default function AdminProductVariants({
                       <div className="text-sm font-medium text-gray-900">
                         {variant.name}
                       </div>
-                      <div className="text-xs text-gray-500 mt-1">
-                        ID: {variant.id}
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700">
-                      {variant.product_id}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700">
                       {formatMoney(variant.price)}
@@ -256,11 +247,10 @@ export default function AdminProductVariants({
                         </span>
                       ) : (
                         <span
-                          className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
-                            variant.is_active === false
+                          className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${variant.is_active === false
                               ? "bg-gray-100 text-gray-800"
                               : "bg-green-100 text-green-800"
-                          }`}
+                            }`}
                         >
                           {variant.is_active === false ? "Ngừng" : "Hoạt động"}
                         </span>
@@ -274,12 +264,12 @@ export default function AdminProductVariants({
                         additionalActions={
                           isDeleted(variant)
                             ? [
-                                {
-                                  label: "Khôi phục",
-                                  icon: "check",
-                                  action: () => setRestoreModal(variant),
-                                },
-                              ]
+                              {
+                                label: "Khôi phục",
+                                icon: "check",
+                                action: () => setRestoreModal(variant),
+                              },
+                            ]
                             : []
                         }
                       />
