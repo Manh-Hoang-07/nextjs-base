@@ -76,7 +76,7 @@ export default function AdminWarehouses({
   };
 
   const viewTransfers = () => {
-    router.push(`/admin/warehouses/transfers`);
+    router.push(`/admin/warehouse-transfers`);
   };
 
   return (

@@ -290,5 +290,19 @@ export const adminEndpoints = {
         update: (id: Id) => `/api/admin/coupons/${id}`,
         delete: (id: Id) => `/api/admin/coupons/${id}`,
     },
+    warehouseImports: {
+        list: "/api/admin/warehouse-imports",
+        create: "/api/admin/warehouse-imports",
+        show: (id: Id) => `/api/admin/warehouse-imports/${id}`,
+        approve: (id: Id) => `/api/admin/warehouse-imports/${id}/approve`,
+        cancel: (id: Id) => `/api/admin/warehouse-imports/${id}/cancel`,
+    },
+    warehouseExports: {
+        list: "/api/admin/warehouse-exports",
+        create: "/api/admin/warehouse-exports",
+        show: (id: Id) => `/api/admin/warehouse-exports/${id}`,
+        approve: (id: Id) => `/api/admin/warehouse-exports/${id}/approve`,
+        cancel: (id: Id) => `/api/admin/warehouse-exports/${id}/cancel`,
+    },
 } as const;
 

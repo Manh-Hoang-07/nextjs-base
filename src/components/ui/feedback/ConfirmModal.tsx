@@ -8,6 +8,9 @@ interface ConfirmModalProps {
   onConfirm: () => void;
   title?: string;
   message?: string;
+  confirmText?: string;
+  cancelText?: string;
+  confirmButtonClass?: string;
 }
 
 export default function ConfirmModal({
@@ -16,6 +19,9 @@ export default function ConfirmModal({
   onConfirm,
   title = "Xác nhận",
   message = "Bạn có chắc chắn muốn thực hiện hành động này?",
+  confirmText = "Xác nhận",
+  cancelText = "Hủy",
+  confirmButtonClass = "bg-red-600 hover:bg-red-700",
 }: ConfirmModalProps) {
   const handleConfirm = () => {
     onConfirm();
@@ -32,14 +38,14 @@ export default function ConfirmModal({
             onClick={onClose}
             className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
           >
-            Hủy
+            {cancelText}
           </button>
           <button
             type="button"
             onClick={handleConfirm}
-            className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none"
+            className={`px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white focus:outline-none ${confirmButtonClass}`}
           >
-            Xác nhận
+            {confirmText}
           </button>
         </div>
       </div>

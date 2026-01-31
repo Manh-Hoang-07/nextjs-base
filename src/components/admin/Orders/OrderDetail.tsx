@@ -251,12 +251,12 @@ export default function OrderDetail({ show, order: initialOrder, onClose, status
                                     {order.items?.map((item: any) => (
                                         <tr key={item.id}>
                                             <td className="px-5 py-3 text-sm">
-                                                <p className="font-medium text-gray-900">{item.product_name}</p>
-                                                {item.variant_label && <span className="text-[10px] text-gray-500 font-medium uppercase">{item.variant_label}</span>}
+                                                <p className="font-medium text-gray-900">{item.variant_name || item.product_name}</p>
+                                                {!item.variant_name && item.variant_label && <span className="text-[10px] text-gray-500 font-medium uppercase">{item.variant_label}</span>}
                                             </td>
                                             <td className="px-5 py-3 text-center text-sm font-medium text-gray-700">{item.quantity}</td>
-                                            <td className="px-5 py-3 text-right text-sm font-mono text-gray-600">{formatCurrency(item.price)}</td>
-                                            <td className="px-5 py-3 text-right text-sm font-mono font-bold text-gray-900">{formatCurrency(item.price * item.quantity)}</td>
+                                            <td className="px-5 py-3 text-right text-sm font-mono text-gray-600">{formatCurrency(Number(item.unit_price || item.price))}</td>
+                                            <td className="px-5 py-3 text-right text-sm font-mono font-bold text-gray-900">{formatCurrency(Number(item.total_price || (item.price * item.quantity)))}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -273,7 +273,7 @@ export default function OrderDetail({ show, order: initialOrder, onClose, status
                                     )}
                                     <tr>
                                         <td colSpan={3} className="px-5 py-1 text-right text-gray-500">Phí ship:</td>
-                                        <td className="px-5 py-1 text-right font-mono text-gray-700">{formatCurrency(order.shipping_fee)}</td>
+                                        <td className="px-5 py-1 text-right font-mono text-gray-700">{formatCurrency(order.shipping_amount)}</td>
                                     </tr>
                                     <tr className="text-lg font-bold">
                                         <td colSpan={3} className="px-5 py-4 text-right text-gray-900 uppercase text-xs tracking-wider">Tổng cộng:</td>

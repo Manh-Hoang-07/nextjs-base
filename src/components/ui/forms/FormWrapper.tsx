@@ -13,12 +13,14 @@ interface FormWrapperProps {
   disableSubmit?: boolean;
   onSubmit?: (data: Record<string, any>) => void | Promise<void>;
   onCancel?: () => void;
-  children?: (props: {
+  children?:
+  | ReactNode
+  | ((props: {
     form: Record<string, any>;
     errors: Record<string, string | string[]>;
     isSubmitting: boolean;
     clearError: (field?: string) => void;
-  }) => ReactNode;
+  }) => ReactNode);
   actions?: ReactNode;
 }
 
@@ -82,7 +84,9 @@ export default function FormWrapper({
 
   return (
     <div className="form-wrapper">
-      {children?.({ form, errors: displayErrors, isSubmitting, clearError })}
+      {typeof children === "function"
+        ? children({ form, errors: displayErrors, isSubmitting, clearError })
+        : children}
       <div className="mt-4 flex justify-end space-x-2">
         {actions || (
           <>

@@ -6,6 +6,7 @@ interface Action {
   icon: string;
   label: string;
   action: () => void;
+  className?: string;
 }
 
 interface ActionsProps {
@@ -157,10 +158,10 @@ export default function Actions({
         <button
           key={`action-${index}-${item.id || index}`}
           onClick={() => handleActionClick(action)}
-          className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
+          className={`p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 ${action.className || ""}`}
           title={action.label}
         >
-          {renderIcon(action.icon, "text-gray-600")}
+          {renderIcon(action.icon, action.className ? "" : "text-gray-600")}
         </button>
       ))}
 
