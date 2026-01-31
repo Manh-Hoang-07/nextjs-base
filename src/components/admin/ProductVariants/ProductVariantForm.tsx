@@ -230,6 +230,9 @@ export default function ProductVariantForm({
         {/* Product & SKU */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="col-span-1 md:col-span-2">
+            <label className="block text-sm font-semibold mb-1.5 text-gray-700">
+              Sản phẩm <span className="text-red-500">*</span>
+            </label>
             <Controller
               control={control}
               name="product_id"
@@ -240,8 +243,6 @@ export default function ProductVariantForm({
                   labelField="name"
                   placeholder="Chọn sản phẩm..."
                   disabled={isEdit}
-                  label="Sản phẩm"
-                  required
                   error={errors.product_id?.message}
                   onChange={(val) => field.onChange(Number(val))}
                 />
@@ -258,7 +259,7 @@ export default function ProductVariantForm({
           <FormField label="Giá bán" {...register("price")} error={errors.price?.message} required placeholder="0" />
           <FormField label="Giá khuyến mãi" {...register("sale_price")} error={errors.sale_price?.message} placeholder="0" />
           <FormField label="Giá vốn" {...register("cost_price")} error={errors.cost_price?.message} placeholder="0" />
-          <FormField label="Tồn kho" type="number" {...register("stock_quantity")} error={errors.stock_quantity?.message} required />
+          <FormField label="Tồn kho" type="number" {...register("stock_quantity")} error={errors.stock_quantity?.message} required disabled helpText="Số lượng được cập nhật tự động từ kho hàng" />
         </div>
 
         {/* Extra Info */}

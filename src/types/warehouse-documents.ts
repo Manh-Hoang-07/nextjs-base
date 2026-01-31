@@ -43,12 +43,12 @@ export interface CreateWarehouseDocumentItemDto {
 
 export interface CreateWarehouseImportDto {
     warehouse_id: number | string;
-    reason: string;
+    notes: string;
     items: CreateWarehouseDocumentItemDto[];
 }
 
 export interface CreateWarehouseExportDto {
     warehouse_id: number | string;
-    reason: string;
+    notes: string;
     items: CreateWarehouseDocumentItemDto[];
 }

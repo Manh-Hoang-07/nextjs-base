@@ -28,7 +28,7 @@ export default function CreateExportModal({ show, onClose, onCreated, apiErrors 
 
     const [formData, setFormData] = useState({
         warehouse_id: "",
-        reason: "",
+        notes: "",
     });
 
     const [items, setItems] = useState<ExportItem[]>([
@@ -90,7 +90,7 @@ export default function CreateExportModal({ show, onClose, onCreated, apiErrors 
 
         const payload = {
             warehouse_id: formData.warehouse_id,
-            reason: formData.reason,
+            notes: formData.notes,
             items: validItems.map(item => ({
                 product_variant_id: item.product_variant_id,
                 quantity: item.quantity
@@ -105,7 +105,7 @@ export default function CreateExportModal({ show, onClose, onCreated, apiErrors 
             show={show}
             onClose={onClose}
             title="Tạo phiếu xuất kho"
-            size="2xl"
+            size="xl"
         >
             <FormWrapper
                 onCancel={onClose}
@@ -126,12 +126,12 @@ export default function CreateExportModal({ show, onClose, onCreated, apiErrors 
                         placeholder="Chọn kho xuất"
                     />
                     <FormField
-                        label="Lý do xuất"
+                        label="Ghi chú xuất hàng"
                         type="textarea"
-                        name="reason"
-                        value={formData.reason}
-                        onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-                        error={apiErrors?.reason}
+                        name="notes"
+                        value={formData.notes}
+                        onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                        error={apiErrors?.notes || apiErrors?.reason}
                     />
                 </div>
 

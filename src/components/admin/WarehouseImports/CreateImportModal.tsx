@@ -28,7 +28,7 @@ export default function CreateImportModal({ show, onClose, onCreated, apiErrors 
 
     const [formData, setFormData] = useState({
         warehouse_id: "",
-        reason: "",
+        notes: "",
     });
 
     const [items, setItems] = useState<ImportItem[]>([
@@ -91,7 +91,7 @@ export default function CreateImportModal({ show, onClose, onCreated, apiErrors 
 
         const payload = {
             warehouse_id: formData.warehouse_id,
-            reason: formData.reason,
+            notes: formData.notes,
             items: validItems.map(item => ({
                 product_variant_id: item.product_variant_id,
                 quantity: item.quantity
@@ -106,7 +106,7 @@ export default function CreateImportModal({ show, onClose, onCreated, apiErrors 
             show={show}
             onClose={onClose}
             title="Tạo phiếu nhập kho"
-            size="2xl" // Wider modal for table
+            size="xl" // Wider modal for table
         >
             <FormWrapper
                 onCancel={onClose}
@@ -127,12 +127,12 @@ export default function CreateImportModal({ show, onClose, onCreated, apiErrors 
                         placeholder="Chọn kho nhập"
                     />
                     <FormField
-                        label="Lý do nhập"
+                        label="Ghi chú nhập hàng"
                         type="textarea"
-                        name="reason"
-                        value={formData.reason}
-                        onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-                        error={apiErrors?.reason}
+                        name="notes"
+                        value={formData.notes}
+                        onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                        error={apiErrors?.notes || apiErrors?.reason}
                     />
                 </div>
 
