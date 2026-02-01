@@ -57,50 +57,47 @@ export function PublicHeader({
     setInternalMobileMenuOpen(false);
   }, [pathname]);
 
-  const siteName = systemConfig?.site_name || "Công Ty Xây Dựng";
+  const siteName = systemConfig?.site_name || "Comic Haven";
+
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   // Scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      setScrolled(currentScrollY > 20);
+      setLastScrollY(currentScrollY);
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   // Navigation items
   const navigationItems = [
-    { name: "Trang chủ", path: "/", icon: "" },
+    { name: "Trang chủ", path: "/home", icon: "" },
     {
-      name: "Dự án",
-      path: "/home/projects",
+      name: "Thể loại",
+      path: "/home/category",
       icon: "",
       children: [
-        { name: "Dự án nổi bật", path: "/home/projects", icon: "" },
-        { name: "Dự án đang thi công", path: "/home/projects?status=ongoing", icon: "" },
-        { name: "Dự án đã hoàn thành", path: "/home/projects?status=completed", icon: "" },
+        { name: "Hành động", path: "/home/category/hanh-dong", icon: "" },
+        { name: "Phiêu lưu", path: "/home/category/phieu-luu", icon: "" },
+        { name: "Học đường", path: "/home/category/hoc-duong", icon: "" },
+        { name: "Chuyển sinh", path: "/home/category/chuyen-sinh", icon: "" },
       ],
     },
-    {
-      name: "Dịch vụ",
-      path: "/home/services",
-      icon: "",
-      children: [
-        { name: "Thiết kế xây dựng", path: "/home/services/design", icon: "" },
-        { name: "Thi công xây dựng", path: "/home/services/construction", icon: "" },
-        { name: "Giám sát thi công", path: "/home/services/supervision", icon: "" },
-      ],
-    },
-    {
-      name: "Về chúng tôi",
-      path: "/home/about",
-      icon: "",
-      children: [
-        { name: "Giới thiệu chung", path: "/home/about", icon: "" },
-        { name: "Đội ngũ nhân sự", path: "/home/staff", icon: "" },
-        { name: "Chứng chỉ & Giấy phép", path: "/home/certificates", icon: "" },
-      ],
-    },
+    { name: "Mới cập nhật", path: "/home/comics?sort=recent", icon: "" },
+    { name: "Truyện HOT", path: "/home/comics?sort=trending", icon: "" },
+    { name: "Hoàn thành", path: "/home/comics?status=completed", icon: "" },
     { name: "Tin tức", path: "/home/posts", icon: "" },
   ];
 
@@ -128,7 +125,7 @@ export function PublicHeader({
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${headerClass}`}
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-in-out ${headerClass} ${isVisible ? "translate-y-0" : "-translate-y-full"}`}
       >
         <div className="mx-auto max-w-[1500px] px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
@@ -200,12 +197,27 @@ export function PublicHeader({
               ))}
             </nav>
 
+            {/* Search Bar (Desktop) */}
+            <div className="hidden xl:flex flex-1 max-w-md mx-8">
+              <form action="/home/comics" method="GET" className="relative w-full">
+                <input
+                  type="text"
+                  name="search"
+                  placeholder="Tìm truyện, tác giả..."
+                  className="w-full h-10 pl-10 pr-4 bg-gray-100 border-none rounded-full text-sm font-medium focus:ring-2 focus:ring-red-500 outline-none transition-all"
+                />
+                <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </form>
+            </div>
+
             {/* Action Buttons */}
             <div className="flex items-center gap-4 shrink-0">
               <Link href="/home/contact" className="hidden lg:flex">
                 <button className="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-full font-medium shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all whitespace-nowrap">
                   <PhoneIcon className="w-4 h-4" />
-                  <span>Tư vấn</span>
+                  <span>Tài khoản</span>
                 </button>
               </Link>
 

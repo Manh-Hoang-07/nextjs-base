@@ -18,6 +18,7 @@ export function PublicLayoutWrapper({
     contactChannels,
 }: PublicLayoutWrapperProps) {
     const pathname = usePathname();
+    const isReadingPage = pathname?.includes("/home/chapters/");
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -26,13 +27,13 @@ export function PublicLayoutWrapper({
             {/* Main Content */}
             <main
                 key="main-content"
-                className="flex-1 min-h-screen pt-20"
+                className={`flex-1 min-h-screen ${isReadingPage ? 'pt-0' : 'pt-20'}`}
             >
                 {children}
             </main>
 
-            <React.Fragment key="footer-section">{footer}</React.Fragment>
-            <FloatingContactChannels key="floating-channels" channels={contactChannels} />
+            {!isReadingPage && <React.Fragment key="footer-section">{footer}</React.Fragment>}
+            {!isReadingPage && <FloatingContactChannels key="floating-channels" channels={contactChannels} />}
         </div>
     );
 }
