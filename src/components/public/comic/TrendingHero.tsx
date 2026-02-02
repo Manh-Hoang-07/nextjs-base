@@ -1,77 +1,174 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Comic } from '@/types/comic';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules';
+import { ChevronLeft, ChevronRight, Play, Info, Star, Clock } from "lucide-react";
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/effect-fade';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 interface TrendingHeroProps {
     comics: Comic[];
 }
 
 export const TrendingHero: React.FC<TrendingHeroProps> = ({ comics }) => {
+    // If no comics, don't render
     if (!comics || comics.length === 0) return null;
 
-    const mainFeature = comics[0];
-    const subFeatures = comics.slice(1, 4);
+    const featuredComics = comics.slice(0, 8); // Top 8 comics
 
     return (
-        <div className="mb-12">
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-[500px]">
-                {/* Main large feature */}
-                <div className="lg:col-span-3 relative rounded-2xl overflow-hidden group">
-                    <div
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                        style={{ backgroundImage: `url(${mainFeature.cover_image})` }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-8 text-white w-full">
-                        <div className="flex gap-2 mb-3">
-                            {mainFeature.categories.slice(0, 3).map(cat => (
-                                <span key={cat.id} className="px-3 py-1 bg-red-600/80 backdrop-blur-md rounded-full text-xs font-bold uppercase">
-                                    {cat.name}
-                                </span>
-                            ))}
-                        </div>
-                        <h1 className="text-4xl lg:text-5xl font-black mb-4 group-hover:text-red-500 transition-colors">
-                            {mainFeature.title}
-                        </h1>
-                        <p className="text-gray-300 line-clamp-2 max-w-2xl text-lg mb-6">
-                            {mainFeature.description}
-                        </p>
-                        <div className="flex gap-4">
-                            <Link
-                                href={`/home/comics/${mainFeature.slug}`}
-                                className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold transition-all transform hover:scale-105"
-                            >
-                                Đọc Ngay
-                            </Link>
-                            <button className="px-8 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white rounded-full font-bold transition-all border border-white/20">
-                                Chi tiết
-                            </button>
-                        </div>
-                    </div>
-                </div>
+        <section className="relative w-full mb-10 group/hero">
+            <Swiper
+                modules={[Autoplay, EffectFade, Navigation, Pagination]}
+                effect={'fade'}
+                fadeEffect={{ crossFade: true }}
+                speed={800}
+                autoplay={{
+                    delay: 5000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                }}
+                loop={true}
+                navigation={{
+                    nextEl: '.swiper-button-next-custom',
+                    prevEl: '.swiper-button-prev-custom',
+                }}
+                pagination={{
+                    clickable: true,
+                    el: '.swiper-pagination-custom',
+                    bulletClass: 'swiper-pagination-bullet-custom',
+                    bulletActiveClass: 'swiper-pagination-bullet-active-custom',
+                }}
+                className="w-full h-[320px] md:h-[360px] lg:h-[380px] rounded-xl overflow-hidden shadow-xl bg-white border border-gray-100"
+            >
+                {featuredComics.map((comic) => (
+                    <SwiperSlide key={comic.id} className="relative w-full h-full group/slide cursor-pointer">
+                        <Link href={`/home/comics/${comic.slug}`} className="block w-full h-full">
+                            {/* 1. Dynamic Background Layer */}
+                            <div className="absolute inset-0 w-full h-full overflow-hidden">
+                                {/* Blurry Bg - Lighter for light mode */}
+                                <div
+                                    className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-[60px] opacity-20 scale-110"
+                                    style={{ backgroundImage: `url(${comic.cover_image})` }}
+                                />
+                                {/* Gradient Overlay for Readability - White based */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent/50 lg:w-4/5" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+                            </div>
 
-                {/* Sub features column */}
-                <div className="hidden lg:flex flex-col gap-4">
-                    {subFeatures.map((comic) => (
-                        <Link
-                            key={comic.id}
-                            href={`/home/comics/${comic.slug}`}
-                            className="relative flex-1 rounded-xl overflow-hidden group"
-                        >
-                            <div
-                                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                                style={{ backgroundImage: `url(${comic.cover_image})` }}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                            <div className="absolute bottom-0 left-0 p-4 text-white w-full">
-                                <h3 className="font-bold text-sm line-clamp-2 group-hover:text-red-400 transition-colors">
-                                    {comic.title}
-                                </h3>
+                            {/* 2. Main Content Container */}
+                            <div className="relative z-10 w-full h-full container mx-auto px-4 md:px-8 lg:px-12 flex items-center gap-6 lg:gap-10">
+
+                                {/* Poster Image (Vertical Rectangle) */}
+                                <div className="hidden md:block flex-shrink-0 relative z-20">
+                                    <div className="w-[160px] lg:w-[200px] aspect-[2/3] rounded-lg shadow-2xl overflow-hidden ring-1 ring-gray-900/5 group-hover/slide:scale-[1.02] transition-transform duration-500">
+                                        <img
+                                            src={comic.cover_image}
+                                            alt={comic.title}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Text Info */}
+                                <div className="flex-1 flex flex-col justify-center text-left space-y-2 lg:space-y-3 pr-4 lg:pr-20">
+
+                                    {/* Top Badge */}
+                                    <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-red-600 text-[10px] md:text-xs font-black uppercase tracking-widest bg-red-50 border border-red-100">
+                                            <Star className="w-3 h-3 fill-current" />
+                                            Trending
+                                        </span>
+                                    </div>
+
+                                    {/* Title */}
+                                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 leading-tight tracking-tight line-clamp-2 animate-fade-in-up group-hover/slide:text-red-600 transition-colors duration-300" style={{ animationDelay: '0.2s' }}>
+                                        {comic.title}
+                                    </h2>
+
+                                    {/* Meta Info (Categories, Status) */}
+                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-gray-500 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {comic.categories.slice(0, 3).map((cat) => (
+                                                <span key={cat.id} className="text-gray-600 font-bold hover:text-red-600 transition-colors bg-gray-100 px-2 py-0.5 rounded">
+                                                    {cat.name}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <div className="w-1 h-1 rounded-full bg-gray-300" />
+                                        <span className="flex items-center gap-1 text-yellow-500 font-bold">
+                                            <Star className="w-3 h-3 fill-current" />
+                                            <span className="text-gray-700">{comic.stats?.rating_sum || '4.9'}</span>
+                                        </span>
+                                        <div className="w-1 h-1 rounded-full bg-gray-300" />
+                                        <span className="flex items-center gap-1">
+                                            <Clock className="w-3 h-3" />
+                                            <span>{new Date(comic.last_chapter_updated_at).toLocaleDateString()}</span>
+                                        </span>
+                                    </div>
+
+                                    {/* Description */}
+                                    <p className="hidden md:block text-gray-500 text-sm leading-relaxed line-clamp-2 md:line-clamp-3 max-w-2xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                                        {comic.description || "Đang cập nhật nội dung..."}
+                                    </p>
+
+                                    {/* Chapter Info */}
+                                    {comic.last_chapter && (
+                                        <div className="inline-block mt-2 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+                                            <span className="text-white font-bold text-sm bg-red-600 px-4 py-1.5 rounded-full shadow-lg shadow-red-200">
+                                                {comic.last_chapter.chapter_label || `Chapter ${comic.last_chapter.chapter_index}`}
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </Link>
-                    ))}
+                    </SwiperSlide>
+                ))}
+
+                {/* Custom Navigation Arrows */}
+                <div className="swiper-button-prev-custom absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-white/80 hover:bg-red-600 rounded-full flex items-center justify-center text-gray-800 hover:text-white cursor-pointer transition-all opacity-0 group-hover/hero:opacity-100 hover:scale-110 shadow-md border border-gray-100">
+                    <ChevronLeft className="w-5 h-5" />
                 </div>
-            </div>
-        </div>
+                <div className="swiper-button-next-custom absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-white/80 hover:bg-red-600 rounded-full flex items-center justify-center text-gray-800 hover:text-white cursor-pointer transition-all opacity-0 group-hover/hero:opacity-100 hover:scale-110 shadow-md border border-gray-100">
+                    <ChevronRight className="w-5 h-5" />
+                </div>
+
+                {/* Custom Pagination */}
+                <div className="absolute bottom-4 right-8 z-30 flex justify-end gap-1.5">
+                    <div className="swiper-pagination-custom flex gap-1.5"></div>
+                </div>
+            </Swiper>
+
+            <style jsx global>{`
+                .swiper-pagination-bullet-custom {
+                    width: 24px;
+                    height: 4px;
+                    background: rgba(0, 0, 0, 0.2); /* Darker for light mode */
+                    border-radius: 2px;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                }
+                .swiper-pagination-bullet-active-custom {
+                    background: #dc2626; /* red-600 */
+                    width: 32px;
+                }
+                @keyframes fadeInUp {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .animate-fade-in-up {
+                    opacity: 0;
+                    animation: fadeInUp 0.6s ease-out forwards;
+                }
+            `}</style>
+        </section>
     );
 };

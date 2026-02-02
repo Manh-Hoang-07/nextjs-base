@@ -95,8 +95,8 @@ export function PublicHeader({
         { name: "Chuyển sinh", path: "/home/category/chuyen-sinh", icon: "" },
       ],
     },
-    { name: "Mới cập nhật", path: "/home/comics?sort=recent", icon: "" },
-    { name: "Truyện HOT", path: "/home/comics?sort=trending", icon: "" },
+    { name: "Mới cập nhật", path: "/home/comics?sort=last_chapter_updated_at:desc", icon: "" },
+    { name: "Truyện HOT", path: "/home/comics?sort=view_count:desc", icon: "" },
     { name: "Hoàn thành", path: "/home/comics?status=completed", icon: "" },
     { name: "Tin tức", path: "/home/posts", icon: "" },
   ];
@@ -197,20 +197,7 @@ export function PublicHeader({
               ))}
             </nav>
 
-            {/* Search Bar (Desktop) */}
-            <div className="hidden xl:flex flex-1 max-w-md mx-8">
-              <form action="/home/comics" method="GET" className="relative w-full">
-                <input
-                  type="text"
-                  name="search"
-                  placeholder="Tìm truyện, tác giả..."
-                  className="w-full h-10 pl-10 pr-4 bg-gray-100 border-none rounded-full text-sm font-medium focus:ring-2 focus:ring-red-500 outline-none transition-all"
-                />
-                <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </form>
-            </div>
+
 
             {/* Action Buttons */}
             <div className="flex items-center gap-4 shrink-0">

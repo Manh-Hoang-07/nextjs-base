@@ -18,6 +18,7 @@ export async function getComics(params: {
     sort?: string;
     search?: string;
     comic_category_id?: string;
+    is_featured?: boolean;
 }): Promise<PaginatedResponse<Comic> | null> {
     const query = new URLSearchParams();
     if (params.page) query.append("page", params.page.toString());
@@ -25,10 +26,23 @@ export async function getComics(params: {
     if (params.sort) query.append("sort", params.sort);
     if (params.search) query.append("search", params.search);
     if (params.comic_category_id) query.append("comic_category_id", params.comic_category_id);
+    if (params.is_featured !== undefined) query.append("is_featured", params.is_featured.toString());
 
-    const { data, error } = await serverFetch<PaginatedResponse<Comic>>(`/public/comics?${query.toString()}`);
-    if (error) return null;
-    return data;
+    const { data, meta: responseMeta, error } = await serverFetch<Comic[]>(`/public/comics?${query.toString()}`);
+    if (error || !data) return null;
+
+    // Chuẩn hóa response data
+    const items = Array.isArray(data) ? data : [];
+    const meta = responseMeta || {
+        page: params.page || 1,
+        limit: params.limit || 20,
+        totalItems: items.length,
+        totalPages: 1,
+        hasNextPage: false,
+        hasPreviousPage: false,
+    };
+
+    return { data: items, meta };
 }
 
 export async function getComicDetail(slug: string): Promise<Comic | null> {
@@ -38,9 +52,21 @@ export async function getComicDetail(slug: string): Promise<Comic | null> {
 }
 
 export async function getComicChapters(slug: string, page: number = 1): Promise<PaginatedResponse<ComicChapter> | null> {
-    const { data, error } = await serverFetch<PaginatedResponse<ComicChapter>>(`/public/comics/${slug}/chapters?page=${page}`);
-    if (error) return null;
-    return data;
+    const { data, meta: responseMeta, error } = await serverFetch<ComicChapter[]>(`/public/comics/${slug}/chapters?page=${page}`);
+    if (error || !data) return null;
+
+    // Chuẩn hóa response data
+    const items = Array.isArray(data) ? data : [];
+    const meta = responseMeta || {
+        page: page,
+        limit: 20,
+        totalItems: items.length,
+        totalPages: 1,
+        hasNextPage: false,
+        hasPreviousPage: false,
+    };
+
+    return { data: items, meta };
 }
 
 export async function getChapterPages(chapterId: string): Promise<ComicPage[] | null> {

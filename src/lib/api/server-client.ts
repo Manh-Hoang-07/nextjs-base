@@ -24,7 +24,7 @@ interface FetchOptions extends RequestInit {
 export async function serverFetch<T = any>(
     endpoint: string,
     options: FetchOptions = {}
-): Promise<{ data: T | null; error: string | null }> {
+): Promise<{ data: T | null; meta?: any; error: string | null }> {
     try {
         let token: string | undefined;
         let groupId: string | undefined;
@@ -101,7 +101,7 @@ export async function serverFetch<T = any>(
         }
 
         const json = await response.json();
-        return { data: json.data, error: null };
+        return { data: json.data, meta: json.meta, error: null };
     } catch (error: any) {
         if (error.name === 'AbortError') {
             console.error(`[API Fetch] TIMEOUT after 5000ms: ${endpoint}`);

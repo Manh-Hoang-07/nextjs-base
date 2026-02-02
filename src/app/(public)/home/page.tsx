@@ -43,21 +43,21 @@ export default async function ComicHomePage() {
             <ComicSection
               title="Mới cập nhật"
               comics={data.recent_update_comics}
-              viewAllLink="/home/comics?sort=recent"
+              viewAllLink="/home/comics?sort=last_chapter_updated_at:desc"
             />
 
             {/* Popular Comics */}
             <ComicSection
               title="Truyện phổ biến"
               comics={data.popular_comics}
-              viewAllLink="/home/comics?sort=popular"
+              viewAllLink="/home/comics?sort=view_count:desc"
             />
 
             {/* New Comics */}
             <ComicSection
               title="Truyện mới đăng"
               comics={data.newest_comics}
-              viewAllLink="/home/comics?sort=newest"
+              viewAllLink="/home/comics?sort=created_at:desc"
             />
           </div>
 

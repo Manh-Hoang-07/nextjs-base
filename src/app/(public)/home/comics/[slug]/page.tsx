@@ -72,7 +72,7 @@ export default async function ComicDetailPage({ params }: Props) {
                             ))}
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-8 text-center sm:text-left">
+                        <div className="space-y-5 mb-8 text-left">
                             <div>
                                 <p className="text-xs text-gray-400 uppercase font-bold tracking-widest mb-1">Tác giả</p>
                                 <p className="text-gray-900 font-bold">{comic.author || 'Đang cập nhật'}</p>

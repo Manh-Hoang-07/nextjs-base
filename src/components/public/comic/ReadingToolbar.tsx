@@ -50,17 +50,17 @@ export const ReadingToolbar: React.FC<ReadingToolbarProps> = ({
         <>
             {/* Minimalist Bottom Navigation Bar */}
             <div className={`fixed bottom-8 inset-x-0 z-[100] px-4 flex justify-center transition-all duration-500 ease-in-out ${isVisible ? "translate-y-0 opacity-100" : "translate-y-24 opacity-0"}`}>
-                <div className="bg-black/80 backdrop-blur-2xl border border-white/10 rounded-2xl p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center gap-1.5">
+                <div className="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl p-1.5 shadow-xl flex items-center gap-1.5 ring-1 ring-black/5">
                     {/* Previous Icon Button */}
                     {prevChapter ? (
                         <Link
                             href={`/home/chapters/${prevChapter.id}`}
-                            className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/15 rounded-xl text-white transition-all active:scale-90"
+                            className="w-12 h-12 flex items-center justify-center bg-gray-50 hover:bg-gray-100 rounded-xl text-gray-700 transition-all active:scale-90"
                         >
                             <ChevronLeftIcon className="w-6 h-6" />
                         </Link>
                     ) : (
-                        <div className="w-12 h-12 flex items-center justify-center text-gray-800 rounded-xl">
+                        <div className="w-12 h-12 flex items-center justify-center text-gray-200 rounded-xl">
                             <ChevronLeftIcon className="w-6 h-6" />
                         </div>
                     )}
@@ -68,22 +68,22 @@ export const ReadingToolbar: React.FC<ReadingToolbarProps> = ({
                     {/* Chapter Selector Pill */}
                     <button
                         onClick={() => setShowSelector(true)}
-                        className="h-12 flex items-center gap-3 px-6 bg-red-600 hover:bg-red-700 text-white rounded-xl font-black text-xs uppercase tracking-tighter transition-all active:scale-95 shadow-lg shadow-red-900/20"
+                        className="h-12 flex items-center gap-2 px-6 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-sm transition-all active:scale-95"
                     >
                         <ListBulletIcon className="w-5 h-5" />
-                        <span>CHƯƠNG</span>
+                        <span>Chương</span>
                     </button>
 
                     {/* Next Icon Button */}
                     {nextChapter ? (
                         <Link
                             href={`/home/chapters/${nextChapter.id}`}
-                            className="w-12 h-12 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-xl transition-all active:scale-90 shadow-lg shadow-red-900/20"
+                            className="w-12 h-12 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-xl transition-all active:scale-90 shadow-lg shadow-red-200"
                         >
                             <ChevronRightIcon className="w-6 h-6" />
                         </Link>
                     ) : (
-                        <div className="w-12 h-12 flex items-center justify-center text-gray-800 rounded-xl">
+                        <div className="w-12 h-12 flex items-center justify-center text-gray-200 rounded-xl">
                             <ChevronRightIcon className="w-6 h-6" />
                         </div>
                     )}
@@ -93,44 +93,44 @@ export const ReadingToolbar: React.FC<ReadingToolbarProps> = ({
             {/* Chapter Selection Modal/Drawer */}
             <div className={`fixed inset-0 z-[110] flex items-center justify-center p-4 transition-all duration-300 ${showSelector ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                 {/* Backdrop */}
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => setShowSelector(false)} />
+                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowSelector(false)} />
 
                 {/* Modal Content */}
-                <div className={`relative w-full max-w-md bg-[#121212] border border-white/5 rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 transform ${showSelector ? 'scale-100 translate-y-0' : 'scale-95 translate-y-8'}`}>
-                    <div className="p-6 border-b border-white/5 flex justify-between items-center">
+                <div className={`relative w-full max-w-md bg-white rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 transform ${showSelector ? 'scale-100 translate-y-0' : 'scale-95 translate-y-8'}`}>
+                    <div className="p-6 border-b border-gray-100 flex justify-between items-center">
                         <div>
-                            <h3 className="text-white font-black text-lg tracking-tight">Danh Sách Chương</h3>
-                            <p className="text-gray-500 text-xs mt-0.5">{chapters.length} chương đã tải</p>
+                            <h3 className="text-gray-900 font-bold text-xl tracking-tight">Danh sách chương</h3>
+                            <p className="text-gray-400 text-sm mt-0.5">Tổng số {chapters.length} chương</p>
                         </div>
                         <button
                             onClick={() => setShowSelector(false)}
-                            className="text-gray-400 hover:text-white hover:bg-white/5 p-2 rounded-xl transition-all"
+                            className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-xl transition-all"
                         >
                             <XMarkIcon className="w-6 h-6" />
                         </button>
                     </div>
 
-                    <div className="max-h-[50vh] overflow-y-auto p-3 space-y-1.5 scrollbar-thin scrollbar-thumb-white/10">
+                    <div className="max-h-[60vh] overflow-y-auto p-4 space-y-1">
                         {chapters.map((chapter) => (
                             <Link
                                 key={chapter.id}
                                 href={`/home/chapters/${chapter.id}`}
                                 onClick={() => setShowSelector(false)}
-                                className={`group flex items-center justify-between px-5 py-4 rounded-2xl text-sm font-bold transition-all ${chapter.id == currentChapterId ? 'bg-red-600 text-white shadow-lg shadow-red-900/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                                className={`flex items-center justify-between px-5 py-3.5 rounded-2xl text-sm font-bold transition-all ${chapter.id == currentChapterId ? 'bg-red-50 text-red-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
                             >
                                 <div className="flex flex-col">
-                                    <span className="opacity-60 text-[10px] uppercase tracking-widest mb-1">{chapter.chapter_label}</span>
                                     <span className="line-clamp-1">{chapter.title}</span>
+                                    <span className="opacity-50 text-[11px] font-medium mt-0.5">{chapter.chapter_label}</span>
                                 </div>
                                 {chapter.id == currentChapterId && <CheckIcon className="w-5 h-5" />}
                             </Link>
                         ))}
                     </div>
 
-                    <div className="p-6 bg-white/5 border-t border-white/5">
+                    <div className="p-4 bg-gray-50 border-t border-gray-100">
                         <button
                             onClick={() => setShowSelector(false)}
-                            className="w-full py-4 bg-white/5 hover:bg-white/10 text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all"
+                            className="w-full py-4 bg-white border border-gray-200 hover:border-gray-300 text-gray-700 rounded-2xl font-bold text-sm transition-all shadow-sm active:scale-95"
                         >
                             Đóng
                         </button>
