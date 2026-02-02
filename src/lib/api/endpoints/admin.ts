@@ -228,6 +228,11 @@ export const adminEndpoints = {
         updateStatus: (id: Id) => `/api/admin/post-comments/${id}/status`,
         delete: (id: Id) => `/api/admin/post-comments/${id}`,
     },
+    comicComments: {
+        list: "/api/admin/comic-comments",
+        updateStatus: (id: Id) => `/api/admin/comic-comments/${id}/status`,
+        delete: (id: Id) => `/api/admin/comic-comments/${id}`,
+    },
     shippingMethods: {
         list: "/api/admin/shipping-methods",
         simple: "/api/admin/shipping-methods/simple",
@@ -333,6 +338,18 @@ export const adminEndpoints = {
         topViewed: "/api/admin/comic-stats/top-viewed",
         topFollowed: "/api/admin/comic-stats/top-followed",
         trending: "/api/admin/comic-stats/trending",
+    },
+    reviews: {
+        list: "/api/admin/reviews",
+        statistics: "/api/admin/reviews/statistics",
+        detail: (id: Id) => `/api/admin/reviews/${id}`,
+        delete: (id: Id) => `/api/admin/reviews/${id}`,
+        update: (id: Id) => `/api/admin/reviews/${id}`,
+    },
+    analytics: {
+        dashboard: "/api/admin/analytics/dashboard",
+        comics: "/api/admin/analytics/comics",
+        views: "/api/admin/analytics/views",
     },
 } as const;
 

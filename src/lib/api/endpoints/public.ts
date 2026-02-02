@@ -100,4 +100,10 @@ export const publicEndpoints = {
         products: (id: Id) => `/api/public/product-categories/${id}/products`,
         showBySlug: (slug: string) => `/api/public/product-categories/${slug}`,
     },
+    reviews: {
+        comic: (comicId: Id) => `/api/public/reviews/comics/${comicId}`,
+    },
+    comments: {
+        comic: (comicId: Id) => `/api/public/comics/${comicId}/comments`,
+    },
 } as const;

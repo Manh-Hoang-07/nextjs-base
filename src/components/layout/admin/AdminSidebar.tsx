@@ -88,6 +88,7 @@ const COMIC_MENUS: MenuTreeItem[] = [
       { id: "admin-comics", name: "Truyện tranh", code: "admin_comics", path: "/admin/comics", icon: "document" },
       { id: "admin-chapters", name: "Chương truyện", code: "admin_chapters", path: "/admin/chapters", icon: "document" },
       { id: "admin-comic-categories", name: "Danh mục truyện", code: "admin_comic_categories", path: "/admin/comic-categories", icon: "squares-2x2" },
+      { id: "admin-comic-comments", name: "Bình luận truyện", code: "admin_comic_comments", path: "/admin/comic-comments", icon: "chat-bubble-left-right" },
       { id: "admin-comic-stats", name: "Thống kê", code: "admin_comic_stats", path: "/admin/comic-stats", icon: "chart-bar" },
     ]
   }

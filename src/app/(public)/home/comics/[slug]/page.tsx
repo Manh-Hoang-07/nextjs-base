@@ -3,7 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getComicDetail, getComicChapters } from "@/lib/api/public/comic";
+import { getComicReviews } from "@/lib/api/public/review";
+import { getComicComments } from "@/lib/api/public/comment";
 import { ChapterList } from "@/components/public/comic/ChapterList";
+import { ReviewSection } from "@/components/public/comic/Review/ReviewSection";
+import { CommentSection } from "@/components/public/comic/Comment/CommentSection";
 import "@/styles/comic.css";
 
 interface Props {
@@ -32,6 +36,11 @@ export default async function ComicDetailPage({ params }: Props) {
     ]);
 
     if (!comic) notFound();
+
+    const [reviewsData, commentsData] = await Promise.all([
+        getComicReviews(comic.id, { limit: 5 }),
+        getComicComments(comic.id, 1)
+    ]);
 
     return (
         <main className="bg-[#f8f9fa] min-h-screen py-8">
@@ -116,7 +125,7 @@ export default async function ComicDetailPage({ params }: Props) {
                     </div>
                 </div>
 
-                <div className="max-w-4xl mx-auto">
+                <div className="max-w-4xl mx-auto space-y-16">
                     {chaptersData ? (
                         <ChapterList
                             chapters={Array.isArray(chaptersData) ? chaptersData : (chaptersData.data || [])}
@@ -127,6 +136,17 @@ export default async function ComicDetailPage({ params }: Props) {
                             Không tìm thấy danh sách chương.
                         </div>
                     )}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-gray-100 pt-12">
+                        <ReviewSection
+                            comicId={comic.id}
+                            reviews={reviewsData?.data || []}
+                        />
+                        <CommentSection
+                            comicId={comic.id}
+                            comments={commentsData?.data || []}
+                        />
+                    </div>
                 </div>
             </div>
         </main>

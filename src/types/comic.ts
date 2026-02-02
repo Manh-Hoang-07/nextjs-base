@@ -168,3 +168,79 @@ export interface ComicTrendingData {
     date: string;
     views: number;
 }
+
+// Review Types
+export interface ReviewUser {
+    id: string;
+    full_name: string;
+    avatar?: string;
+}
+
+export interface ComicReview {
+    id: string;
+    comic_id: string;
+    user_id: string;
+    rating: number;
+    content: string;
+    created_at: string;
+    updated_at: string;
+    user: ReviewUser;
+    comic?: AdminComic;
+}
+
+export interface ReviewStatistics {
+    total: number;
+    today: number;
+    this_week: number;
+    this_month: number;
+    average_rating: number;
+    rating_distribution: Array<{
+        rating: number;
+        count: number;
+    }>;
+}
+
+export interface ReviewQueryParams {
+    comic_id?: string;
+    user_id?: string;
+    rating?: number;
+    rating_min?: number;
+    rating_max?: number;
+    search?: string;
+    date_from?: string;
+    date_to?: string;
+    page?: number;
+    limit?: number;
+    sort?: string;
+}
+
+// Analytics Types
+export interface AdminDashboardAnalytics {
+    total_comics: number;
+    total_views: number;
+    total_follows: number;
+    top_comics: Array<{
+        comic: AdminComic;
+        stats: {
+            view_count: number;
+            follow_count: number;
+            rating_count: number;
+            rating_sum: number;
+        };
+    }>;
+}
+
+export interface AdminAnalyticsComicStat {
+    comic: AdminComic;
+    stats: {
+        view_count: number;
+        follow_count: number;
+        rating_count: number;
+        rating_sum: number;
+    };
+}
+
+export interface AdminViewHistoryItem {
+    date: string;
+    count: number;
+}
