@@ -27,8 +27,13 @@ export function NavigationProgress() {
     if (!isNavigating) return null;
 
     return (
-        <div className="fixed top-0 left-0 right-0 z-[9999]">
-            <div className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-progress-bar" />
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/50 backdrop-blur-sm">
+            <div className="relative">
+                <div className="h-12 w-12 rounded-full border-t-4 border-b-4 border-red-600 animate-spin"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div className="h-6 w-6 rounded-full bg-red-600/20"></div>
+                </div>
+            </div>
         </div>
     );
 }
