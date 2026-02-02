@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ComicChapter } from '@/types/comic';
+import { formatDate } from '@/utils/formatters';
 
 interface ChapterListProps {
     chapters: ComicChapter[];
@@ -25,7 +26,7 @@ export const ChapterList: React.FC<ChapterListProps> = ({ chapters, comicSlug })
                                 {chapter.chapter_label}: {chapter.title}
                             </span>
                             <span className="text-xs text-gray-400">
-                                {new Date(chapter.created_at).toLocaleDateString('vi-VN')}
+                                {formatDate(chapter.created_at)}
                             </span>
                         </Link>
                     ))}

@@ -230,7 +230,8 @@ export const adminEndpoints = {
     },
     comicComments: {
         list: "/api/admin/comic-comments",
-        updateStatus: (id: Id) => `/api/admin/comic-comments/${id}/status`,
+        statistics: "/api/admin/comic-comments/statistics",
+        update: (id: Id) => `/api/admin/comic-comments/${id}`,
         delete: (id: Id) => `/api/admin/comic-comments/${id}`,
     },
     shippingMethods: {
@@ -338,13 +339,6 @@ export const adminEndpoints = {
         topViewed: "/api/admin/comic-stats/top-viewed",
         topFollowed: "/api/admin/comic-stats/top-followed",
         trending: "/api/admin/comic-stats/trending",
-    },
-    reviews: {
-        list: "/api/admin/reviews",
-        statistics: "/api/admin/reviews/statistics",
-        detail: (id: Id) => `/api/admin/reviews/${id}`,
-        delete: (id: Id) => `/api/admin/reviews/${id}`,
-        update: (id: Id) => `/api/admin/reviews/${id}`,
     },
     analytics: {
         dashboard: "/api/admin/analytics/dashboard",

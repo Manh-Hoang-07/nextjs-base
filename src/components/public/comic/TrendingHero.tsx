@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { formatDate } from '@/utils/formatters';
 import { Comic } from '@/types/comic';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules';
@@ -110,7 +111,7 @@ export const TrendingHero: React.FC<TrendingHeroProps> = ({ comics }) => {
                                         <div className="w-1 h-1 rounded-full bg-gray-300" />
                                         <span className="flex items-center gap-1">
                                             <Clock className="w-3 h-3" />
-                                            <span>{new Date(comic.last_chapter_updated_at).toLocaleDateString()}</span>
+                                            <span>{formatDate(comic.last_chapter_updated_at)}</span>
                                         </span>
                                     </div>
 

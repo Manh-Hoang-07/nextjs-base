@@ -1,3 +1,5 @@
+// ... (keeping previous types)
+
 export interface ComicCategory {
     id: string;
     name: string;
@@ -45,14 +47,27 @@ export interface ChapterDetail extends ComicChapter {
     prev_chapter_id: string | null;
 }
 
-export interface Comment {
+export interface ComicCommentUser {
     id: string;
-    content: string;
-    user_name: string;
-    user_avatar?: string;
-    created_at: string;
-    replies?: Comment[];
+    username: string;
+    name: string;
+    image: string;
 }
+
+export interface ComicComment {
+    id: string;
+    comic_id: string;
+    chapter_id: string | null;
+    parent_id: string | null;
+    content: string;
+    status: 'visible' | 'hidden';
+    created_at: string;
+    user: ComicCommentUser;
+    replies: ComicComment[];
+}
+
+// Alias for backward compatibility if needed, or just use ComicComment
+export type Comment = ComicComment;
 
 export interface HomepageData {
     top_viewed_comics: Comic[];
@@ -169,7 +184,7 @@ export interface ComicTrendingData {
     views: number;
 }
 
-// Review Types
+// Review Types - Might be deprecated or reused for comments
 export interface ReviewUser {
     id: string;
     full_name: string;
@@ -237,6 +252,7 @@ export interface AdminAnalyticsComicStat {
         follow_count: number;
         rating_count: number;
         rating_sum: number;
+        children_count?: number;
     };
 }
 
@@ -244,3 +260,4 @@ export interface AdminViewHistoryItem {
     date: string;
     count: number;
 }
+

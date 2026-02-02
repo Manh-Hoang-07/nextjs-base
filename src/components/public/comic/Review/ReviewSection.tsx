@@ -6,6 +6,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as StarOutline } from "@heroicons/react/24/outline";
 import { reviewService } from "@/lib/api/user/review";
 import { useToastContext } from "@/contexts/ToastContext";
+import { formatDate } from "@/utils/formatters";
 
 interface ReviewSectionProps {
     comicId: string;
@@ -98,7 +99,7 @@ export function ReviewSection({ comicId, reviews, onReviewSuccess }: ReviewSecti
                             </div>
                             <p className="text-gray-600 text-sm leading-relaxed">{review.content}</p>
                             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-2 block">
-                                {new Date(review.created_at).toLocaleDateString("vi-VN")}
+                                {formatDate(review.created_at)}
                             </span>
                         </div>
                     </div>

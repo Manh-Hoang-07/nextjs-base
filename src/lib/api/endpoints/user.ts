@@ -23,12 +23,10 @@ export const userEndpoints = {
         files: "/api/upload/files",
         image: "/api/upload/image",
     },
-    reviews: {
-        list: "/api/user/reviews",
-        comic: (comicId: Id) => `/api/user/reviews/comics/${comicId}`,
-    },
     comments: {
-        comic: (comicId: Id) => `/api/user/comics/${comicId}/comments`,
-        delete: (id: Id) => `/api/user/comments/${id}`,
+        list: "/api/user/comic-comments",
+        create: "/api/user/comic-comments",
+        update: (id: Id) => `/api/user/comic-comments/${id}`,
+        delete: (id: Id) => `/api/user/comic-comments/${id}`,
     },
 } as const;

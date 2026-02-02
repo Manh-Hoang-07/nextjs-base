@@ -44,7 +44,10 @@ export function formatDate(
       return d.toLocaleDateString("en-US");
     case "dd/MM/yyyy":
     default:
-      return d.toLocaleDateString("vi-VN");
+      const day = d.getDate().toString().padStart(2, "0");
+      const month = (d.getMonth() + 1).toString().padStart(2, "0");
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
   }
 }
 

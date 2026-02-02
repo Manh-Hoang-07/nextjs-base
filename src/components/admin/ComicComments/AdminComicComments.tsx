@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { adminEndpoints } from "@/lib/api/endpoints";
+import { useMemo, useState } from "react";
 import { useAdminListPage } from "@/hooks/useAdminListPage";
+import { adminEndpoints } from "@/lib/api/endpoints";
 import SkeletonLoader from "@/components/ui/feedback/SkeletonLoader";
 import ConfirmModal from "@/components/ui/feedback/ConfirmModal";
 import Actions from "@/components/ui/data-display/Actions";
 import Pagination from "@/components/ui/data-display/Pagination";
+import ComicCommentFilter from "./ComicCommentFilter";
 import { Comment } from "@/types/comic";
-import { Eye, EyeOff, MessageSquare, User } from "lucide-react";
-import Modal from "@/components/ui/feedback/Modal";
+import Image from "next/image";
+import { User, MessageSquare } from "lucide-react";
 import { api } from "@/lib/api/client";
 
 const formatDate = (dateString?: string): string => {
@@ -25,6 +25,20 @@ const formatDate = (dateString?: string): string => {
 };
 
 export default function AdminComicComments() {
+    const listOptions = useMemo(
+        () => ({
+            endpoints: {
+                list: adminEndpoints.comicComments.list,
+                delete: (id: string | number) => adminEndpoints.comicComments.delete(id),
+                // statistic endpoint is available but not used for list
+            },
+            messages: {
+                deleteSuccess: "Bình luận đã được xóa thành công",
+            },
+        }),
+        []
+    );
+
     const {
         items,
         loading,
@@ -42,24 +56,15 @@ export default function AdminComicComments() {
         refresh,
         showSuccess,
         showError,
-    } = useAdminListPage({
-        endpoints: {
-            list: adminEndpoints.comicComments.list,
-            delete: (id) => adminEndpoints.comicComments.delete(id),
-        },
-        messages: {
-            deleteSuccess: "Bình luận đã được xóa thành công",
-        },
-    });
+    } = useAdminListPage(listOptions);
 
     const [togglingId, setTogglingId] = useState<string | null>(null);
-    const [viewComment, setViewComment] = useState<Comment | null>(null);
 
-    const handleToggleStatus = async (comment: any) => {
+    const handleToggleStatus = async (comment: Comment) => {
         const newStatus = comment.status === "visible" ? "hidden" : "visible";
         setTogglingId(comment.id);
         try {
-            await api.patch(adminEndpoints.comicComments.updateStatus(comment.id), {
+            await api.put(adminEndpoints.comicComments.update(comment.id), {
                 status: newStatus,
             });
             showSuccess(`Đã ${newStatus === "visible" ? "hiện" : "ẩn"} bình luận`);
@@ -73,14 +78,16 @@ export default function AdminComicComments() {
 
     return (
         <div className="admin-comic-comments">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold flex items-center gap-2">
-                    <MessageSquare className="text-blue-600" />
-                    Quản lý bình luận truyện tranh
+            <div className="mb-6 flex items-center justify-between">
+                <h1 className="text-2xl font-bold font-primary text-gray-900 flex items-center gap-2">
+                    <MessageSquare className="text-blue-600 w-6 h-6" />
+                    Quản lý bình luận
                 </h1>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg overflow-hidden mt-6">
+            <ComicCommentFilter initialFilters={filters} onUpdateFilters={updateFilters} />
+
+            <div className="mt-6 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
                 {loading ? (
                     <SkeletonLoader type="table" rows={10} columns={6} />
                 ) : (
@@ -88,57 +95,87 @@ export default function AdminComicComments() {
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">STT</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-64">Người gửi</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nội dung</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-40">Truyện</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">Trạng thái</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32">Ngày gửi</th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-24">Thao tác</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 w-16">
+                                        STT
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 w-64">
+                                        Người gửi
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                                        Nội dung
+                                    </th>
+                                    {/* <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 w-40">
+                                        Truyện
+                                    </th> */}
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 w-24">
+                                        Trạng thái
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 w-40">
+                                        Ngày gửi
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500 w-24">
+                                        Thao tác
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="divide-y divide-gray-200 bg-white">
                                 {items.map((comment: any, index) => (
-                                    <tr key={comment.id} className={`${comment.status === "hidden" ? "bg-gray-50" : ""} hover:bg-gray-50 transition-colors`}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{getSerialNumber(index)}</td>
+                                    <tr key={comment.id} className={`${comment.status === "hidden" ? "bg-red-50" : ""} hover:bg-gray-50 transition-colors`}>
+                                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                            {getSerialNumber(index)}
+                                        </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center">
-                                                <div className="flex-shrink-0 h-8 w-8">
-                                                    {comment.user_avatar ? (
-                                                        <Image className="h-8 w-8 rounded-full object-cover" src={comment.user_avatar} alt={comment.user_name || "User"} width={32} height={32} />
+                                                <div className="h-8 w-8 flex-shrink-0">
+                                                    {comment.user?.image ? (
+                                                        <Image
+                                                            className="h-8 w-8 rounded-full object-cover"
+                                                            src={comment.user.image}
+                                                            alt={comment.user.name || "User"}
+                                                            width={32}
+                                                            height={32}
+                                                        />
                                                     ) : (
-                                                        <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
-                                                            <User className="text-gray-500 w-4 h-4" />
+                                                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200">
+                                                            <User className="h-4 w-4 text-gray-500" />
                                                         </div>
                                                     )}
                                                 </div>
                                                 <div className="ml-3 min-w-0 flex-1">
-                                                    <div className="text-sm font-medium text-gray-900 truncate">
-                                                        {comment.user_name || "Khách"}
+                                                    <div className="truncate text-sm font-medium text-gray-900">
+                                                        {comment.user?.name || comment.user?.username || "Khách"}
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-900 line-clamp-2">
+                                            <div className="line-clamp-2 text-sm text-gray-900">
                                                 {comment.content}
                                             </div>
+                                            {/* Optional: Show comic title if available */}
+                                            {/* {comment.comic && (
+                                                <div className="mt-1 text-xs text-gray-500 flex items-center gap-1">
+                                                    <span className="font-semibold">Truyện:</span> {comment.comic.title}
+                                                </div>
+                                            )} */}
                                         </td>
-                                        <td className="px-6 py-4">
+                                        {/* <td className="px-6 py-4">
                                             {comment.comic?.title || "N/A"}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${comment.status === 'visible'
-                                                ? 'bg-green-100 text-green-800'
-                                                : 'bg-yellow-100 text-yellow-800'
-                                                }`}>
+                                        </td> */}
+                                        <td className="whitespace-nowrap px-6 py-4">
+                                            <span
+                                                className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold leading-5 ${comment.status === 'visible'
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-red-100 text-red-800'
+                                                    }`}
+                                            >
                                                 {comment.status === 'visible' ? 'Công khai' : 'Đang ẩn'}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                             {formatDate(comment.created_at)}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                                        <td className="whitespace-nowrap px-6 py-4 text-center text-sm font-medium">
                                             <Actions
                                                 item={comment}
                                                 showView={false}
@@ -147,20 +184,23 @@ export default function AdminComicComments() {
                                                 onDelete={() => openDeleteModal(comment)}
                                                 additionalActions={[
                                                     {
-                                                        label: "Xem chi tiết",
-                                                        action: () => setViewComment(comment),
-                                                        icon: "eye",
-                                                    },
-                                                    {
                                                         label: comment.status === 'visible' ? 'Ẩn bình luận' : 'Hiện bình luận',
                                                         action: () => handleToggleStatus(comment),
                                                         icon: comment.status === 'visible' ? 'eye-off' : 'eye',
+                                                        className: comment.status === 'visible' ? 'text-amber-600 hover:text-amber-700' : 'text-green-600 hover:text-green-700'
                                                     },
                                                 ]}
                                             />
                                         </td>
                                     </tr>
                                 ))}
+                                {items.length === 0 && (
+                                    <tr>
+                                        <td colSpan={7} className="px-6 py-10 text-center text-gray-500 italic">
+                                            Không tìm thấy dữ liệu
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -168,12 +208,14 @@ export default function AdminComicComments() {
             </div>
 
             {hasData && (
-                <Pagination
-                    currentPage={pagination.page}
-                    totalPages={pagination.totalPages}
-                    totalItems={pagination.totalItems}
-                    onPageChange={changePage}
-                />
+                <div className="mt-8">
+                    <Pagination
+                        currentPage={pagination.page}
+                        totalPages={pagination.totalPages}
+                        totalItems={pagination.totalItems}
+                        onPageChange={changePage}
+                    />
+                </div>
             )}
 
             <ConfirmModal
@@ -182,6 +224,7 @@ export default function AdminComicComments() {
                 message="Bạn có chắc chắn muốn xóa bình luận này?"
                 onClose={closeDeleteModal}
                 onConfirm={() => handleDelete(selectedItem?.id)}
+                confirmText="Xóa bình luận"
             />
         </div>
     );
