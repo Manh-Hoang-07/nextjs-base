@@ -100,8 +100,8 @@ export interface UseAdminListPageResult {
   changePage: (page: number) => void;
   refresh: () => void;
   clearApiErrors: () => void;
-  handleCreate: (itemData: any) => Promise<void>;
-  handleUpdate: (id: string | number, itemData: any) => Promise<void>;
+  handleCreate: (itemData: any) => Promise<any>;
+  handleUpdate: (id: string | number, itemData: any) => Promise<any>;
   handleDelete: (id: string | number) => Promise<void>;
   openModal: (modalName: string, item?: any) => void;
   closeModal: (modalName: string) => void;
@@ -207,6 +207,7 @@ export function useAdminListPage(
           if (onCreated) {
             onCreated(createdItem);
           }
+          return createdItem;
         }
       } catch (error: any) {
         const errorMessage =
@@ -214,6 +215,7 @@ export function useAdminListPage(
           messages.createError ||
           "Có lỗi xảy ra khi tạo mới";
         toastError(errorMessage);
+        throw error;
       }
     },
     [composable, toastSuccess, toastError, messages, closeCreateModal, onCreated]
@@ -230,6 +232,7 @@ export function useAdminListPage(
           if (onUpdated) {
             onUpdated(updatedItem);
           }
+          return updatedItem;
         }
       } catch (error: any) {
         const errorMessage =
@@ -237,6 +240,7 @@ export function useAdminListPage(
           messages.updateError ||
           "Có lỗi xảy ra khi cập nhật";
         toastError(errorMessage);
+        throw error;
       }
     },
     [composable, toastSuccess, toastError, messages, closeEditModal, onUpdated]
@@ -299,5 +303,3 @@ export function useAdminListPage(
     showError: toastError,
   };
 }
-
-

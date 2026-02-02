@@ -7,22 +7,24 @@ import { ReadingToolbar } from "@/components/public/comic/ReadingToolbar";
 import "@/styles/comic.css";
 
 interface Props {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { id } = await params;
     return {
         title: `Đang đọc chương | Comic Haven`,
     };
 }
 
 export default async function ReadingPage({ params }: Props) {
-    const chapterDetail = await getChapterDetail(params.id);
+    const { id } = await params;
+    const chapterDetail = await getChapterDetail(id);
 
     const [pages, nextChapter, prevChapter, chaptersData] = await Promise.all([
-        getChapterPages(params.id),
-        getChapterNavigation(params.id, 'next'),
-        getChapterNavigation(params.id, 'prev'),
+        getChapterPages(id),
+        getChapterNavigation(id, 'next'),
+        getChapterNavigation(id, 'prev'),
         chapterDetail?.comic?.slug ? getComicChapters(chapterDetail.comic.slug, 1) : Promise.resolve(null)
     ]);
 
@@ -35,7 +37,7 @@ export default async function ReadingPage({ params }: Props) {
                 nextChapter={nextChapter}
                 prevChapter={prevChapter}
                 chapters={chaptersData ? (Array.isArray(chaptersData) ? chaptersData : (chaptersData.data || [])) : []}
-                currentChapterId={params.id}
+                currentChapterId={id}
             />
 
             {/* Content Area */}

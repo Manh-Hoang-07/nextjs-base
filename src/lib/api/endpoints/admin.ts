@@ -304,5 +304,35 @@ export const adminEndpoints = {
         approve: (id: Id) => `/api/admin/warehouse-exports/${id}/approve`,
         cancel: (id: Id) => `/api/admin/warehouse-exports/${id}/cancel`,
     },
+    comicCategories: {
+        list: "/api/admin/comic-categories",
+        create: "/api/admin/comic-categories",
+        show: (id: Id) => `/api/admin/comic-categories/${id}`,
+        update: (id: Id) => `/api/admin/comic-categories/${id}`,
+        delete: (id: Id) => `/api/admin/comic-categories/${id}`,
+    },
+    comics: {
+        list: "/api/admin/comics",
+        create: "/api/admin/comics",
+        show: (id: Id) => `/api/admin/comics/${id}`,
+        update: (id: Id) => `/api/admin/comics/${id}`,
+        delete: (id: Id) => `/api/admin/comics/${id}`,
+        uploadCover: (id: Id) => `/api/admin/comics/${id}/cover`,
+    },
+    chapters: {
+        list: "/api/admin/chapters",
+        create: "/api/admin/chapters",
+        show: (id: Id) => `/api/admin/chapters/${id}`,
+        update: (id: Id) => `/api/admin/chapters/${id}`,
+        delete: (id: Id) => `/api/admin/chapters/${id}`,
+        uploadPages: (id: Id) => `/api/admin/chapters/${id}/pages`,
+        updatePages: (id: Id) => `/api/admin/chapters/${id}/pages`,
+    },
+    comicStats: {
+        overview: "/api/admin/comic-stats/overview",
+        topViewed: "/api/admin/comic-stats/top-viewed",
+        topFollowed: "/api/admin/comic-stats/top-followed",
+        trending: "/api/admin/comic-stats/trending",
+    },
 } as const;
 

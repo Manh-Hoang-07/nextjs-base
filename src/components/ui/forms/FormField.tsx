@@ -157,7 +157,7 @@ const FormField = forwardRef<HTMLInputElement | HTMLTextAreaElement | HTMLSelect
               {...commonProps}
               ref={ref as any}
               type="checkbox"
-              {...(value !== undefined ? { checked: !!value } : {})}
+              checked={Boolean(value)}
               onChange={handleInputChange}
               className="h-5 w-5 text-blue-600 border-gray-300 rounded-lg transition-all focus:ring-blue-500 cursor-pointer"
             />

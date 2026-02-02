@@ -7,12 +7,12 @@ import { CategorySelect } from "@/components/public/comic/CategorySelect";
 import "@/styles/comic.css";
 
 interface Props {
-    searchParams: {
+    searchParams: Promise<{
         page?: string;
         sort?: string;
         comic_category_id?: string;
         is_featured?: string;
-    };
+    }>;
 }
 
 export const metadata: Metadata = {
@@ -21,12 +21,13 @@ export const metadata: Metadata = {
 };
 
 export default async function ComicListPage({ searchParams }: Props) {
-    const page = parseInt(searchParams.page || "1");
+    const sp = await searchParams;
+    const page = parseInt(sp.page || "1");
     const comicsData = await getComics({
         page,
-        sort: searchParams.sort || "last_chapter_updated_at:desc",
-        comic_category_id: searchParams.comic_category_id,
-        is_featured: searchParams.is_featured === 'true'
+        sort: sp.sort || "last_chapter_updated_at:desc",
+        comic_category_id: sp.comic_category_id,
+        is_featured: sp.is_featured === 'true'
     });
     const categories = await getComicCategories();
 
@@ -47,14 +48,14 @@ export default async function ComicListPage({ searchParams }: Props) {
                             {/* Sort Buttons */}
                             <div className="flex bg-white rounded-xl p-1 border border-gray-100 shadow-sm">
                                 <Link
-                                    href={`/home/comics?sort=last_chapter_updated_at:desc${searchParams.comic_category_id ? `&comic_category_id=${searchParams.comic_category_id}` : ''}`}
-                                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${!searchParams.sort || searchParams.sort === 'last_chapter_updated_at:desc' ? 'bg-red-600 text-white shadow-md' : 'text-gray-600 hover:text-red-500'}`}
+                                    href={`/home/comics?sort=last_chapter_updated_at:desc${sp.comic_category_id ? `&comic_category_id=${sp.comic_category_id}` : ''}`}
+                                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${!sp.sort || sp.sort === 'last_chapter_updated_at:desc' ? 'bg-red-600 text-white shadow-md' : 'text-gray-600 hover:text-red-500'}`}
                                 >
                                     Mới cập nhật
                                 </Link>
                                 <Link
-                                    href={`/home/comics?sort=view_count:desc${searchParams.comic_category_id ? `&comic_category_id=${searchParams.comic_category_id}` : ''}`}
-                                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${searchParams.sort === 'view_count:desc' ? 'bg-red-600 text-white shadow-md' : 'text-gray-600 hover:text-red-500'}`}
+                                    href={`/home/comics?sort=view_count:desc${sp.comic_category_id ? `&comic_category_id=${sp.comic_category_id}` : ''}`}
+                                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${sp.sort === 'view_count:desc' ? 'bg-red-600 text-white shadow-md' : 'text-gray-600 hover:text-red-500'}`}
                                 >
                                     Xem nhiều
                                 </Link>

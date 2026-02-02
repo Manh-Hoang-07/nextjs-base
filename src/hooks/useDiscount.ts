@@ -97,7 +97,7 @@ export function useDiscount() {
         }
 
         const response = await apiClient.post(
-          publicEndpoints.discounts.applyCoupon,
+          publicEndpoints.discounts.apply,
           requestBody
         );
 
@@ -163,7 +163,7 @@ export function useDiscount() {
     async (couponCode: string, cartTotal?: number) => {
       try {
         const response = await apiClient.post(
-          publicEndpoints.discounts.validateCoupon,
+          publicEndpoints.discounts.validate,
           {
             coupon_code: couponCode,
             cart_total: cartTotal || 0,

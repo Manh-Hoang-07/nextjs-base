@@ -78,6 +78,21 @@ function MenuItem({ item, pathname, depth = 0 }: { item: MenuTreeItem; pathname:
   );
 }
 
+const COMIC_MENUS: MenuTreeItem[] = [
+  {
+    id: "comic-management",
+    name: "Quản lý Truyện",
+    code: "comic_management",
+    icon: "document-text",
+    children: [
+      { id: "admin-comics", name: "Truyện tranh", code: "admin_comics", path: "/admin/comics", icon: "document" },
+      { id: "admin-chapters", name: "Chương truyện", code: "admin_chapters", path: "/admin/chapters", icon: "document" },
+      { id: "admin-comic-categories", name: "Danh mục truyện", code: "admin_comic_categories", path: "/admin/comic-categories", icon: "squares-2x2" },
+      { id: "admin-comic-stats", name: "Thống kê", code: "admin_comic_stats", path: "/admin/comic-stats", icon: "chart-bar" },
+    ]
+  }
+];
+
 export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname();
   const { getUserMenus, loading: menusLoading } = useMenus();
@@ -184,12 +199,10 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: 
         <nav className="space-y-1">
           {menusLoading && menus.length === 0 ? (
             <div className="px-2 py-4 text-sm text-gray-500 italic">Loading menus...</div>
-          ) : menus.length > 0 ? (
-            menus.map((menu) => (
+          ) : (
+            [...menus, ...COMIC_MENUS].map((menu) => (
               <MenuItem key={menu.id} item={menu} pathname={pathname || ""} />
             ))
-          ) : (
-            <div className="px-2 py-4 text-sm text-gray-400 italic">No menu items found</div>
           )}
         </nav>
       </div>

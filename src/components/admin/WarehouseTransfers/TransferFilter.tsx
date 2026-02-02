@@ -1,6 +1,7 @@
 "use client";
 
 import AdminFilter from "@/components/admin/Filter/AdminFilter";
+import SelectFilter from "@/components/ui/filters/SelectFilter";
 
 interface TransferFilterProps {
     initialFilters?: Record<string, any>;
@@ -33,14 +34,20 @@ export default function TransferFilter({
             searchField="search" // Optional: if API supports search generic text
             searchPlaceholder="Tìm kiếm..."
             hasAdvancedFilters={true}
-            advancedFilters={[
-                {
-                    key: "status",
-                    label: "Trạng thái",
-                    type: "select",
-                    options: statusOptions,
-                },
-            ]}
+            advancedFilters={({ filters, onChange }) => (
+                <div className="min-w-[200px]">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Trạng thái</label>
+                    <SelectFilter
+                        value={filters["status"] || ""}
+                        options={[{ value: "", label: "Tất cả" }, ...statusOptions]}
+                        placeholder="Tất cả trạng thái"
+                        onChange={(value) => {
+                            filters["status"] = value;
+                            onChange();
+                        }}
+                    />
+                </div>
+            )}
             onUpdateFilters={onUpdateFilters}
             onFilterChange={onFilterChange}
         />

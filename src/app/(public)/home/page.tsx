@@ -34,7 +34,7 @@ export default async function ComicHomePage() {
     <main className="bg-[#f8f9fa] min-h-screen">
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section - Trending */}
-        <TrendingHero comics={data.trending_comics} />
+        <TrendingHero comics={data.trending_comics || []} />
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Content Area */}
@@ -42,21 +42,21 @@ export default async function ComicHomePage() {
             {/* Newest Updates */}
             <ComicSection
               title="Mới cập nhật"
-              comics={data.recent_update_comics}
+              comics={data.recent_update_comics || []}
               viewAllLink="/home/comics?sort=last_chapter_updated_at:desc"
             />
 
             {/* Popular Comics */}
             <ComicSection
               title="Truyện phổ biến"
-              comics={data.popular_comics}
+              comics={data.popular_comics || []}
               viewAllLink="/home/comics?sort=view_count:desc"
             />
 
             {/* New Comics */}
             <ComicSection
               title="Truyện mới đăng"
-              comics={data.newest_comics}
+              comics={data.newest_comics || []}
               viewAllLink="/home/comics?sort=created_at:desc"
             />
           </div>
@@ -65,7 +65,7 @@ export default async function ComicHomePage() {
           <aside className="lg:w-80 w-full">
             <div className="sticky top-24 space-y-8">
               {/* Categories Sidebar */}
-              <CategorySidebar categories={data.comic_categories} />
+              <CategorySidebar categories={data.comic_categories || []} />
 
               {/* Top Viewed (Mini list) */}
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
@@ -73,7 +73,7 @@ export default async function ComicHomePage() {
                   Xem nhiều nhất
                 </h3>
                 <div className="space-y-4">
-                  {data.top_viewed_comics.map((comic, idx) => (
+                  {(data.top_viewed_comics || []).map((comic, idx) => (
                     <div key={comic.id} className="flex gap-4 group cursor-pointer">
                       <div className="relative w-16 h-20 flex-shrink-0 overflow-hidden rounded-lg">
                         <img

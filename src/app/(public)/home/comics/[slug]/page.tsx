@@ -7,11 +7,12 @@ import { ChapterList } from "@/components/public/comic/ChapterList";
 import "@/styles/comic.css";
 
 interface Props {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const comic = await getComicDetail(params.slug);
+    const { slug } = await params;
+    const comic = await getComicDetail(slug);
     if (!comic) return { title: "Không tìm thấy truyện" };
 
     return {
@@ -24,9 +25,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ComicDetailPage({ params }: Props) {
+    const { slug } = await params;
     const [comic, chaptersData] = await Promise.all([
-        getComicDetail(params.slug),
-        getComicChapters(params.slug)
+        getComicDetail(slug),
+        getComicChapters(slug)
     ]);
 
     if (!comic) notFound();
