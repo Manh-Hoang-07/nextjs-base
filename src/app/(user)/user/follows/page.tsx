@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import PageMeta from "@/components/ui/navigation/PageMeta";
-import UserFollowsClient from "./userFollowsClient";
+import UserFollowsClient from "./UserFollowsClient";
 
 export const metadata: Metadata = {
   title: "Đang theo dõi | User",

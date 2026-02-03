@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import PageMeta from "@/components/ui/navigation/PageMeta";
-import UserProfileClient from "./userProfileClient";
+import UserProfileClient from "./UserProfileClient";
 
 export const metadata: Metadata = {
   title: "Hồ sơ cá nhân | User",

@@ -1,29 +1,30 @@
-import { Suspense } from "react";
+﻿import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminMenus from "@/components/admin/core/menu/AdminMenus";
+import AdminMenus from "@/components/admin/core/menus/AdminMenus";
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-  title: "Quản lý Menu | Admin",
-  description: "Quản lý cấu trúc danh mục và liên kết",
+  title: "Quáº£n lÃ½ Menu | Admin",
+  description: "Quáº£n lÃ½ cáº¥u trÃºc danh má»¥c vÃ  liÃªn káº¿t",
 };
 
 export default function AdminMenusPage() {
   return (
     <div className="w-full p-4">
       <PageMeta
-        title="Quản lý Menu"
+        title="Quáº£n lÃ½ Menu"
         breadcrumbs={[
-          { label: "Trang quản trị", href: "/admin", },
-          { label: "Giao diện" },
+          { label: "Trang quáº£n trá»‹", href: "/admin", },
+          { label: "Giao diá»‡n" },
           { label: "Menu" },
         ]}
       />
-      <Suspense fallback={<div>Đang tải...</div>}>
+      <Suspense fallback={<div>Äang táº£i...</div>}>
         <AdminMenus />
       </Suspense>
     </div>
   );
 }
+
 
 

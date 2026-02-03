@@ -49,7 +49,7 @@ export default function WarehouseTransfersClient() {
       setItems([]);
       showError(
         e?.response?.data?.message ||
-          "Không thể tải danh sách chuyển kho (BE hiện đang placeholder có thể trả rỗng)"
+        "Không thể tải danh sách chuyển kho (BE hiện đang placeholder có thể trả rỗng)"
       );
     } finally {
       setLoading(false);

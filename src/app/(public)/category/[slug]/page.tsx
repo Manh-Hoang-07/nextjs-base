@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useProductCategories, ProductCategory } from "@/hooks/useProductCategories";
-import CategoryMenu from "@/components/public/ecommerce/categoryMenu";
+import CategoryMenu from "@/components/public/ecommerce/CategoryMenu";
+import Image from "next/image";
 
 interface Product {
   id: number;
@@ -138,12 +139,15 @@ export default function PublicCategoryPage() {
                     className="flex flex-col overflow-hidden rounded-lg bg-white shadow-sm"
                   >
                     {product.thumbnail && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={product.thumbnail}
-                        alt={product.name}
-                        className="h-40 w-full object-cover"
-                      />
+                      <div className="relative h-40 w-full">
+                        <Image
+                          src={product.thumbnail}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                          unoptimized
+                        />
+                      </div>
                     )}
                     <div className="flex flex-1 flex-col p-3">
                       <h3 className="line-clamp-2 text-sm font-semibold text-gray-900">
@@ -152,11 +156,11 @@ export default function PublicCategoryPage() {
                       <div className="mt-2 text-sm font-semibold text-primary">
                         {product.sale_price ?? product.price
                           ? new Intl.NumberFormat("vi-VN", {
-                              style: "currency",
-                              currency: "VND",
-                            }).format(
-                              Number((product.sale_price ?? product.price) || 0)
-                            )
+                            style: "currency",
+                            currency: "VND",
+                          }).format(
+                            Number((product.sale_price ?? product.price) || 0)
+                          )
                           : null}
                       </div>
                     </div>

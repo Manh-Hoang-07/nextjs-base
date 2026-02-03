@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import PageMeta from "@/components/ui/navigation/PageMeta";
-import AdminGroupMembersClient from "./groupMembersClient";
+import AdminGroupMembersClient from "./GroupMembersClient";
 
 export const metadata: Metadata = {
   title: "Thành viên nhóm | Admin",

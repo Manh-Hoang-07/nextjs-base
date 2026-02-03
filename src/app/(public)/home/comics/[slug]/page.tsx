@@ -4,8 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getComicDetail, getComicChapters } from "@/lib/api/public/comic";
 import { getComicComments } from "@/lib/api/public/comment";
-import { ChapterList } from "@/components/public/comic/chapterList";
-import { CommentSection } from "@/components/public/comic/comment/commentSection";
+import { ChapterList } from "@/components/public/comics/ChapterList";
+import { CommentSection } from "@/components/public/comics/comments/CommentSection";
 import "@/styles/comic.css";
 
 interface Props {
@@ -70,7 +70,7 @@ export default async function ComicDetailPage({ params }: Props) {
                             {comic.categories.map(cat => (
                                 <Link
                                     key={cat.id}
-                                    href={`/home/category/${cat.slug}`}
+                                    href={`/home/categories/${cat.slug}`}
                                     className="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-bold text-gray-600 hover:border-red-500 hover:text-red-500 transition-colors"
                                 >
                                     {cat.name}

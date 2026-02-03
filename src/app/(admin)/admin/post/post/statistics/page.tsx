@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import AdminPostStatistics from '@/components/admin/post/Post/AdminPostStatistics';
+import AdminPostStatistics from '@/components/admin/post/post/AdminPostStatistics';
 
 export const metadata: Metadata = {
     title: 'Thống kê bài viết | Admin',

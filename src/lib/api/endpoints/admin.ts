@@ -233,6 +233,7 @@ export const adminEndpoints = {
         statistics: "/api/admin/comic-comments/statistics",
         update: (id: Id) => `/api/admin/comic-comments/${id}`,
         delete: (id: Id) => `/api/admin/comic-comments/${id}`,
+        updateStatus: (id: Id) => `/api/admin/comic-comments/${id}/status`,
     },
     shippingMethods: {
         list: "/api/admin/shipping-methods",
@@ -298,14 +299,14 @@ export const adminEndpoints = {
     },
     warehouseImports: {
         list: "/api/admin/warehouse-imports",
-        create: "/api/admin/warehouses/import",
+        create: "/api/admin/warehouses/imports",
         show: (id: Id) => `/api/admin/warehouse-imports/${id}`,
         approve: (id: Id) => `/api/admin/warehouse-imports/${id}/approve`,
         cancel: (id: Id) => `/api/admin/warehouse-imports/${id}/cancel`,
     },
     warehouseExports: {
         list: "/api/admin/warehouse-exports",
-        create: "/api/admin/warehouses/export",
+        create: "/api/admin/warehouses/exports",
         show: (id: Id) => `/api/admin/warehouse-exports/${id}`,
         approve: (id: Id) => `/api/admin/warehouse-exports/${id}/approve`,
         cancel: (id: Id) => `/api/admin/warehouse-exports/${id}/cancel`,
@@ -344,6 +345,13 @@ export const adminEndpoints = {
         dashboard: "/api/admin/stats/dashboard",
         comics: "/api/admin/stats/comics",
         views: "/api/admin/stats/views",
+    },
+    reviews: {
+        list: "/api/admin/reviews",
+        create: "/api/admin/reviews",
+        show: (id: Id) => `/api/admin/reviews/${id}`,
+        update: (id: Id) => `/api/admin/reviews/${id}`,
+        delete: (id: Id) => `/api/admin/reviews/${id}`,
     },
 } as const;
 

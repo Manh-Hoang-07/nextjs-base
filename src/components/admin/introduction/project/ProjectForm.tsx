@@ -9,6 +9,7 @@ import FormField from "@/components/ui/forms/FormField";
 import ImageUploader from "@/components/ui/forms/ImageUploader";
 import CKEditor from "@/components/ui/forms/CKEditor";
 import { userEndpoints } from "@/lib/api/endpoints";
+import Image from "next/image";
 
 // 1. Define Project Schema
 const projectSchema = z.object({
@@ -37,7 +38,7 @@ type ProjectFormValues = z.infer<typeof projectSchema>;
 
 const getProjectStatusArray = () => [
   { value: "planning", label: "Đang lập kế hoạch" },
-  { value: "in_progress", label: "Đang thực hiện" },
+  { value: "in_progres", label: "Đang thực hiện" },
   { value: "completed", label: "Hoàn thành" },
   { value: "on_hold", label: "Tạm dừng" },
   { value: "cancelled", label: "Đã hủy" },
@@ -377,8 +378,13 @@ export default function ProjectForm({
             <div className="grid grid-cols-4 md:grid-cols-6 gap-2 mt-4">
               {control._formValues.images?.map((img: string, idx: number) => (
                 <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 group">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img} alt="preview" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                  <Image
+                    src={img}
+                    alt="preview"
+                    fill
+                    className="object-cover transition-transform group-hover:scale-110"
+                    unoptimized
+                  />
                   <button
                     type="button"
                     onClick={() => {

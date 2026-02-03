@@ -161,7 +161,7 @@ import type { HeroBannerData } from "@/components/public/banners";`}
                             <p className="text-gray-700 mb-2">Component tự động transform API response. API cần trả về:</p>
                             <pre className="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto text-sm">
                                 {`{
-  "success": true,
+  "succes": true,
   "data": {
     "id": 1,
     "title": "Tiêu đề",

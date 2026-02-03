@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { useUpload, UploadResponse } from "@/hooks/useUpload";
 
 interface MultipleImageUploaderProps {
@@ -95,11 +96,10 @@ export default function MultipleImageUploader({
 
       <div className="mb-4">
         <label
-          className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-2xl cursor-pointer transition-all ${
-            disabled || uploading
+          className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-2xl cursor-pointer transition-all ${disabled || uploading
               ? "border-gray-200 bg-gray-50 cursor-not-allowed"
               : "border-gray-300 bg-white hover:bg-gray-50 hover:border-blue-400"
-          }`}
+            }`}
         >
           <div className="flex flex-col items-center justify-center pt-5 pb-6 text-gray-500">
             {uploading ? (
@@ -168,15 +168,15 @@ export default function MultipleImageUploader({
         <div className="grid grid-cols-3 gap-4">
           {imageUrls.map((url, index) => (
             <div key={index} className="relative group">
-              <img
-                src={getImageUrl(url)}
-                alt={`Image ${index + 1}`}
-                className="w-full h-32 object-cover rounded-lg border border-gray-200"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    "https://via.placeholder.com/300x200?text=Invalid+Image";
-                }}
-              />
+              <div className="relative w-full h-32 overflow-hidden rounded-lg border border-gray-200">
+                <Image
+                  src={getImageUrl(url)}
+                  alt={`Image ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 33vw, 200px"
+                />
+              </div>
               <button
                 type="button"
                 onClick={() => handleRemove(index)}

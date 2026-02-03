@@ -1,6 +1,6 @@
 "use client";
 
-import FAQForm from "./FaqForm";
+import FAQForm from "./FAQForm";
 
 interface FAQ {
   id?: number;

@@ -58,7 +58,7 @@ export default function HtmlContent({
       "code",
       "pre",
     ];
-    const allowedAttributes = ["class", "style"];
+    const allowedAttributes = ["clas", "style"];
 
     let sanitized = content;
 

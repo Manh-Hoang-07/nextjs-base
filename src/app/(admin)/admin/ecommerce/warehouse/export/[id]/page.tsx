@@ -1,6 +1,6 @@
 "use client";
 
-import ExportDetail from "@/components/admin/ecommerce/warehouse/export/exportDetail";
+import ExportDetail from "@/components/admin/ecommerce/warehouses/exports/ExportDetail";
 import { useParams } from "next/navigation";
 
 export default function ExportDetailPage() {

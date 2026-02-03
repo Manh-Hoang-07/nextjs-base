@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import GalleryClient from "./galleryClient";
+import GalleryClient from "./GalleryClient";
 
 export const metadata: Metadata = {
   title: "Thư viện dự án",

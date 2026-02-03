@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import FAQsClient from "./faqsClient";
+import FAQsClient from "./FAQsClient";
 
 export const metadata: Metadata = {
   title: "Câu hỏi thường gặp",

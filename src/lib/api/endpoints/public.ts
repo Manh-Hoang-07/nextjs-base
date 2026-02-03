@@ -78,7 +78,7 @@ export const publicEndpoints = {
         checkout: "/api/public/orders",
         myOrders: "/api/public/orders",
         detail: (id: Id) => `/api/public/orders/${id}`,
-        access: "/api/public/orders/access",
+        access: "/api/public/orders/acces",
         cancel: (id: Id) => `/api/public/orders/${id}/cancel`,
     },
     payments: {

@@ -277,8 +277,8 @@ export default function BannerSlider({
               >
                 <span
                   className={`block h-2 rounded-full transition-all duration-200 ${index === currentIndex
-                      ? "bg-white w-8"
-                      : "bg-white/50 group-hover:bg-white/70 w-2"
+                    ? "bg-white w-8"
+                    : "bg-white/50 group-hover:bg-white/70 w-2"
                     }`}
                 />
               </button>

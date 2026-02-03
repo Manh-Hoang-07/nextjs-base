@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import api from "@/lib/api/client";
 import { publicEndpoints } from "@/lib/api/endpoints";
-import ComicCard from "./comicCard";
+import ComicCard from "./ComicCard";
 
 interface Comic {
   id: string | number;
@@ -168,9 +168,8 @@ export default function HomePageContent() {
               {featuredComics.map((comic, index) => (
                 <div
                   key={comic.id}
-                  className={`flex flex-col md:flex-row cursor-pointer hover:bg-gray-50 transition-colors ${
-                    index === currentFeaturedIndex ? "" : "hidden"
-                  }`}
+                  className={`flex flex-col md:flex-row cursor-pointer hover:bg-gray-50 transition-colors ${index === currentFeaturedIndex ? "" : "hidden"
+                    }`}
                   onClick={() => goToComic(comic.slug)}
                 >
                   <div className="md:w-48 flex-shrink-0 relative aspect-[3/4] md:h-auto">

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import PageMeta from "@/components/ui/navigation/PageMeta";
-import WarehouseTransfersClient from "./Warehouse-transfers-client";
+import WarehouseTransfersClient from "./warehouse-transfers-client";
 
 export const metadata: Metadata = {
   title: "Chuyển kho | Admin",

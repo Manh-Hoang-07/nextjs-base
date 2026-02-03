@@ -14,7 +14,7 @@ interface Project {
     short_description: string;
     cover_image: string | null;
     location: string;
-    status: "completed" | "in_progress" | "planned";
+    status: "completed" | "in_progres" | "planned";
     client_name: string;
     images: string;
 }
@@ -54,8 +54,8 @@ export function ProjectFilter({ initialProjects }: ProjectFilterProps) {
         switch (status) {
             case "completed":
                 return "bg-green-100 text-green-800";
-            case "in-progress":
-            case "in_progress":
+            case "in-progres":
+            case "in_progres":
                 return "bg-yellow-100 text-yellow-800";
             case "planned":
                 return "bg-blue-100 text-blue-800";
@@ -68,8 +68,8 @@ export function ProjectFilter({ initialProjects }: ProjectFilterProps) {
         switch (status) {
             case "completed":
                 return "Hoàn thành";
-            case "in-progress":
-            case "in_progress":
+            case "in-progres":
+            case "in_progres":
                 return "Đang thực hiện";
             case "planned":
                 return "Kế hoạch";
@@ -102,7 +102,7 @@ export function ProjectFilter({ initialProjects }: ProjectFilterProps) {
                         options={[
                             { value: "all", label: "Tất cả" },
                             { value: "completed", label: "Hoàn thành" },
-                            { value: "in_progress", label: "Đang thực hiện" },
+                            { value: "in_progres", label: "Đang thực hiện" },
                             { value: "planned", label: "Kế hoạch" },
                         ]}
                     />

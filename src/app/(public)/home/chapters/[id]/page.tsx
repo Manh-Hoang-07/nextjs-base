@@ -1,9 +1,10 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon, ListBulletIcon } from "@heroicons/react/24/outline";
 import { notFound } from "next/navigation";
 import { getChapterPages, getChapterNavigation, getChapterDetail, getComicChapters } from "@/lib/api/public/comic";
-import { ReadingToolbar } from "@/components/public/comic/ReadingToolbar";
+import { ReadingToolbar } from "@/components/public/comics/ReadingToolbar";
 import "@/styles/comic.css";
 
 interface Props {
@@ -45,9 +46,12 @@ export default async function ReadingPage({ params }: Props) {
                 <div className="space-y-0 w-full shadow-2xl">
                     {pages.map((page, index) => (
                         <div key={index} className="relative w-full overflow-hidden bg-white flex justify-center">
-                            <img
+                            <Image
                                 src={page.image_url}
                                 alt={`Page ${page.page_number}`}
+                                width={800}
+                                height={1200}
+                                unoptimized
                                 className="w-full h-auto object-contain select-none"
                                 loading={index < 3 ? "eager" : "lazy"}
                             />

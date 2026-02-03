@@ -7,6 +7,7 @@ import * as z from "zod";
 import Modal from "@/components/ui/feedback/Modal";
 import FormField from "@/components/ui/forms/FormField";
 import ImageUploader from "@/components/ui/forms/ImageUploader";
+import Image from "next/image";
 
 // 1. Define Gallery Schema
 const gallerySchema = z.object({
@@ -256,8 +257,13 @@ export default function GalleryForm({
                       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 p-4 bg-white rounded-2xl border border-gray-200">
                         {value.map((url, idx) => (
                           <div key={idx} className="relative aspect-square group rounded-xl overflow-hidden border border-gray-100 shadow-sm">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={url} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                            <Image
+                              src={url}
+                              alt={`Gallery ${idx}`}
+                              fill
+                              className="object-cover"
+                              unoptimized
+                            />
                             <button
                               type="button"
                               onClick={() => onChange(value.filter((_, i) => i !== idx))}
@@ -297,7 +303,7 @@ export default function GalleryForm({
           </button>
         </div>
       </form>
-    </Modal>
+    </Modal >
   );
 }
 

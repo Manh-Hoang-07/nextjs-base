@@ -1,8 +1,8 @@
 // Export all banner components
 export { default as HeroBanner } from "./HeroBanner";
-export { default as BannerSlider } from "./bannerSlider";
+export { default as BannerSlider } from "./BannerSlider";
 export { default as SimpleBanner } from "./SimpleBanner";
-export { default as BannerGrid } from "./bannerGrid";
+export { default as BannerGrid } from "./BannerGrid";
 export { default as SidebarBanner } from "./SidebarBanner";
 
 // Export types

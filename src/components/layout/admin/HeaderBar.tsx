@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import GroupSwitcher from "@/components/ui/navigation/groupSwitcher";
-import UserDropdown from "./userDropdown";
+import GroupSwitcher from "@/components/ui/navigation/GroupSwitcher";
+import UserDropdown from "./UserDropdown";
 import { useAuthStore } from "@/lib/store/authStore";
 
 interface HeaderBarProps {
