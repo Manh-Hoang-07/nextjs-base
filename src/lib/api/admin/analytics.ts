@@ -2,7 +2,7 @@ import { api } from "@/lib/api/client";
 import { adminEndpoints } from "@/lib/api/endpoints";
 import { AdminDashboardAnalytics, AdminAnalyticsComicStat, AdminViewHistoryItem } from "@/types/comic";
 
-export const adminAnalyticsService = {
+export const adminStatsService = {
     /**
      * Get dashboard analytics summary
      */

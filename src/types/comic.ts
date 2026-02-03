@@ -48,21 +48,33 @@ export interface ChapterDetail extends ComicChapter {
 }
 
 export interface ComicCommentUser {
-    id: string;
+    id: number | string;
     username: string;
-    name: string;
-    image: string;
+    email?: string;
+    name: string | null;
+    image: string | null;
 }
 
 export interface ComicComment {
-    id: string;
-    comic_id: string;
-    chapter_id: string | null;
-    parent_id: string | null;
+    id: number | string;
+    user_id: number | string;
+    comic_id: number | string;
+    chapter_id: number | string | null;
+    parent_id: number | string | null;
     content: string;
     status: 'visible' | 'hidden';
     created_at: string;
+    updated_at: string;
     user: ComicCommentUser;
+    comic?: {
+        id: number | string;
+        title: string;
+        slug: string;
+    };
+    chapter?: {
+        id: number | string;
+        title: string;
+    } | null;
     replies: ComicComment[];
 }
 
@@ -100,8 +112,11 @@ export interface PaginatedResponse<T> {
 export interface AdminMeta {
     page: number;
     limit: number;
-    total: number;
-    total_pages: number;
+    totalItems: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    nextPage?: number | null;
 }
 
 export interface AdminResponse<T> {
@@ -237,10 +252,12 @@ export interface AdminDashboardAnalytics {
     top_comics: Array<{
         comic: AdminComic;
         stats: {
+            comic_id: number;
             view_count: number;
             follow_count: number;
             rating_count: number;
             rating_sum: number;
+            updated_at?: string;
         };
     }>;
 }
@@ -248,11 +265,12 @@ export interface AdminDashboardAnalytics {
 export interface AdminAnalyticsComicStat {
     comic: AdminComic;
     stats: {
+        comic_id: number;
         view_count: number;
         follow_count: number;
         rating_count: number;
         rating_sum: number;
-        children_count?: number;
+        updated_at?: string;
     };
 }
 

@@ -341,9 +341,9 @@ export const adminEndpoints = {
         trending: "/api/admin/comic-stats/trending",
     },
     analytics: {
-        dashboard: "/api/admin/analytics/dashboard",
-        comics: "/api/admin/analytics/comics",
-        views: "/api/admin/analytics/views",
+        dashboard: "/api/admin/stats/dashboard",
+        comics: "/api/admin/stats/comics",
+        views: "/api/admin/stats/views",
     },
 } as const;
 

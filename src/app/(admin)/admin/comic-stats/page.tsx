@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { adminAnalyticsService } from "@/lib/api/admin/analytics";
+import { adminStatsService } from "@/lib/api/admin/analytics";
 import {
     AdminDashboardAnalytics,
     AdminViewHistoryItem,
@@ -62,7 +62,7 @@ export default function ComicStatsPage() {
         const fetchDashboard = async () => {
             try {
                 setLoadingDashboard(true);
-                const data = await adminAnalyticsService.getDashboard();
+                const data = await adminStatsService.getDashboard();
                 setDashboard(data);
             } catch (error) {
                 showError("Không thể tải tổng quan thống kê");
@@ -79,7 +79,7 @@ export default function ComicStatsPage() {
             if (!historyDateRange.start || !historyDateRange.end) return;
             try {
                 setLoadingHistory(true);
-                const data = await adminAnalyticsService.getViewHistory(
+                const data = await adminStatsService.getViewHistory(
                     historyDateRange.start,
                     historyDateRange.end
                 );
@@ -98,7 +98,7 @@ export default function ComicStatsPage() {
         const fetchTop = async () => {
             try {
                 setLoadingTop(true);
-                const data = await adminAnalyticsService.getComicsRanking(topFilter);
+                const data = await adminStatsService.getComicsRanking(topFilter);
                 setTopComics(data);
             } catch (error) {
                 showError("Không thể tải xếp hạng truyện");
@@ -241,7 +241,7 @@ export default function ComicStatsPage() {
                                     { label: "Top 20", value: "20" },
                                     { label: "Top 50", value: "50" },
                                 ]}
-                                onChange={(val) => setTopFilter(prev => ({ ...prev, limit: parseInt(val) }))}
+                                onChange={(val) => setTopFilter(prev => ({ ...prev, limit: parseInt(String(val)) }))}
                             />
                         </div>
                     </div>
@@ -253,9 +253,9 @@ export default function ComicStatsPage() {
                             topComics.map((item, index) => (
                                 <div key={item.comic.id} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors border-b border-gray-50 last:border-0">
                                     <div className={`w-6 h-6 rounded flex items-center justify-center text-xs font-bold ${index === 0 ? "bg-yellow-100 text-yellow-700" :
-                                            index === 1 ? "bg-gray-100 text-gray-700" :
-                                                index === 2 ? "bg-orange-100 text-orange-700" :
-                                                    "text-gray-400"
+                                        index === 1 ? "bg-gray-100 text-gray-700" :
+                                            index === 2 ? "bg-orange-100 text-orange-700" :
+                                                "text-gray-400"
                                         }`}>
                                         {index + 1}
                                     </div>
