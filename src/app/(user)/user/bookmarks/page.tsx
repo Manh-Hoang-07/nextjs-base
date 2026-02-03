@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import PageMeta from "@/components/ui/navigation/PageMeta";
-import UserBookmarksClient from "./UserBookmarksClient";
+import UserBookmarksClient from "./userBookmarksClient";
 
 export const metadata: Metadata = {
   title: "Đánh dấu của tôi | User",

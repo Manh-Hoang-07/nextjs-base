@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Comic } from '@/types/comic';
-import { ComicCard } from './ComicCard';
+import { ComicCard } from './comicCard';
 
 interface ComicSectionProps {
     title: string;

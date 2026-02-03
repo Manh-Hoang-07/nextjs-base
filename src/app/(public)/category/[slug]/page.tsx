@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useProductCategories, ProductCategory } from "@/hooks/useProductCategories";
-import CategoryMenu from "@/components/public/ecommerce/CategoryMenu";
+import CategoryMenu from "@/components/public/ecommerce/categoryMenu";
 
 interface Product {
   id: number;

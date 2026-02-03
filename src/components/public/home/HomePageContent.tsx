@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import api from "@/lib/api/client";
 import { publicEndpoints } from "@/lib/api/endpoints";
-import ComicCard from "./ComicCard";
+import ComicCard from "./comicCard";
 
 interface Comic {
   id: string | number;

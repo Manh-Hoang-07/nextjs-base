@@ -1,6 +1,6 @@
 import { serverFetch } from "@/lib/api/server-client";
 import { publicEndpoints } from "@/lib/api/endpoints";
-import { CertificateList } from "@/components/public/certificates/CertificateList";
+import { CertificateList } from "@/components/public/certificates/certificateList";
 import { Metadata } from "next";
 import { Button } from "@/components/ui/navigation/Button";
 import HeroBanner from "@/components/public/banners/HeroBanner";

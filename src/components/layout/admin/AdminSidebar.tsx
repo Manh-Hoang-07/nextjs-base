@@ -6,7 +6,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useMenus, MenuTreeItem } from "@/hooks/useMenus";
 import { initializeUserGroups, getUserGroups, getSelectedGroup, Group } from "@/lib/group/utils";
 import { useAuthStore } from "@/lib/store/authStore";
-import { IconSelector } from "@/components/admin/IconSelector";
+import { IconSelector } from "@/components/admin/shared/IconSelector";
 
 function MenuItem({ item, pathname, depth = 0 }: { item: MenuTreeItem; pathname: string; depth?: number }) {
   const [isOpen, setIsOpen] = useState(false);

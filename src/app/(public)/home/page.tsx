@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import { getComicHomepageData } from "@/lib/api/public/comic";
 import { TrendingHero } from "@/components/public/comic/TrendingHero";
-import { ComicSection } from "@/components/public/comic/ComicSection";
-import { CategorySidebar } from "@/components/public/comic/CategorySidebar";
+import { ComicSection } from "@/components/public/comic/comicSection";
+import { CategorySidebar } from "@/components/public/comic/categorySidebar";
 import "@/styles/comic.css";
 
 export const metadata: Metadata = {

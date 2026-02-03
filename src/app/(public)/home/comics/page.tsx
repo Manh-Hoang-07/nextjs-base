@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { getComics, getComicCategories } from "@/lib/api/public/comic";
-import { ComicCard } from "@/components/public/comic/ComicCard";
+import { ComicCard } from "@/components/public/comic/comicCard";
 import { Pagination } from "@/components/public/comic/Pagination";
-import { CategorySelect } from "@/components/public/comic/CategorySelect";
+import { CategorySelect } from "@/components/public/comic/categorySelect";
 import "@/styles/comic.css";
 
 interface Props {

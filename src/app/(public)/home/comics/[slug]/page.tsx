@@ -4,8 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getComicDetail, getComicChapters } from "@/lib/api/public/comic";
 import { getComicComments } from "@/lib/api/public/comment";
-import { ChapterList } from "@/components/public/comic/ChapterList";
-import { CommentSection } from "@/components/public/comic/Comment/CommentSection";
+import { ChapterList } from "@/components/public/comic/chapterList";
+import { CommentSection } from "@/components/public/comic/comment/commentSection";
 import "@/styles/comic.css";
 
 interface Props {
