@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminAboutSections from "@/components/introduction/about-section/admin/AdminAboutSections";
-import PageMeta from "@/components/shared/ui/navigation/PageMeta";
+import AdminAboutSections from "@/components/Features/Introduction/About/Admin/AdminAboutSections";
+import PageMeta from "@/components/UI/Navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Giới thiệu chung | Admin",
@@ -15,7 +15,7 @@ export default function AdminAboutSectionsPage() {
         title="Giới thiệu chung"
         breadcrumbs={[
           { label: "Trang quản trị", href: "/admin", },
-          { label: "Giới thiệu", href: "/admin/about-sections" },
+          { label: "Giới thiệu", href: "/admin/Abouts" },
           { label: "Nội dung chung" },
         ]}
       />

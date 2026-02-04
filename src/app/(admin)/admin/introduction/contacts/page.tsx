@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import PageMeta from "@/components/shared/ui/navigation/PageMeta";
-import AdminContacts from "@/components/introduction/contact/admin/AdminContacts";
+import PageMeta from "@/components/UI/Navigation/PageMeta";
+import AdminContacts from "@/components/Features/Introduction/Contacts/Admin/AdminContacts";
 
 export const metadata: Metadata = {
   title: "Quản lý Liên hệ | Admin",

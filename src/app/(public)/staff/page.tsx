@@ -1,8 +1,8 @@
 import { getStaffList } from "@/lib/api/public/general";
-import { StaffList } from "@/components/introduction/staff/public/StaffList";
+import { StaffList } from "@/components/Features/Introduction/Staff/Public/StaffList";
 import { Metadata } from "next";
 import Link from "next/link";
-import { Button } from "@/components/shared/ui/navigation/Button";
+import { Button } from "@/components/UI/Navigation/Button";
 
 export const metadata: Metadata = {
   title: "Đội ngũ nhân sự",

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminCoupons from "@/components/products/coupon/admin/AdminCoupons";
-import PageMeta from "@/components/shared/ui/navigation/PageMeta";
+import AdminCoupons from "@/components/Features/Ecommerce/Coupons/Admin/AdminCoupons";
+import PageMeta from "@/components/UI/Navigation/PageMeta";
 
 export const metadata: Metadata = {
     title: "Mã khuyến mãi | Admin",

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminCertificates from "@/components/introduction/certificate/admin/AdminCertificates";
-import PageMeta from "@/components/shared/ui/navigation/PageMeta";
+import AdminCertificates from "@/components/Features/Introduction/Certificates/Admin/AdminCertificates";
+import PageMeta from "@/components/UI/Navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Chứng chỉ & Giải thưởng | Admin",
@@ -15,7 +15,7 @@ export default function AdminCertificatesPage() {
         title="Chứng chỉ & Giải thưởng"
         breadcrumbs={[
           { label: "Trang quản trị", href: "/admin", },
-          { label: "Giới thiệu", href: "/admin/about-sections" },
+          { label: "Giới thiệu", href: "/admin/Abouts" },
           { label: "Chứng chỉ" },
         ]}
       />

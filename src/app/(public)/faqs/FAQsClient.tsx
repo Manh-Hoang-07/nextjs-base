@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/shared/ui/navigation/Button";
+import { Button } from "@/components/UI/Navigation/Button";
 import api from "@/lib/api/client";
 import { publicEndpoints } from "@/lib/api/endpoints";
 

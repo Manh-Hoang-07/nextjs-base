@@ -1,10 +1,12 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import { getComicHomepageData } from "@/lib/api/public/comic";
-import { TrendingHero } from "@/components/comics/comic/public/TrendingHero";
-import { ComicSection } from "@/components/comics/comic/public/ComicSection";
-import { CategorySidebar } from "@/components/comics/categories/public/CategorySidebar";
+import { TrendingHero } from "@/components/Features/Comics/ComicList/Public/TrendingHero";
+import { ComicSection } from "@/components/Features/Comics/ComicList/Public/ComicSection";
+import { CategorySidebar } from "@/components/Features/Comics/Categories/Public/CategorySidebar";
+import Link from "next/link";
 import "@/styles/comic.css";
+
 
 export const metadata: Metadata = {
   title: "Trang Chủ | Comic Haven - Thế Giới Truyện Tranh Miễn Phí",
@@ -23,9 +25,9 @@ export default async function ComicHomePage() {
           </svg>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops! Có lỗi xảy ra</h2>
           <p className="text-gray-600 mb-6">Không thể kết nối được với máy chủ để lấy dữ liệu trang chủ.</p>
-          <a href="/" className="inline-block px-6 py-2 bg-red-600 text-white rounded-full font-bold hover:bg-red-700 transition">
+          <Link href="/" className="inline-block px-6 py-2 bg-red-600 text-white rounded-full font-bold hover:bg-red-700 transition">
             Thử lại
-          </a>
+          </Link>
         </div>
       </div>
     );

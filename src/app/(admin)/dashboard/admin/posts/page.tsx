@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import DataTable from "@/components/shared/ui/data-display/DataTable";
-import { Button } from "@/components/shared/ui/navigation/Button";
-import FormField from "@/components/shared/ui/forms/FormField";
-import Modal from "@/components/shared/ui/feedback/Modal";
+import DataTable from "@/components/UI/DataDisplay/DataTable";
+import { Button } from "@/components/UI/Navigation/Button";
+import FormField from "@/components/UI/Forms/FormField";
+import Modal from "@/components/UI/Feedback/Modal";
 import { useToastContext } from "@/contexts/ToastContext";
 
 interface Post {

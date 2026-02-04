@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import GroupMembers from "@/components/core/group/admin/GroupMembers";
+import GroupMembers from "@/components/Features/Core/Groups/Admin/GroupMembers";
 
 export default function AdminGroupMembersClient() {
     const params = useParams();

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminPartners from "@/components/introduction/partner/admin/AdminPartners";
-import PageMeta from "@/components/shared/ui/navigation/PageMeta";
+import AdminPartners from "@/components/Features/Introduction/Partners/Admin/AdminPartners";
+import PageMeta from "@/components/UI/Navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Quản lý Đối tác | Admin",

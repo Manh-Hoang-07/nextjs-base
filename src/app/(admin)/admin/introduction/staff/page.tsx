@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminStaff from "@/components/introduction/staff/admin/AdminStaff";
-import PageMeta from "@/components/shared/ui/navigation/PageMeta";
+import AdminStaff from "@/components/Features/Introduction/Staff/Admin/AdminStaff";
+import PageMeta from "@/components/UI/Navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Quản lý Nhân sự | Admin",
@@ -15,7 +15,7 @@ export default function AdminStaffPage() {
         title="Quản lý Nhân sự"
         breadcrumbs={[
           { label: "Trang quản trị", href: "/admin", },
-          { label: "Giới thiệu", href: "/admin/about-sections" },
+          { label: "Giới thiệu", href: "/admin/Abouts" },
           { label: "Nhân sự" },
         ]}
       />

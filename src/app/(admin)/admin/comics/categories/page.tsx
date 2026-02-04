@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminComicCategories from "@/components/comics/categories/admin/AdminComicCategories";
-import PageMeta from "@/components/shared/ui/navigation/PageMeta";
+import AdminComicCategories from "@/components/Features/Comics/Categories/Admin/AdminComicCategories";
+import PageMeta from "@/components/UI/Navigation/PageMeta";
 
 export const metadata: Metadata = {
     title: "Danh mục truyện | Admin",

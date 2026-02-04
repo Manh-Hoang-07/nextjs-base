@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import PageMeta from "@/components/shared/ui/navigation/PageMeta";
+import PageMeta from "@/components/UI/Navigation/PageMeta";
 import UserProfileClient from "./UserProfileClient";
 
 export const metadata: Metadata = {

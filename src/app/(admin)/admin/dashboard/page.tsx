@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import PageMeta from "@/components/shared/ui/navigation/PageMeta";
+import PageMeta from "@/components/UI/Navigation/PageMeta";
 
 export const dynamic = "force-dynamic";
 

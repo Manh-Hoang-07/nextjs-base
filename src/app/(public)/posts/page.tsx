@@ -1,6 +1,6 @@
 import { publicEndpoints } from "@/lib/api/endpoints";
-import { PostList } from "@/components/posts/post/public/PostList";
-import HeroBanner from "@/components/marketing/banner/public/HeroBanner";
+import { PostList } from "@/components/Features/Posts/PostList/Public/PostList";
+import HeroBanner from "@/components/Features/Marketing/Banners/Public/HeroBanner";
 import { serverFetch } from "@/lib/api/server-client";
 import { Metadata } from "next";
 

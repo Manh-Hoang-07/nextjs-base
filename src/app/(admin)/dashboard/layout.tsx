@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { AdminSidebar, AdminHeader } from "@/components/shared/layout/admin";
+import { AdminSidebar, AdminHeader } from "@/components/Layouts/Admin";
 
 export default function AdminLayout({
   children,

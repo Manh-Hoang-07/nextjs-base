@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { PageBanner } from "@/components/shared/ui/navigation/PageBanner";
-import { Button } from "@/components/shared/ui/navigation/Button";
+import { PageBanner } from "@/components/UI/Navigation/PageBanner";
+import { Button } from "@/components/UI/Navigation/Button";
 import { serverFetch } from "@/lib/api/server-client";
 import { publicEndpoints } from "@/lib/api/endpoints";
 import { Project } from "@/types/api";

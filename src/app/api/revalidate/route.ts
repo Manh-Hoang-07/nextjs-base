@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
  * 
  * Sử dụng:
  * POST /api/revalidate
- * Body: { tag: "system-config" } hoặc { tag: "system-config-general" }
+ * Body: { tag: "SystemConfig" } hoặc { tag: "SystemConfig-general" }
  * Headers: { "x-revalidate-secret": "your-secret-key" }
  */
 export async function POST(request: NextRequest) {

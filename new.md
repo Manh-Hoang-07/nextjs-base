@@ -1,765 +1,772 @@
-src/components/
-├── comics/                           ← Module: SỐ NHIỀU
-│   ├── comic/                        ← Entity: SỐ ÍT, không prefix
-│   │   ├── domain/
-│   │   ├── admin/                    ← Scope: SỐ ÍT
-│   │   │   ├── AdminComics.tsx
-│   │   │   ├── ComicList.tsx
-│   │   │   ├── ComicForm.tsx
-│   │   │   ├── ComicFilter.tsx
-│   │   │   ├── CreateComic.tsx
-│   │   │   ├── EditComic.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/                   ← Scope: SỐ ÍT
-│   │   │   ├── ComicCard.tsx
-│   │   │   ├── ComicDetail.tsx
-│   │   │   ├── ComicSection.tsx
-│   │   │   ├── TrendingHero.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── user/                     ← Scope: SỐ ÍT
-│   │   │   ├── MyComics.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── category/                     ← Entity: SỐ ÍT (KHÔNG dùng comic-category)
-│   │   ├── domain/
-│   │   ├── admin/
-│   │   │   ├── AdminComicCategories.tsx
-│   │   │   ├── ComicCategoryList.tsx
-│   │   │   ├── ComicCategoryForm.tsx
-│   │   │   ├── ComicCategoryFilter.tsx
-│   │   │   ├── CreateComicCategory.tsx
-│   │   │   ├── EditComicCategory.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── CategorySelect.tsx
-│   │   │   ├── CategorySidebar.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── chapter/                      ← Entity: SỐ ÍT (KHÔNG dùng comic-chapter)
-│   │   ├── domain/
-│   │   ├── admin/
-│   │   │   ├── AdminChapters.tsx
-│   │   │   ├── ChapterList.tsx
-│   │   │   ├── ChapterForm.tsx
-│   │   │   ├── ChapterFilter.tsx
-│   │   │   ├── CreateChapter.tsx
-│   │   │   ├── EditChapter.tsx
-│   │   │   ├── PageManager.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── ChapterList.tsx
-│   │   │   ├── ReadingToolbar.tsx
-│   │   │   ├── Pagination.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── comment/                      ← Entity: SỐ ÍT
-│   │   ├── domain/
-│   │   ├── admin/
-│   │   │   ├── AdminComicComments.tsx
-│   │   │   ├── ComicCommentFilter.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── CommentSection.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── user/
-│   │   │   ├── MyComments.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── review/                       ← Entity: SỐ ÍT
-│   │   ├── domain/
-│   │   ├── admin/
-│   │   ├── public/
-│   │   │   ├── ReviewSection.tsx
-│   │   │   └── index.ts
-│   │   ├── user/
-│   │   └── index.ts
-│   │
-│   ├── bookmark/                     ← Entity: SỐ ÍT
-│   │   ├── domain/
-│   │   ├── user/
-│   │   │   ├── BookmarkButton.tsx
-│   │   │   ├── BookmarkList.tsx
-│   │   │   └── index.ts
-│   │   └── index.ts
-│   │
-│   ├── follow/                       ← Entity: SỐ ÍT
-│   │   ├── domain/
-│   │   ├── user/
-│   │   │   ├── FollowButton.tsx
-│   │   │   ├── FollowingList.tsx
-│   │   │   └── index.ts
-│   │   └── index.ts
-│   │
-│   ├── reading-history/              ← Entity: SỐ ÍT (từ ghép)
-│   │   ├── domain/
-│   │   ├── user/
-│   │   │   ├── HistoryList.tsx
-│   │   │   └── index.ts
-│   │   └── index.ts
-│   │
-│   ├── stats/                        ← Entity: SỐ NHIỀU (stats luôn số nhiều)
-│   │   ├── domain/
-│   │   ├── admin/
-│   │   │   ├── ComicStatistics.tsx
-│   │   │   └── index.ts
-│   │   ├── public/
-│   │   ├── user/
-│   │   └── index.ts
-│   │
-│   ├── homepage/                     ← Entity: SỐ ÍT (feature đặc biệt)
-│   │   └── public/
-│   │       ├── HomePageContent.tsx
-│   │       └── index.ts
-│   │
-│   └── shared/                       ← Shared trong module comics
-│       ├── ComicCard.tsx
-│       └── index.ts
+src/
+├─ app/
+│  ├─ (admin)/                          # Admin routes - yêu cầu đăng nhập admin
+│  │  └─ admin/
+│  │     ├─ dashboard/                  # Trang tổng quan
+│  │     │
+│  │     ├─ comics/                     # Quản lý truyện tranh
+│  │     │  ├─ categories/             # Danh mục truyện
+│  │     │  ├─ list/                   # Danh sách truyện (thay vì comics/comics)
+│  │     │  ├─ chapters/               # Quản lý chương
+│  │     │  ├─ comments/               # Bình luận
+│  │     │  ├─ reviews/                # Đánh giá (nên tách riêng khỏi comments)
+│  │     │  ├─ management/             # Công cụ quản lý chung
+│  │     │  └─ statistics/             # Thống kê (đổi từ stats)
+│  │     │
+│  │     ├─ ecommerce/                 # Thương mại điện tử
+│  │     │  ├─ products/               # Sản phẩm
+│  │     │  │  ├─ list/               # Danh sách SP (thay vì products/products)
+│  │     │  │  ├─ categories/         # Danh mục SP
+│  │     │  │  ├─ attributes/         # Thuộc tính
+│  │     │  │  ├─ attribute-values/   # Giá trị thuộc tính
+│  │     │  │  └─ variants/           # Biến thể
+│  │     │  ├─ orders/                # Đơn hàng
+│  │     │  ├─ coupons/               # Mã giảm giá
+│  │     │  ├─ shipping-methods/      # Phương thức vận chuyển
+│  │     │  └─ warehouses/            # Kho hàng
+│  │     │     ├─ list/               # Danh sách kho (thay vì warehouses/warehouses)
+│  │     │     ├─ [id]/
+│  │     │     │  └─ inventory/       # Tồn kho từng kho
+│  │     │     ├─ imports/            # Nhập kho
+│  │     │     │  └─ [id]/           # Chi tiết phiếu nhập
+│  │     │     ├─ exports/            # Xuất kho
+│  │     │     │  └─ [id]/           # Chi tiết phiếu xuất
+│  │     │     └─ transfers/          # Chuyển kho
+│  │     │        └─ [id]/           # Chi tiết phiếu chuyển
+│  │     │
+│  │     ├─ posts/                     # Quản lý bài viết/blog
+│  │     │  ├─ list/                  # Danh sách bài viết (thay vì posts/posts)
+│  │     │  ├─ categories/            # Danh mục bài viết
+│  │     │  ├─ tags/                  # Tags
+│  │     │  ├─ comments/              # Bình luận
+│  │     │  └─ statistics/            # Thống kê
+│  │     │
+│  │     ├─ marketing/                 # Marketing
+│  │     │  ├─ banners/               # Banner quảng cáo
+│  │     │  ├─ locations/             # Vị trí hiển thị banner
+│  │     │  └─ campaigns/             # Chiến dịch marketing (có thể thêm)
+│  │     │
+│  │     ├─ introduction/              # Giới thiệu công ty/dự án
+│  │     │  ├─ about/                 # Về chúng tôi
+│  │     │  ├─ services/              # Dịch vụ (nên có admin)
+│  │     │  ├─ projects/              # Dự án
+│  │     │  ├─ staff/                 # Nhân sự
+│  │     │  ├─ partners/              # Đối tác
+│  │     │  ├─ certificates/          # Chứng nhận
+│  │     │  ├─ testimonials/          # Lời chứng thực/đánh giá KH
+│  │     │  ├─ galleries/             # Thư viện ảnh
+│  │     │  ├─ faqs/                  # Câu hỏi thường gặp
+│  │     │  └─ contacts/              # Liên hệ
+│  │     │
+│  │     ├─ core/                      # Hệ thống lõi
+│  │     │  ├─ iam/                   # Identity & Access Management
+│  │     │  │  ├─ users/             # Người dùng
+│  │     │  │  ├─ roles/             # Vai trò
+│  │     │  │  └─ permissions/       # Quyền hạn
+│  │     │  ├─ groups/                # Nhóm người dùng
+│  │     │  │  └─ [id]/
+│  │     │  │     └─ members/        # Thành viên nhóm
+│  │     │  ├─ menus/                 # Quản lý menu
+│  │     │  ├─ content-templates/     # Template nội dung
+│  │     │  ├─ contexts/              # Ngữ cảnh/cấu hình
+│  │     │  └─ system-config/         # Cấu hình hệ thống
+│  │     │     ├─ general/           # Cài đặt chung
+│  │     │     ├─ email/             # Cấu hình email
+│  │     │     └─ notifications/     # Thông báo (có thể thêm)
+│  │     │
+│  │     └─ payment-methods/           # Phương thức thanh toán
+│  │
+│  ├─ (auth)/                          # Authentication routes - không yêu cầu đăng nhập
+│  │  ├─ login/                       # Đăng nhập
+│  │  ├─ register/                    # Đăng ký
+│  │  ├─ forgot-password/             # Quên mật khẩu
+│  │  ├─ reset-password/              # Đặt lại mật khẩu (nên thêm)
+│  │  └─ oauth/                       # OAuth callbacks (nhóm lại thay vì google/)
+│  │     ├─ google/
+│  │     │  └─ callback/
+│  │     └─ facebook/                 # Dễ mở rộng thêm provider
+│  │        └─ callback/
+│  │
+│  ├─ (user)/                          # User routes - yêu cầu đăng nhập user
+│  │  └─ user/
+│  │     ├─ dashboard/                # Trang tổng quan user (nên thêm)
+│  │     ├─ profile/                  # Hồ sơ cá nhân
+│  │     │  ├─ edit/                 # Chỉnh sửa
+│  │     │  └─ change-password/      # Đổi mật khẩu
+│  │     ├─ bookmarks/                # Đánh dấu
+│  │     ├─ follows/                  # Theo dõi
+│  │     ├─ reading-history/          # Lịch sử đọc
+│  │     ├─ orders/                   # Đơn hàng của user (nên thêm)
+│  │     ├─ reviews/                  # Đánh giá của user (nên thêm)
+│  │     └─ notifications/            # Thông báo (nên thêm)
+│  │
+│  ├─ (public)/                        # Public routes - ai cũng truy cập được
+│  │  ├─ home/                        # Trang chủ (hoặc để trống dùng page.tsx)
+│  │  │
+│  │  ├─ comics/                      # Truyện tranh
+│  │  │  ├─ categories/
+│  │  │  │  └─ [slug]/
+│  │  │  └─ [slug]/                  # Chi tiết truyện
+│  │  │
+│  │  ├─ chapters/                    # Đọc chương
+│  │  │  └─ [id]/
+│  │  │
+│  │  ├─ posts/                       # Blog/Tin tức
+│  │  │  ├─ categories/
+│  │  │  │  └─ [slug]/
+│  │  │  ├─ tags/
+│  │  │  │  └─ [slug]/
+│  │  │  └─ [slug]/                  # Chi tiết bài viết
+│  │  │
+│  │  ├─ products/                    # Sản phẩm (nên thêm nếu có ecommerce public)
+│  │  │  ├─ categories/
+│  │  │  │  └─ [slug]/
+│  │  │  └─ [slug]/
+│  │  │
+│  │  ├─ about/                       # Về chúng tôi
+│  │  ├─ services/                    # Dịch vụ
+│  │  │  └─ [id]/
+│  │  ├─ projects/                    # Dự án
+│  │  │  └─ [slug]/
+│  │  ├─ staff/                       # Đội ngũ
+│  │  ├─ partners/                    # Đối tác (nên thêm)
+│  │  ├─ certificates/                # Chứng nhận
+│  │  │  └─ [id]/
+│  │  ├─ galleries/                   # Thư viện ảnh
+│  │  │  └─ [id]/
+│  │  ├─ testimonials/                # Phản hồi khách hàng (nên thêm)
+│  │  ├─ faqs/                        # FAQ
+│  │  ├─ contacts/                    # Liên hệ
+│  │  └─ search/                      # Tìm kiếm toàn site (nên thêm)
+│  │
+│  └─ api/                             # API routes
+│     ├─ auth/                        # Auth APIs (nên thêm)
+│     ├─ public/                      # Public APIs
+│     │  ├─ system-config/
+│     │  │  └─ general/
+│     │  └─ search/                   # Search API (nên thêm)
+│     ├─ admin/                       # Admin APIs (nên thêm nếu cần)
+│     ├─ user/                        # User APIs (nên thêm nếu cần)
+│     ├─ webhooks/                    # Webhooks (payment, oauth, etc.)
+│     └─ revalidate/                  # Revalidation
 │
-├── posts/                            ← Module: SỐ NHIỀU
-│   ├── post/                         ← Entity: SỐ ÍT
-│   │   ├── domain/
-│   │   ├── admin/
-│   │   │   ├── AdminPosts.tsx
-│   │   │   ├── PostList.tsx
-│   │   │   ├── PostForm.tsx
-│   │   │   ├── PostFilter.tsx
-│   │   │   ├── CreatePost.tsx
-│   │   │   ├── EditPost.tsx
-│   │   │   ├── AdminPostStatistics.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── PostList.tsx
-│   │   │   ├── PostCard.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── user/
-│   │   └── index.ts
-│   │
-│   ├── category/                     ← Entity: SỐ ÍT (KHÔNG dùng post-category)
-│   │   ├── domain/
-│   │   ├── admin/
-│   │   │   ├── AdminPostCategories.tsx
-│   │   │   ├── PostCategoryList.tsx
-│   │   │   ├── PostCategoryForm.tsx
-│   │   │   ├── PostCategoryFilter.tsx
-│   │   │   ├── CreatePostCategory.tsx
-│   │   │   ├── EditPostCategory.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   └── index.ts
-│   │
-│   ├── tag/                          ← Entity: SỐ ÍT (KHÔNG dùng post-tag)
-│   │   ├── domain/
-│   │   ├── admin/
-│   │   │   ├── AdminPostTags.tsx
-│   │   │   ├── PostTagList.tsx
-│   │   │   ├── PostTagForm.tsx
-│   │   │   ├── PostTagFilter.tsx
-│   │   │   ├── CreatePostTag.tsx
-│   │   │   ├── EditPostTag.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   └── index.ts
-│   │
-│   ├── comment/                      ← Entity: SỐ ÍT
-│   │   ├── domain/
-│   │   ├── admin/
-│   │   │   ├── AdminPostComments.tsx
-│   │   │   ├── PostCommentFilter.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── PostComments.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── user/
-│   │   └── index.ts
-│   │
-│   └── shared/
+├─ components/                         # React components
+│  ├─ Features/                       # ✅ PascalCase - Feature-based components
+│  │  ├─ Comics/                      # ✅ PascalCase
+│  │  │  ├─ Categories/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ ComicCategoryList.tsx
+│  │  │  │  │  ├─ ComicCategoryForm.tsx
+│  │  │  │  │  └─ ComicCategoryCard.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ ComicCategoryGrid.tsx
+│  │  │  │     └─ ComicCategoryFilter.tsx
+│  │  │  ├─ Chapters/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ ChapterList.tsx
+│  │  │  │  │  ├─ ChapterForm.tsx
+│  │  │  │  │  └─ ChapterUpload.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ ChapterReader.tsx
+│  │  │  │     ├─ ChapterNavigation.tsx
+│  │  │  │     └─ ChapterComments.tsx
+│  │  │  ├─ ComicList/                # ✅ Đổi từ list/ → ComicList/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ ComicTable.tsx
+│  │  │  │  │  ├─ ComicForm.tsx
+│  │  │  │  │  ├─ ComicCard.tsx
+│  │  │  │  │  └─ ComicFilters.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ ComicGrid.tsx
+│  │  │  │     ├─ ComicCard.tsx
+│  │  │  │     ├─ ComicDetails.tsx
+│  │  │  │     └─ ComicSidebar.tsx
+│  │  │  ├─ Comments/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ CommentModeration.tsx
+│  │  │  │  │  └─ CommentList.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ CommentForm.tsx
+│  │  │  │     ├─ CommentItem.tsx
+│  │  │  │     └─ CommentThread.tsx
+│  │  │  ├─ Reviews/
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ ReviewForm.tsx
+│  │  │  │     ├─ ReviewList.tsx
+│  │  │  │     └─ ReviewStats.tsx
+│  │  │  ├─ Homepage/
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ FeaturedComics.tsx
+│  │  │  │     ├─ TrendingComics.tsx
+│  │  │  │     ├─ NewReleases.tsx
+│  │  │  │     └─ PopularCategories.tsx
+│  │  │  └─ Shared/                  # Components dùng chung
+│  │  │     ├─ ComicRating.tsx
+│  │  │     ├─ ComicBadge.tsx
+│  │  │     └─ ComicProgress.tsx
+│  │  │
+│  │  ├─ Ecommerce/                   # ✅ PascalCase
+│  │  │  ├─ Products/
+│  │  │  │  ├─ Attributes/
+│  │  │  │  │  └─ Admin/
+│  │  │  │  │     ├─ AttributeList.tsx
+│  │  │  │  │     └─ AttributeForm.tsx
+│  │  │  │  ├─ AttributeValues/
+│  │  │  │  │  └─ Admin/
+│  │  │  │  │     ├─ AttributeValueList.tsx
+│  │  │  │  │     └─ AttributeValueForm.tsx
+│  │  │  │  ├─ Categories/
+│  │  │  │  │  ├─ Admin/
+│  │  │  │  │  │  ├─ ProductCategoryList.tsx
+│  │  │  │  │  │  └─ ProductCategoryForm.tsx
+│  │  │  │  │  └─ Public/
+│  │  │  │  │     ├─ CategoryTree.tsx
+│  │  │  │  │     └─ CategoryFilter.tsx
+│  │  │  │  ├─ ProductList/          # ✅ Đổi từ list/ → ProductList/
+│  │  │  │  │  ├─ Admin/
+│  │  │  │  │  │  ├─ ProductTable.tsx
+│  │  │  │  │  │  ├─ ProductForm.tsx
+│  │  │  │  │  │  └─ ProductBulkActions.tsx
+│  │  │  │  │  └─ Public/
+│  │  │  │  │     ├─ ProductGrid.tsx
+│  │  │  │  │     ├─ ProductCard.tsx
+│  │  │  │  │     ├─ ProductDetails.tsx
+│  │  │  │  │     └─ ProductFilters.tsx
+│  │  │  │  └─ Variants/
+│  │  │  │     └─ Admin/
+│  │  │  │        ├─ VariantList.tsx
+│  │  │  │        ├─ VariantForm.tsx
+│  │  │  │        └─ VariantMatrix.tsx
+│  │  │  ├─ Orders/
+│  │  │  │  └─ Admin/
+│  │  │  │     ├─ OrderList.tsx
+│  │  │  │     ├─ OrderDetails.tsx
+│  │  │  │     ├─ OrderStatusUpdate.tsx
+│  │  │  │     └─ OrderTimeline.tsx
+│  │  │  ├─ Coupons/
+│  │  │  │  └─ Admin/
+│  │  │  │     ├─ CouponList.tsx
+│  │  │  │     ├─ CouponForm.tsx
+│  │  │  │     └─ CouponUsageStats.tsx
+│  │  │  ├─ ShippingMethods/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ ShippingMethodList.tsx
+│  │  │  │  │  └─ ShippingMethodForm.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ ShippingMethodSelector.tsx
+│  │  │  │     └─ ShippingCostCalculator.tsx
+│  │  │  └─ Warehouses/
+│  │  │     └─ Admin/
+│  │  │        ├─ WarehouseList/
+│  │  │        │  ├─ WarehouseTable.tsx
+│  │  │        │  └─ WarehouseForm.tsx
+│  │  │        ├─ Inventory/
+│  │  │        │  ├─ InventoryTable.tsx
+│  │  │        │  ├─ InventoryAdjustment.tsx
+│  │  │        │  └─ StockAlerts.tsx
+│  │  │        ├─ Imports/
+│  │  │        │  ├─ ImportList.tsx
+│  │  │        │  ├─ ImportForm.tsx
+│  │  │        │  └─ ImportDetails.tsx
+│  │  │        ├─ Exports/
+│  │  │        │  ├─ ExportList.tsx
+│  │  │        │  ├─ ExportForm.tsx
+│  │  │        │  └─ ExportDetails.tsx
+│  │  │        └─ Transfers/
+│  │  │           ├─ TransferList.tsx
+│  │  │           ├─ TransferForm.tsx
+│  │  │           └─ TransferDetails.tsx
+│  │  │
+│  │  ├─ Posts/                       # ✅ PascalCase
+│  │  │  ├─ Categories/
+│  │  │  │  └─ Admin/
+│  │  │  │     ├─ PostCategoryList.tsx
+│  │  │  │     └─ PostCategoryForm.tsx
+│  │  │  ├─ Tags/
+│  │  │  │  └─ Admin/
+│  │  │  │     ├─ TagList.tsx
+│  │  │  │     └─ TagForm.tsx
+│  │  │  ├─ PostList/                # ✅ Đổi từ list/ → PostList/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ PostTable.tsx
+│  │  │  │  │  ├─ PostForm.tsx
+│  │  │  │  │  ├─ PostEditor.tsx
+│  │  │  │  │  └─ PostPreview.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ PostGrid.tsx
+│  │  │  │     ├─ PostCard.tsx
+│  │  │  │     ├─ PostDetails.tsx
+│  │  │  │     ├─ PostSidebar.tsx
+│  │  │  │     └─ RelatedPosts.tsx
+│  │  │  └─ Comments/
+│  │  │     └─ Admin/
+│  │  │        ├─ PostCommentList.tsx
+│  │  │        └─ PostCommentModeration.tsx
+│  │  │
+│  │  ├─ Introduction/                # ✅ PascalCase
+│  │  │  ├─ About/
+│  │  │  │  └─ Admin/
+│  │  │  │     ├─ AboutSectionList.tsx
+│  │  │  │     └─ AboutSectionForm.tsx
+│  │  │  ├─ Services/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ ServiceList.tsx
+│  │  │  │  │  └─ ServiceForm.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ ServiceGrid.tsx
+│  │  │  │     ├─ ServiceCard.tsx
+│  │  │  │     └─ ServiceDetails.tsx
+│  │  │  ├─ Projects/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ ProjectList.tsx
+│  │  │  │  │  └─ ProjectForm.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ ProjectGrid.tsx
+│  │  │  │     ├─ ProjectCard.tsx
+│  │  │  │     └─ ProjectDetails.tsx
+│  │  │  ├─ Staff/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ StaffList.tsx
+│  │  │  │  │  └─ StaffForm.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ StaffGrid.tsx
+│  │  │  │     └─ StaffCard.tsx
+│  │  │  ├─ Partners/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ PartnerList.tsx
+│  │  │  │  │  └─ PartnerForm.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ PartnerGrid.tsx
+│  │  │  │     └─ PartnerLogo.tsx
+│  │  │  ├─ Certificates/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ CertificateList.tsx
+│  │  │  │  │  └─ CertificateForm.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ CertificateGrid.tsx
+│  │  │  │     └─ CertificateCard.tsx
+│  │  │  ├─ Testimonials/
+│  │  │  │  └─ Admin/
+│  │  │  │     ├─ TestimonialList.tsx
+│  │  │  │     └─ TestimonialForm.tsx
+│  │  │  ├─ Galleries/               # ✅ Số nhiều
+│  │  │  │  └─ Admin/
+│  │  │  │     ├─ GalleryList.tsx
+│  │  │  │     ├─ GalleryForm.tsx
+│  │  │  │     └─ GalleryUpload.tsx
+│  │  │  ├─ Faqs/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ FaqList.tsx
+│  │  │  │  │  └─ FaqForm.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ FaqAccordion.tsx
+│  │  │  │     └─ FaqSearch.tsx
+│  │  │  └─ Contacts/
+│  │  │     ├─ Admin/
+│  │  │     │  ├─ ContactList.tsx
+│  │  │     │  └─ ContactDetails.tsx
+│  │  │     └─ Public/
+│  │  │        ├─ ContactForm.tsx
+│  │  │        ├─ ContactInfo.tsx
+│  │  │        └─ ContactMap.tsx
+│  │  │
+│  │  ├─ Marketing/                   # ✅ PascalCase
+│  │  │  ├─ Banners/
+│  │  │  │  ├─ Admin/
+│  │  │  │  │  ├─ BannerList.tsx
+│  │  │  │  │  ├─ BannerForm.tsx
+│  │  │  │  │  └─ BannerPreview.tsx
+│  │  │  │  └─ Public/
+│  │  │  │     ├─ BannerSlider.tsx
+│  │  │  │     └─ BannerCarousel.tsx
+│  │  │  └─ Locations/
+│  │  │     └─ Admin/
+│  │  │        ├─ LocationList.tsx
+│  │  │        └─ LocationForm.tsx
+│  │  │
+│  │  ├─ Payments/                    # ✅ PascalCase
+│  │  │  └─ Methods/
+│  │  │     └─ Admin/
+│  │  │        ├─ PaymentMethodList.tsx
+│  │  │        └─ PaymentMethodForm.tsx
+│  │  │
+│  │  ├─ Core/                        # ✅ PascalCase
+│  │  │  ├─ Iam/                      # Identity & Access Management
+│  │  │  │  ├─ Users/
+│  │  │  │  │  └─ Admin/
+│  │  │  │  │     ├─ UserList.tsx
+│  │  │  │  │     ├─ UserForm.tsx
+│  │  │  │  │     ├─ UserDetails.tsx
+│  │  │  │  │     └─ UserPermissions.tsx
+│  │  │  │  ├─ Roles/
+│  │  │  │  │  └─ Admin/
+│  │  │  │  │     ├─ RoleList.tsx
+│  │  │  │  │     ├─ RoleForm.tsx
+│  │  │  │  │     └─ RolePermissions.tsx
+│  │  │  │  └─ Permissions/
+│  │  │  │     └─ Admin/
+│  │  │  │        ├─ PermissionList.tsx
+│  │  │  │        ├─ PermissionForm.tsx
+│  │  │  │        └─ PermissionMatrix.tsx
+│  │  │  ├─ Groups/
+│  │  │  │  └─ Admin/
+│  │  │  │     ├─ GroupList.tsx
+│  │  │  │     ├─ GroupForm.tsx
+│  │  │  │     └─ GroupMembers.tsx
+│  │  │  ├─ Menus/
+│  │  │  │  └─ Admin/
+│  │  │  │     ├─ MenuList.tsx
+│  │  │  │     ├─ MenuForm.tsx
+│  │  │  │     └─ MenuBuilder.tsx
+│  │  │  ├─ ContentTemplates/
+│  │  │  │  └─ Admin/
+│  │  │  │     ├─ TemplateList.tsx
+│  │  │  │     ├─ TemplateForm.tsx
+│  │  │  │     └─ TemplateEditor.tsx
+│  │  │  ├─ Contexts/
+│  │  │  │  └─ Admin/
+│  │  │  │     ├─ ContextList.tsx
+│  │  │  │     └─ ContextForm.tsx
+│  │  │  └─ SystemConfig/
+│  │  │     └─ Admin/
+│  │  │        ├─ GeneralSettings.tsx
+│  │  │        ├─ EmailSettings.tsx
+│  │  │        └─ NotificationSettings.tsx
+│  │  │
+│  │  └─ Users/                       # ✅ PascalCase - User-facing features
+│  │     ├─ Profile/
+│  │     │  ├─ ProfileView.tsx
+│  │     │  ├─ ProfileEdit.tsx
+│  │     │  └─ PasswordChange.tsx
+│  │     ├─ Bookmarks/
+│  │     │  ├─ BookmarkList.tsx
+│  │     │  └─ BookmarkCard.tsx
+│  │     ├─ Follows/
+│  │     │  ├─ FollowList.tsx
+│  │     │  └─ FollowCard.tsx
+│  │     ├─ ReadingHistory/
+│  │     │  ├─ HistoryList.tsx
+│  │     │  └─ HistoryCard.tsx
+│  │     └─ Notifications/
+│  │        ├─ NotificationList.tsx
+│  │        ├─ NotificationItem.tsx
+│  │        └─ NotificationSettings.tsx
+│  │
+│  ├─ Layouts/                        # ✅ PascalCase - Layout components
+│  │  ├─ Admin/
+│  │  │  ├─ AdminLayout.tsx
+│  │  │  ├─ AdminHeader/
+│  │  │  │  ├─ AdminHeader.tsx
+│  │  │  │  ├─ UserMenu.tsx
+│  │  │  │  └─ NotificationBell.tsx
+│  │  │  ├─ AdminSidebar/
+│  │  │  │  ├─ AdminSidebar.tsx
+│  │  │  │  ├─ NavItem.tsx
+│  │  │  │  └─ NavGroup.tsx
+│  │  │  └─ AdminFooter/
+│  │  │     └─ AdminFooter.tsx
+│  │  ├─ Public/
+│  │  │  ├─ PublicLayout.tsx
+│  │  │  ├─ PublicHeader/
+│  │  │  │  ├─ PublicHeader.tsx
+│  │  │  │  ├─ MainNav.tsx
+│  │  │  │  ├─ MobileNav.tsx
+│  │  │  │  └─ SearchBar.tsx
+│  │  │  ├─ PublicFooter/
+│  │  │  │  ├─ PublicFooter.tsx
+│  │  │  │  ├─ FooterLinks.tsx
+│  │  │  │  └─ FooterSocial.tsx
+│  │  │  ├─ ContactChannels/
+│  │  │  │  ├─ FloatingContact.tsx
+│  │  │  │  └─ SocialLinks.tsx
+│  │  │  └─ Sections/
+│  │  │     ├─ Hero.tsx
+│  │  │     ├─ Features.tsx
+│  │  │     └─ CallToAction.tsx
+│  │  └─ User/
+│  │     ├─ UserLayout.tsx
+│  │     ├─ UserHeader/
+│  │     │  └─ UserHeader.tsx
+│  │     └─ UserSidebar/
+│  │        └─ UserSidebar.tsx
+│  │
+│  ├─ UI/                             # ✅ PascalCase - UI Design System
+│  │  ├─ Forms/                      # Form controls
+│  │  │  ├─ Input.tsx
+│  │  │  ├─ Textarea.tsx
+│  │  │  ├─ Select.tsx
+│  │  │  ├─ Checkbox.tsx
+│  │  │  ├─ Radio.tsx
+│  │  │  ├─ DatePicker.tsx
+│  │  │  ├─ TimePicker.tsx
+│  │  │  ├─ FileUpload.tsx
+│  │  │  └─ FormField.tsx
+│  │  ├─ DataDisplay/                # Tables, lists, cards
+│  │  │  ├─ Table/
+│  │  │  │  ├─ Table.tsx
+│  │  │  │  ├─ TableHeader.tsx
+│  │  │  │  ├─ TableBody.tsx
+│  │  │  │  ├─ TableRow.tsx
+│  │  │  │  └─ TableCell.tsx
+│  │  │  ├─ Card/
+│  │  │  │  ├─ Card.tsx
+│  │  │  │  ├─ CardHeader.tsx
+│  │  │  │  ├─ CardBody.tsx
+│  │  │  │  └─ CardFooter.tsx
+│  │  │  ├─ List/
+│  │  │  │  ├─ List.tsx
+│  │  │  │  └─ ListItem.tsx
+│  │  │  ├─ Badge.tsx
+│  │  │  ├─ Tag.tsx
+│  │  │  ├─ Avatar.tsx
+│  │  │  └─ Stats.tsx
+│  │  ├─ Feedback/                   # Toasts, alerts, modals
+│  │  │  ├─ Toast/
+│  │  │  │  ├─ Toast.tsx
+│  │  │  │  ├─ ToastContainer.tsx
+│  │  │  │  └─ useToast.ts
+│  │  │  ├─ Alert.tsx
+│  │  │  ├─ Modal/
+│  │  │  │  ├─ Modal.tsx
+│  │  │  │  ├─ ModalHeader.tsx
+│  │  │  │  ├─ ModalBody.tsx
+│  │  │  │  └─ ModalFooter.tsx
+│  │  │  ├─ Dialog.tsx
+│  │  │  ├─ Loading.tsx
+│  │  │  ├─ Spinner.tsx
+│  │  │  ├─ Skeleton.tsx
+│  │  │  └─ Progress.tsx
+│  │  ├─ Navigation/                 # Breadcrumbs, tabs, pagination
+│  │  │  ├─ Breadcrumb/
+│  │  │  │  ├─ Breadcrumb.tsx
+│  │  │  │  └─ BreadcrumbItem.tsx
+│  │  │  ├─ Tabs/
+│  │  │  │  ├─ Tabs.tsx
+│  │  │  │  ├─ TabList.tsx
+│  │  │  │  ├─ Tab.tsx
+│  │  │  │  └─ TabPanel.tsx
+│  │  │  ├─ Pagination/
+│  │  │  │  ├─ Pagination.tsx
+│  │  │  │  └─ PaginationItem.tsx
+│  │  │  ├─ Stepper/
+│  │  │  │  ├─ Stepper.tsx
+│  │  │  │  └─ Step.tsx
+│  │  │  └─ Menu/
+│  │  │     ├─ Menu.tsx
+│  │  │     └─ MenuItem.tsx
+│  │  ├─ Media/                      # Image, video players
+│  │  │  ├─ Image.tsx
+│  │  │  ├─ ImageGallery.tsx
+│  │  │  ├─ VideoPlayer.tsx
+│  │  │  └─ AudioPlayer.tsx
+│  │  ├─ Filters/                    # Filter components
+│  │  │  ├─ SearchFilter.tsx
+│  │  │  ├─ DateRangeFilter.tsx
+│  │  │  ├─ CategoryFilter.tsx
+│  │  │  └─ SortFilter.tsx
+│  │  └─ Overlays/                   # Modals, drawers, tooltips
+│  │     ├─ Drawer/
+│  │     │  ├─ Drawer.tsx
+│  │     │  └─ DrawerContent.tsx
+│  │     ├─ Popover/
+│  │     │  ├─ Popover.tsx
+│  │     │  └─ PopoverContent.tsx
+│  │     ├─ Tooltip.tsx
+│  │     └─ Dropdown/
+│  │        ├─ Dropdown.tsx
+│  │        └─ DropdownItem.tsx
+│  │
+│  └─ Shared/                         # ✅ PascalCase - Shared components
+│     ├─ Birthday/
+│     │  └─ BirthdayWish.tsx
+│     ├─ SEO/
+│     │  ├─ Meta.tsx
+│     │  ├─ OpenGraph.tsx
+│     │  └─ JsonLd.tsx
+│     ├─ Analytics/
+│     │  ├─ GoogleAnalytics.tsx
+│     │  └─ FacebookPixel.tsx
+│     └─ ErrorBoundaries/
+│        ├─ ErrorBoundary.tsx
+│        └─ ErrorFallback.tsx
 │
-├── products/                         ← Module: SỐ NHIỀU
-│   ├── product/                      ← Entity: SỐ ÍT
-│   │   ├── domain/
-│   │   ├── admin/
-│   │   │   ├── AdminProducts.tsx
-│   │   │   ├── ProductList.tsx
-│   │   │   ├── ProductForm.tsx
-│   │   │   ├── ProductFilter.tsx
-│   │   │   ├── CreateProduct.tsx
-│   │   │   ├── EditProduct.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── ProductCard.tsx
-│   │   │   ├── ProductList.tsx
-│   │   │   ├── ProductDetail.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── user/
-│   │   └── index.ts
-│   │
-│   ├── category/                     ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminProductCategories.tsx
-│   │   │   ├── ProductCategoryList.tsx
-│   │   │   ├── ProductCategoryForm.tsx
-│   │   │   ├── ProductCategoryFilter.tsx
-│   │   │   ├── CreateProductCategory.tsx
-│   │   │   ├── EditProductCategory.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── CategoryMenu.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── variant/                      ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminProductVariants.tsx
-│   │   │   ├── ProductVariantList.tsx
-│   │   │   ├── ProductVariantForm.tsx
-│   │   │   ├── ProductVariantFilter.tsx
-│   │   │   ├── CreateProductVariant.tsx
-│   │   │   ├── EditProductVariant.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── attribute/                    ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminProductAttributes.tsx
-│   │   │   ├── ProductAttributeList.tsx
-│   │   │   ├── ProductAttributeForm.tsx
-│   │   │   ├── ProductAttributeFilter.tsx
-│   │   │   ├── CreateProductAttribute.tsx
-│   │   │   ├── EditProductAttribute.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── attribute-value/              ← Entity: SỐ ÍT (từ ghép)
-│   │   ├── admin/
-│   │   │   ├── AdminProductAttributeValues.tsx
-│   │   │   ├── ProductAttributeValueList.tsx
-│   │   │   ├── ProductAttributeValueForm.tsx
-│   │   │   ├── ProductAttributeValueFilter.tsx
-│   │   │   ├── CreateProductAttributeValue.tsx
-│   │   │   ├── EditProductAttributeValue.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── order/                        ← Entity: SỐ ÍT
-│   │   ├── domain/
-│   │   ├── admin/
-│   │   │   ├── AdminOrders.tsx
-│   │   │   ├── OrderList.tsx
-│   │   │   ├── OrderDetail.tsx
-│   │   │   ├── OrderFilter.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── user/
-│   │   │   ├── MyOrders.tsx
-│   │   │   ├── OrderTracking.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── coupon/                       ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminCoupons.tsx
-│   │   │   ├── CouponList.tsx
-│   │   │   ├── CouponForm.tsx
-│   │   │   ├── CouponFilter.tsx
-│   │   │   ├── CreateCoupon.tsx
-│   │   │   ├── EditCoupon.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── shipping-method/              ← Entity: SỐ ÍT (từ ghép)
-│   │   ├── admin/
-│   │   │   ├── AdminShippingMethods.tsx
-│   │   │   ├── ShippingMethodList.tsx
-│   │   │   ├── ShippingMethodForm.tsx
-│   │   │   ├── ShippingMethodFilter.tsx
-│   │   │   ├── CreateShippingMethod.tsx
-│   │   │   ├── EditShippingMethod.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── ShippingSelector.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── warehouse/                    ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminWarehouses.tsx
-│   │   │   ├── WarehouseList.tsx
-│   │   │   ├── WarehouseForm.tsx
-│   │   │   ├── WarehouseFilter.tsx
-│   │   │   ├── CreateWarehouse.tsx
-│   │   │   ├── EditWarehouse.tsx
-│   │   │   ├── WarehouseInventory.tsx
-│   │   │   ├── InventoryFilter.tsx
-│   │   │   ├── UpdateInventoryModal.tsx
-│   │   │   ├── WarehouseImportList.tsx
-│   │   │   ├── ImportDetail.tsx
-│   │   │   ├── ImportFilter.tsx
-│   │   │   ├── CreateImportModal.tsx
-│   │   │   ├── WarehouseExportList.tsx
-│   │   │   ├── ExportDetail.tsx
-│   │   │   ├── ExportFilter.tsx
-│   │   │   ├── CreateExportModal.tsx
-│   │   │   ├── WarehouseTransferList.tsx
-│   │   │   ├── TransferDetail.tsx
-│   │   │   ├── TransferFilter.tsx
-│   │   │   ├── CreateTransferModal.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   └── shared/
+├─ lib/                               # Libraries & utilities
+│  ├─ api/                           # API clients
+│  │  ├─ client/                    # Client-side API (cho browser)
+│  │  │  ├─ axios-client.ts
+│  │  │  └─ fetch-client.ts
+│  │  ├─ server/                    # Server-side API (cho server components)
+│  │  │  └─ fetch-server.ts
+│  │  ├─ endpoints/                 # API endpoint definitions
+│  │  │  ├─ comics.ts
+│  │  │  ├─ products.ts
+│  │  │  ├─ posts.ts
+│  │  │  └─ users.ts
+│  │  └─ interceptors/              # Request/response interceptors
+│  │     ├─ auth-interceptor.ts
+│  │     └─ error-interceptor.ts
+│  ├─ auth/                          # Authentication utilities
+│  │  ├─ session.ts
+│  │  ├─ permissions.ts
+│  │  └─ jwt.ts
+│  ├─ database/                      # Database utilities
+│  │  ├─ prisma.ts                  # Prisma client
+│  │  ├─ mongodb.ts                 # MongoDB client (nếu dùng)
+│  │  └─ queries/                   # Shared queries
+│  ├─ validations/                   # Validation schemas (Zod, Yup, etc.)
+│  │  ├─ comics.ts
+│  │  ├─ products.ts
+│  │  ├─ users.ts
+│  │  └─ auth.ts
+│  ├─ constants/                     # App constants
+│  │  ├─ app.ts
+│  │  ├─ routes.ts
+│  │  ├─ permissions.ts
+│  │  └─ status.ts
+│  └─ stores/                        # State management (Zustand, Redux, etc.)
+│     ├─ auth-store.ts
+│     ├─ ui-store.ts
+│     ├─ cart-store.ts
+│     └─ notification-store.ts
 │
-├── introduction/                     ← Module: SỐ ÍT (tên riêng)
-│   ├── about-section/                ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminAboutSections.tsx
-│   │   │   ├── AboutSectionList.tsx
-│   │   │   ├── AboutSectionForm.tsx
-│   │   │   ├── AboutSectionFilter.tsx
-│   │   │   ├── CreateAboutSection.tsx
-│   │   │   ├── EditAboutSection.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   └── index.ts
-│   │
-│   ├── staff/                        ← Entity: SỐ ÍT (danh từ không đếm được)
-│   │   ├── admin/
-│   │   │   ├── AdminStaff.tsx
-│   │   │   ├── StaffList.tsx
-│   │   │   ├── StaffForm.tsx
-│   │   │   ├── StaffFilter.tsx
-│   │   │   ├── CreateStaff.tsx
-│   │   │   ├── EditStaff.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── StaffList.tsx
-│   │   │   ├── StaffCarousel.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── certificate/                  ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminCertificates.tsx
-│   │   │   ├── CertificateList.tsx
-│   │   │   ├── CertificateForm.tsx
-│   │   │   ├── CertificateFilter.tsx
-│   │   │   ├── CreateCertificate.tsx
-│   │   │   ├── EditCertificate.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── CertificateList.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── testimonial/                  ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminTestimonials.tsx
-│   │   │   ├── TestimonialList.tsx
-│   │   │   ├── TestimonialForm.tsx
-│   │   │   ├── TestimonialFilter.tsx
-│   │   │   ├── CreateTestimonial.tsx
-│   │   │   ├── EditTestimonial.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   └── index.ts
-│   │
-│   ├── faq/                          ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminFAQs.tsx
-│   │   │   ├── FAQList.tsx
-│   │   │   ├── FAQForm.tsx
-│   │   │   ├── FAQFilter.tsx
-│   │   │   ├── CreateFAQ.tsx
-│   │   │   ├── EditFAQ.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── FaqAccordion.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── contact/                      ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminContacts.tsx
-│   │   │   ├── ContactList.tsx
-│   │   │   ├── ContactFilter.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── ContactForm.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── project/                      ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminProjects.tsx
-│   │   │   ├── ProjectList.tsx
-│   │   │   ├── ProjectForm.tsx
-│   │   │   ├── ProjectFilter.tsx
-│   │   │   ├── CreateProject.tsx
-│   │   │   ├── EditProject.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── ProjectFilter.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── gallery/                      ← Entity: SỐ ÍT (danh từ tập hợp)
-│   │   ├── admin/
-│   │   │   ├── AdminGallery.tsx
-│   │   │   ├── GalleryList.tsx
-│   │   │   ├── GalleryForm.tsx
-│   │   │   ├── GalleryFilter.tsx
-│   │   │   ├── CreateGallery.tsx
-│   │   │   ├── EditGallery.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   └── index.ts
-│   │
-│   ├── partner/                      ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminPartners.tsx
-│   │   │   ├── PartnerList.tsx
-│   │   │   ├── PartnerForm.tsx
-│   │   │   ├── PartnerFilter.tsx
-│   │   │   ├── CreatePartner.tsx
-│   │   │   ├── EditPartner.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── PartnerCarousel.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   └── shared/
+├─ hooks/                             # Custom React hooks
+│  ├─ auth/
+│  │  ├─ use-auth.ts
+│  │  ├─ use-user.ts
+│  │  └─ use-permissions.ts
+│  ├─ data/
+│  │  ├─ use-comics.ts
+│  │  ├─ use-products.ts
+│  │  └─ use-posts.ts
+│  ├─ ui/
+│  │  ├─ use-media-query.ts
+│  │  ├─ use-toast.ts
+│  │  ├─ use-modal.ts
+│  │  └─ use-theme.ts
+│  └─ utils/
+│     ├─ use-local-storage.ts
+│     ├─ use-debounce.ts
+│     └─ use-clipboard.ts
 │
-├── marketing/                        ← Module: SỐ ÍT (danh từ không đếm được)
-│   ├── banner/                       ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminBanners.tsx
-│   │   │   ├── BannerList.tsx
-│   │   │   ├── BannerForm.tsx
-│   │   │   ├── BannerFilter.tsx
-│   │   │   ├── CreateBanner.tsx
-│   │   │   ├── EditBanner.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── BannerGrid.tsx
-│   │   │   ├── BannerSlider.tsx
-│   │   │   ├── HeroBanner.tsx
-│   │   │   ├── SidebarBanner.tsx
-│   │   │   ├── SimpleBanner.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── banner-location/              ← Entity: SỐ ÍT (từ ghép)
-│   │   ├── admin/
-│   │   │   ├── AdminBannerLocations.tsx
-│   │   │   ├── BannerLocationList.tsx
-│   │   │   ├── BannerLocationForm.tsx
-│   │   │   ├── BannerLocationFilter.tsx
-│   │   │   ├── CreateBannerLocation.tsx
-│   │   │   ├── EditBannerLocation.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   └── shared/
+├─ types/                             # TypeScript types
+│  ├─ api/                           # API types
+│  │  ├─ request.ts
+│  │  └─ response.ts
+│  ├─ models/                        # Data models
+│  │  ├─ comic.ts
+│  │  ├─ product.ts
+│  │  ├─ post.ts
+│  │  └─ user.ts
+│  ├─ ui/                            # UI component types
+│  │  └─ common.ts
+│  └─ index.ts                       # Export all types
 │
-├── payments/                         ← Module: SỐ NHIỀU
-│   ├── payment-method/               ← Entity: SỐ ÍT (từ ghép)
-│   │   ├── admin/
-│   │   │   ├── AdminPaymentMethods.tsx
-│   │   │   ├── PaymentMethodList.tsx
-│   │   │   ├── PaymentMethodForm.tsx
-│   │   │   ├── PaymentMethodFilter.tsx
-│   │   │   ├── CreatePaymentMethod.tsx
-│   │   │   ├── EditPaymentMethod.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── public/
-│   │   │   ├── PaymentMethodSelector.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   └── shared/
+├─ utils/                             # Utility functions
+│  ├─ formatters/                    # Formatters
+│  │  ├─ date.ts
+│  │  ├─ number.ts
+│  │  ├─ currency.ts
+│  │  └─ text.ts
+│  ├─ validators/                    # Validation helpers
+│  │  ├─ email.ts
+│  │  ├─ phone.ts
+│  │  └─ url.ts
+│  ├─ helpers/                       # General helpers
+│  │  ├─ string.ts
+│  │  ├─ array.ts
+│  │  ├─ object.ts
+│  │  └─ file.ts
+│  └─ transformers/                  # Data transformers
+│     ├─ api-to-model.ts
+│     └─ model-to-view.ts
 │
-├── users/                            ← Module: SỐ NHIỀU
-│   ├── user/                         ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminUsers.tsx
-│   │   │   ├── UserList.tsx
-│   │   │   ├── UserForm.tsx
-│   │   │   ├── UserFilter.tsx
-│   │   │   ├── CreateUser.tsx
-│   │   │   ├── EditUser.tsx
-│   │   │   ├── AssignRole.tsx
-│   │   │   ├── ChangePassword.tsx
-│   │   │   ├── ChangePasswordForm.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── user/
-│   │   │   ├── UserProfile.tsx
-│   │   │   ├── UpdateProfile.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── role/                         ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminRoles.tsx
-│   │   │   ├── RoleList.tsx
-│   │   │   ├── RoleForm.tsx
-│   │   │   ├── RoleFilter.tsx
-│   │   │   ├── CreateRole.tsx
-│   │   │   ├── EditRole.tsx
-│   │   │   ├── AssignPermissions.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── permission/                   ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminPermissions.tsx
-│   │   │   ├── PermissionList.tsx
-│   │   │   ├── PermissionForm.tsx
-│   │   │   ├── PermissionFilter.tsx
-│   │   │   ├── CreatePermission.tsx
-│   │   │   ├── EditPermission.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   └── shared/
+├─ styles/                            # Global styles
+│  ├─ globals.css
+│  ├─ variables.css
+│  ├─ themes/
+│  │  ├─ light.css
+│  │  └─ dark.css
+│  └─ fonts/
+│     └─ custom-fonts.css
 │
-├── core/                             ← Module: SỐ ÍT (danh từ tập hợp)
-│   ├── group/                        ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminGroups.tsx
-│   │   │   ├── GroupList.tsx
-│   │   │   ├── GroupForm.tsx
-│   │   │   ├── GroupFilter.tsx
-│   │   │   ├── CreateGroup.tsx
-│   │   │   ├── EditGroup.tsx
-│   │   │   ├── GroupMembers.tsx
-│   │   │   ├── AddMemberModal.tsx
-│   │   │   ├── EditMemberRolesModal.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── menu/                         ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminMenus.tsx
-│   │   │   ├── MenuList.tsx
-│   │   │   ├── MenuForm.tsx
-│   │   │   ├── MenuFilter.tsx
-│   │   │   ├── CreateMenu.tsx
-│   │   │   ├── EditMenu.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── context/                      ← Entity: SỐ ÍT
-│   │   ├── admin/
-│   │   │   ├── AdminContexts.tsx
-│   │   │   ├── ContextList.tsx
-│   │   │   ├── ContextForm.tsx
-│   │   │   ├── ContextFilter.tsx
-│   │   │   ├── CreateContext.tsx
-│   │   │   ├── EditContext.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── content-template/             ← Entity: SỐ ÍT (từ ghép)
-│   │   ├── admin/
-│   │   │   ├── AdminContentTemplates.tsx
-│   │   │   ├── ContentTemplateList.tsx
-│   │   │   ├── ContentTemplateForm.tsx
-│   │   │   ├── ContentTemplateFilter.tsx
-│   │   │   ├── ContentTemplateTestModal.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   ├── system-config/                ← Entity: SỐ ÍT (từ ghép)
-│   │   ├── admin/
-│   │   │   ├── AdminSystemConfigs.tsx
-│   │   │   ├── SystemConfigList.tsx
-│   │   │   ├── SystemConfigForm.tsx
-│   │   │   ├── ContactChannelsManager.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── index.ts
-│   │
-│   └── shared/
+├─ config/                            # Configuration files
+│  ├─ site.ts                        # Site metadata
+│  ├─ navigation.ts                  # Navigation config
+│  ├─ features.ts                    # Feature flags
+│  └─ env.ts                         # Environment variables
 │
-└── shared/                           ← Global Shared
-    ├── ui/
-    │   ├── data-display/
-    │   │   ├── Actions.tsx
-    │   │   ├── DataTable.tsx
-    │   │   ├── Pagination.tsx
-    │   │   ├── StatusBadge.tsx
-    │   │   ├── UserCard.tsx
-    │   │   └── index.ts
-    │   │
-    │   ├── feedback/
-    │   │   ├── BannerSkeleton.tsx
-    │   │   ├── ConfirmModal.tsx
-    │   │   ├── LoadingSpinner.tsx
-    │   │   ├── Modal.tsx
-    │   │   ├── PostCardSkeleton.tsx
-    │   │   ├── ProductCardSkeleton.tsx
-    │   │   ├── SkeletonLoader.tsx
-    │   │   ├── ToastContainer.tsx
-    │   │   └── index.ts
-    │   │
-    │   ├── filters/
-    │   │   ├── DateRangeFilter.tsx
-    │   │   ├── MultiSelectFilter.tsx
-    │   │   ├── SelectFilter.tsx
-    │   │   ├── TextFilter.tsx
-    │   │   └── index.ts
-    │   │
-    │   ├── forms/
-    │   │   ├── CKEditor.tsx
-    │   │   ├── FormField.tsx
-    │   │   ├── FormWrapper.tsx
-    │   │   ├── ImageUploader.tsx
-    │   │   ├── MultipleImageUploader.tsx
-    │   │   ├── MultipleSelect.tsx
-    │   │   ├── SearchableSelect.tsx
-    │   │   ├── SimpleEditor.tsx
-    │   │   ├── SingleSelectEnhanced.tsx
-    │   │   ├── Upload.tsx
-    │   │   └── index.ts
-    │   │
-    │   ├── media/
-    │   │   ├── BaseSlider.tsx
-    │   │   ├── HtmlContent.tsx
-    │   │   ├── OptimizedImage.tsx
-    │   │   └── index.ts
-    │   │
-    │   └── navigation/
-    │       ├── Button.tsx
-    │       ├── GroupSwitcher.tsx
-    │       ├── NavigationProgress.tsx
-    │       ├── OptimizedLink.tsx
-    │       ├── PageBanner.tsx
-    │       ├── PageMeta.tsx
-    │       ├── PageTransition.tsx
-    │       ├── ShareButton.tsx
-    │       └── index.ts
-    │
-    ├── layout/
-    │   ├── admin/
-    │   │   ├── header/
-    │   │   │   ├── AdminHeader.tsx
-    │   │   │   ├── HeaderBar.tsx
-    │   │   │   ├── UserDropdown.tsx
-    │   │   │   └── index.ts
-    │   │   │
-    │   │   ├── sidebar/
-    │   │   │   ├── AdminSidebar.tsx
-    │   │   │   ├── SidebarMenu.tsx
-    │   │   │   └── index.ts
-    │   │   │
-    │   │   ├── AdminLayoutClient.tsx
-    │   │   └── index.ts
-    │   │
-    │   └── public/
-    │       ├── header/
-    │       │   ├── PublicHeader.tsx
-    │       │   └── index.ts
-    │       │
-    │       ├── footer/
-    │       │   ├── PublicFooter.tsx
-    │       │   ├── SystemFooter.tsx
-    │       │   └── index.ts
-    │       │
-    │       ├── contact-channels/
-    │       │   ├── ContactChannels.tsx
-    │       │   ├── FloatingContactChannels.tsx
-    │       │   └── index.ts
-    │       │
-    │       ├── sections/
-    │       │   ├── CustomSection.tsx
-    │       │   └── index.ts
-    │       │
-    │       ├── PublicLayoutWrapper.tsx
-    │       └── index.ts
-    │
-    ├── admin/
-    │   ├── AdminFilter.tsx
-    │   ├── IconSelector.tsx
-    │   └── index.ts
-    │
-    └── birthday/
-        ├── BirthdayContent.tsx
-        └── index.ts
+├─ middleware/                        # Next.js middlewares
+│  └─ auth-middleware.ts
+│
+└─ public/                            # Static files
+   ├─ images/
+   │  ├─ logos/
+   │  ├─ banners/
+   │  └─ placeholders/
+   ├─ icons/
+   │  └─ favicon.ico
+   └─ fonts/
 
 
-✅ CHUẨN MỰC DUY NHẤT - PHIÊN BẢN CUỐI CÙNG
-QUY TẮC ĐƠN GIẢN:
-Cấp độQuy tắcVí dụModule (cấp 1)Số nhiềucomics/, posts/, products/Entity (cấp 2)Số ít, KHÔNG prefixcomic/, chapter/, comment/Scope (cấp 3)Số ítadmin/, public/, user/
+═══════════════════════════════════════════════════════════════
+QUY TẮC NAMING HOÀN CHỈNH:
+═══════════════════════════════════════════════════════════════
 
-📋 BẢNG QUY TẮC CHỐT
-Cấp độQuy tắcVí dụ ✅Sai ❌ModuleSố nhiềucomics/, posts/, products/, users/, payments/comic/, post/, product/Module đặc biệtSố ítintroduction/, marketing/, core/introductions/EntitySố ítcomic/, chapter/, comment/, category/comics/, chapters/, comments/, categories/Entity (từ ghép)Số ít + gạch nốireading-history/, attribute-value/, banner-location/reading_history/, attributeValue/ScopeSố ítadmin/, public/, user/admins/, publics/, users/PrefixKHÔNG dùngcomics/chapter/comics/comic-chapter/Trường hợp đặc biệtTheo từstaff/ (không đếm được), stats/ (luôn số nhiều)staffs/, stat/
+1. ✅ ROUTES (app/): kebab-case
+   - app/(admin)/admin/comics/categories/
+   - app/(public)/posts/categories/[slug]/
 
-🎯 TÓM TẮT
+2. ✅ COMPONENTS: PascalCase
+   - components/Features/Comics/ComicList/
+   - components/UI/Forms/Input.tsx
+   - components/Layouts/Admin/AdminHeader.tsx
 
-Module: SỐ NHIỀU - comics/, posts/, products/, users/, payments/
-Entity: SỐ ÍT - comic/, chapter/, comment/, category/, tag/
-Scope: SỐ ÍT - admin/, public/, user/
-KHÔNG PREFIX - comics/chapter/ (KHÔNG phải comics/comic-chapter/)
-Từ ghép: GẠCH NỐI - reading-history/, payment-method/, attribute-value/
+3. ✅ FILES:
+   - Component files: PascalCase.tsx (Input.tsx, ComicCard.tsx)
+   - Utility files: kebab-case.ts (use-auth.ts, date-formatter.ts)
+   - Config files: kebab-case.ts (site-config.ts)
+   - Hook files: use-*.ts (use-auth.ts, use-modal.ts)
 
-Đây là CHUẨN DUY NHẤT - Không thay đổi! ✅
+4. ✅ FOLDERS:
+   - Component folders: PascalCase (Comics/, Header/, UserMenu/)
+   - Utility folders: kebab-case (api/, formatters/, validators/)
+   - Route folders: kebab-case (posts/, user-profile/)
+
+5. ✅ EXPORTS:
+   - Named exports cho utilities: export const formatDate = ...
+   - Default exports cho components: export default ComicCard
+   - Named exports cho types: export type Comic = ...
+
+═══════════════════════════════════════════════════════════════
+VÍ DỤ CỤ THỂ:
+═══════════════════════════════════════════════════════════════
+
+📁 components/Features/Comics/ComicList/Admin/
+├─ ComicTable.tsx              # Component chính
+├─ ComicFilters.tsx            # Component phụ
+├─ ComicTableRow.tsx           # Sub-component
+├─ use-comic-table.ts          # Custom hook (camelCase với use-)
+└─ comic-table.types.ts        # Types file (kebab-case)
+
+📁 lib/api/endpoints/
+├─ comics.ts                   # kebab-case
+├─ products.ts                 # kebab-case
+└─ users.ts                    # kebab-case
+
+📁 app/(public)/comics/
+├─ page.tsx                    # Next.js convention
+├─ layout.tsx                  # Next.js convention
+└─ [slug]/
+   └─ page.tsx
+
+═══════════════════════════════════════════════════════════════
+LỢI ÍCH CỦA CẤU TRÚC MỚI:
+═══════════════════════════════════════════════════════════════
+
+✅ Nhất quán: Tất cả components đều PascalCase
+✅ Dễ đọc: Nhìn vào là biết đây là component
+✅ Dễ import: import { ComicCard } from '@/components/Features/Comics/ComicList/Public'
+✅ Autocomplete tốt: IDE suggest chính xác hơn
+✅ Tránh conflict: Không bị nhầm với utility functions
+✅ Team-friendly: Ai cũng hiểu convention
+✅ Scalable: Dễ mở rộng khi project lớn

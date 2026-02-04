@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminContexts from "@/components/core/context/admin/AdminContexts";
-import PageMeta from "@/components/shared/ui/navigation/PageMeta";
+import AdminContexts from "@/components/Features/Core/Contexts/Admin/AdminContexts";
+import PageMeta from "@/components/UI/Navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Quản lý Context | Admin",

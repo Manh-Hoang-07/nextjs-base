@@ -72,7 +72,7 @@ export function useUserNavigation(): UserNavigationResult {
       {
         name: "Giới thiệu",
         path: "/about",
-        api: "api/about-sections",
+        api: "api/Abouts",
         icon: "ℹ️",
         status: "active",
         children: [

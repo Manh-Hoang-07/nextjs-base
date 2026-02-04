@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 /**
  * Public API: Lấy cấu hình chung (có cache 1 giờ)
  *
- * Route: GET /api/public/system-config/general
+ * Route: GET /api/public/SystemConfig/general
  *
  * Ghi chú:
  * - API này có cache 1 giờ (3600 giây) để tối ưu hiệu năng.
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
 
     // Gọi backend API
     const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000";
-    const response = await fetch(`${apiBase}/api/public/system-config/general`, {
+    const response = await fetch(`${apiBase}/api/public/SystemConfig/general`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

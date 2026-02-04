@@ -1,5 +1,5 @@
-import { ContactForm } from "@/components/introduction/contact/public/ContactForm";
-import HeroBanner from "@/components/marketing/banner/public/HeroBanner";
+import { ContactForm } from "@/components/Features/Introduction/Contacts/Public/ContactForm";
+import HeroBanner from "@/components/Features/Marketing/Banners/Public/HeroBanner";
 import { Metadata } from "next";
 import { getSystemConfig } from "@/lib/api/public/general";
 import { SystemConfig } from "@/types/api";

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import SystemConfigForm from "@/components/core/system-config/admin/SystemConfigForm";
+import SystemConfigForm from "@/components/Features/Core/SystemConfig/Admin/SystemConfigForm";
 
 export const metadata: Metadata = {
   title: "Cấu hình Email | Admin",

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { PageBanner } from "@/components/shared/ui/navigation/PageBanner";
-import { Button } from "@/components/shared/ui/navigation/Button";
+import { PageBanner } from "@/components/UI/Navigation/PageBanner";
+import { Button } from "@/components/UI/Navigation/Button";
 import { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {

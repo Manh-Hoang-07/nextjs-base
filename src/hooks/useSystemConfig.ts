@@ -65,7 +65,7 @@ export interface SystemConfigResult {
 // ===== CACHE MANAGEMENT =====
 
 const CACHE_TTL = 60 * 60 * 1000; // 1 giờ
-const CACHE_KEY_PREFIX = "system-config-cache";
+const CACHE_KEY_PREFIX = "SystemConfig-cache";
 
 const getStorageKey = (group: string) =>
   group === "general" ? CACHE_KEY_PREFIX : `${CACHE_KEY_PREFIX}:${group}`;

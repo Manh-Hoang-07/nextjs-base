@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/shared/ui/navigation/Button";
+import { Button } from "@/components/UI/Navigation/Button";
 import api from "@/lib/api/client";
 import { publicEndpoints } from "@/lib/api/endpoints";
-import HeroBanner from "@/components/marketing/banner/public/HeroBanner";
+import HeroBanner from "@/components/Features/Marketing/Banners/Public/HeroBanner";
 
 interface GalleryItem {
     id: number;
