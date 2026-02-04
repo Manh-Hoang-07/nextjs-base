@@ -96,7 +96,7 @@ export default function AdminGroups({ title = "Quản lý Groups", createButtonT
   }, []);
 
   const navigateToMembers = (groupId: number) => {
-    router.push(`/admin/groups/${groupId}/members`);
+    router.push(`/admin/core/groups/${groupId}/members`);
   };
 
   const getStatusLabel = (status?: string): string => {

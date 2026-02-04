@@ -15,7 +15,7 @@ export default function AdminGroupsPage() {
         title="Quản lý Nhóm"
         breadcrumbs={[
           { label: "Trang quản trị", href: "/admin", },
-          { label: "Nhóm & Context", href: "/admin/groups" },
+          { label: "Nhóm & Context", href: "/admin/core/groups" },
           { label: "Nhóm" },
         ]}
       />

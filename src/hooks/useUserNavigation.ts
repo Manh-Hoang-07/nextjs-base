@@ -147,7 +147,7 @@ export function useUserNavigation(): UserNavigationResult {
       },
       {
         name: "Lịch sử đọc",
-        path: "/user/reading-history",
+        path: "/user/reading-histories",
         api: "api/user/reading-history",
         icon: "📖",
         status: "active",
