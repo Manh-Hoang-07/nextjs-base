@@ -4,9 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import apiClient from "@/lib/api/client";
 import { adminEndpoints } from "@/lib/api/endpoints";
 import { useToastContext } from "@/contexts/ToastContext";
-import FormField from "@/components/ui/forms/FormField";
-import Actions from "@/components/ui/data-display/Actions";
-import SearchableSelect from "@/components/ui/forms/SearchableSelect";
+import FormField from "@/components/shared/ui/forms/FormField";
+import Actions from "@/components/shared/ui/data-display/Actions";
+import SearchableSelect from "@/components/shared/ui/forms/SearchableSelect";
 
 interface TransferRow {
   id: number;

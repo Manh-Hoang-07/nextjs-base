@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminChapters from "@/components/admin/comics/chapters/AdminChapters";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminChapters from "@/components/comics/chapter/admin/AdminChapters";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
     title: "Quản lý Chương truyện | Admin",

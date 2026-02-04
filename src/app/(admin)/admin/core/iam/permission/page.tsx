@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminPermissions from "@/components/admin/core/iam/permission/AdminPermissions";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminPermissions from "@/components/users/permission/admin/AdminPermissions";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Quản lý Quyền hạn | Admin",

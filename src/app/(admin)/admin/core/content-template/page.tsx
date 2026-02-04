@@ -1,7 +1,7 @@
-﻿import { Suspense } from "react";
+import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminContentTemplates from "@/components/admin/core/content-templates/AdminContentTemplates";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminContentTemplates from "@/components/core/content-template/admin/AdminContentTemplates";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
     title: "Quản lý Mẫu nội dung | Admin",

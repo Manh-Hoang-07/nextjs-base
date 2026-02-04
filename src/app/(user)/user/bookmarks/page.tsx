@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 import UserBookmarksClient from "./UserBookmarksClient";
 
 export const metadata: Metadata = {

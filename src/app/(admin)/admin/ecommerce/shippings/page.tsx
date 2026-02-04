@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminShippingMethods from "@/components/admin/ecommerce/shippings/AdminShippingMethods";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminShippingMethods from "@/components/products/shipping-method/admin/AdminShippingMethods";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Phương thức vận chuyển | Admin",

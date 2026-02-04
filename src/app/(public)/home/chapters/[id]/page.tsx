@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon, ListBulletIcon } from "@heroicons/react/24/outline";
 import { notFound } from "next/navigation";
 import { getChapterPages, getChapterNavigation, getChapterDetail, getComicChapters } from "@/lib/api/public/comic";
-import { ReadingToolbar } from "@/components/public/comics/ReadingToolbar";
+import { ReadingToolbar } from "@/components/comics/chapter/public/ReadingToolbar";
 import "@/styles/comic.css";
 
 interface Props {

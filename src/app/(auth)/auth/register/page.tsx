@@ -6,8 +6,8 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Button } from "@/components/ui/navigation/Button";
-import FormField from "@/components/ui/forms/FormField";
+import { Button } from "@/components/shared/ui/navigation/Button";
+import FormField from "@/components/shared/ui/forms/FormField";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useToastContext } from "@/contexts/ToastContext";
 

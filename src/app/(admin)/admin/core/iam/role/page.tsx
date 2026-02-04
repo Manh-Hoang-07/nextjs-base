@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminRoles from "@/components/admin/core/iam/role/AdminRoles";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminRoles from "@/components/users/role/admin/AdminRoles";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Quản lý Vai trò | Admin",

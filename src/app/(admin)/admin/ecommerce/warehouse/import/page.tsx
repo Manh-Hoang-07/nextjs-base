@@ -1,4 +1,4 @@
-import WarehouseImportList from "@/components/admin/ecommerce/warehouses/imports/WarehouseImportList";
+import WarehouseImportList from "@/components/products/warehouse/admin/imports/WarehouseImportList";
 
 export default function WarehouseImportsPage() {
     return <WarehouseImportList />;

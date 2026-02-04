@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 import WarehouseTransfersClient from "./warehouse-transfers-client";
 
 export const metadata: Metadata = {

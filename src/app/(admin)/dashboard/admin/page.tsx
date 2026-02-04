@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/navigation/Button";
+import { Button } from "@/components/shared/ui/navigation/Button";
 
 interface DashboardStats {
   totalUsers: number;

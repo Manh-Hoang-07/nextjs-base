@@ -1,4 +1,4 @@
-import AdminComicComments from "@/components/admin/comics/comments/AdminComicComments";
+import AdminComicComments from "@/components/comics/comment/admin/AdminComicComments";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

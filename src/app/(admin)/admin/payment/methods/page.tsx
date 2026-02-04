@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminPaymentMethods from "@/components/admin/payment/methods/AdminPaymentMethods";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminPaymentMethods from "@/components/payments/payment-method/admin/AdminPaymentMethods";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Phương thức thanh toán | Admin",

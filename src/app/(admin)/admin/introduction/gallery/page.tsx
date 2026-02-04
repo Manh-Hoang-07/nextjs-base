@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminGallery from "@/components/admin/introduction/gallery/AdminGallery";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminGallery from "@/components/introduction/gallery/admin/AdminGallery";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Thư viện ảnh | Admin",

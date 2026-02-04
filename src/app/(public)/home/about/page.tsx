@@ -1,10 +1,10 @@
 import { getAboutSections, getStaffList } from "@/lib/api/public/general";
 import { AboutSection, TeamMember } from "@/types/api";
 import Link from "next/link";
-import { Button } from "@/components/ui/navigation/Button";
+import { Button } from "@/components/shared/ui/navigation/Button";
 import Image from "next/image";
 import { Metadata } from "next";
-import HeroBanner from "@/components/public/banners/HeroBanner";
+import HeroBanner from "@/components/marketing/banner/public/HeroBanner";
 
 export const metadata: Metadata = {
   title: "Về chúng tôi",

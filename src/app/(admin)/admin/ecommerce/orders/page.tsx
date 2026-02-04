@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminOrders from "@/components/admin/ecommerce/orders/AdminOrders";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminOrders from "@/components/products/order/admin/AdminOrders";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
     title: "Đơn hàng | Admin",

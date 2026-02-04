@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminTestimonials from "@/components/admin/introduction/testimonial/AdminTestimonials";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminTestimonials from "@/components/introduction/testimonial/admin/AdminTestimonials";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Đánh giá Khách hàng | Admin",

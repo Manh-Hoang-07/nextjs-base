@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminBanners from "@/components/admin/marketing/banners/AdminBanners";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminBanners from "@/components/marketing/banner/admin/AdminBanners";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Quản lý Banner | Admin",

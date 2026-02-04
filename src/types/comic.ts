@@ -20,6 +20,7 @@ export interface ComicStats {
     follow_count: string;
     rating_count: string;
     rating_sum: string;
+    chapter_count?: number;
 }
 
 export interface Comic {

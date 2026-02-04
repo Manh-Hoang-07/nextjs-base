@@ -1,5 +1,5 @@
-import HeroBanner from "@/components/public/banners/HeroBanner";
-import type { HeroBannerData } from "@/components/public/banners";
+import HeroBanner from "@/components/marketing/banner/public/HeroBanner";
+import { HeroBannerData } from "@/components/marketing/banner/public/HeroBanner";
 
 export default function BannerDemoPage() {
     // Example 1: Sử dụng với data trực tiếp (static)
@@ -88,8 +88,8 @@ export default function BannerDemoPage() {
                         <div>
                             <h3 className="text-lg font-semibold mb-2">1. Import Component</h3>
                             <pre className="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto text-sm">
-                                {`import HeroBanner from "@/components/public/banners/HeroBanner";
-import type { HeroBannerData } from "@/components/public/banners";`}
+                                {`import HeroBanner from "@/components/marketing/banner/public/HeroBanner";
+import { HeroBannerData } from "@/components/marketing/banner/public/HeroBanner";`}
                             </pre>
                         </div>
 

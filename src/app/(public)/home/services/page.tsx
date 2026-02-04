@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/navigation/Button";
-import { ServiceFilter } from "@/components/public/services/ServiceFilter";
+import { Button } from "@/components/shared/ui/navigation/Button";
+import { ServiceFilter } from "@/components/introduction/service/public/ServiceFilter";
 import { Metadata } from "next";
-import HeroBanner from "@/components/public/banners/HeroBanner";
+import HeroBanner from "@/components/marketing/banner/public/HeroBanner";
 
 export const metadata: Metadata = {
   title: "Dịch vụ",

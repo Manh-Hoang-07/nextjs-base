@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import PageMeta from "@/components/ui/navigation/PageMeta";
-import WarehouseInventory from "@/components/admin/ecommerce/warehouses/warehouse-management/WarehouseInventory";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
+import WarehouseInventory from "@/components/products/warehouse/admin/warehouse-management/WarehouseInventory";
 
 export const metadata: Metadata = {
   title: "Tồn kho | Admin",

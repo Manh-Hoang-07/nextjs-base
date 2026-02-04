@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { PageBanner } from "@/components/ui/navigation/PageBanner";
+import { PageBanner } from "@/components/shared/ui/navigation/PageBanner";
 import { serverFetch } from "@/lib/api/server-client";
 import { publicEndpoints } from "@/lib/api/endpoints";
 import { Post } from "@/types/api";
 import { notFound } from "next/navigation";
-import { ShareButton } from "@/components/ui/navigation/ShareButton";
-import { PostComments } from "@/components/public/posts/PostComments";
+import { ShareButton } from "@/components/shared/ui/navigation/ShareButton";
+import { PostComments } from "@/components/posts/post/public/PostComments";
 import { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

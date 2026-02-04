@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminCertificates from "@/components/admin/introduction/certificate/AdminCertificates";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminCertificates from "@/components/introduction/certificate/admin/AdminCertificates";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Chứng chỉ & Giải thưởng | Admin",

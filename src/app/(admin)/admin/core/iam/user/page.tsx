@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import UsersClient from "./UsersClient";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Quản lý thành viên | Admin",

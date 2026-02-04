@@ -1,12 +1,12 @@
 
 import { serverFetch } from "@/lib/api/server-client";
 import { publicEndpoints } from "@/lib/api/endpoints";
-import { ProjectFilter } from "@/components/public/projects/ProjectFilter";
+import { ProjectFilter } from "@/components/introduction/project/public/ProjectFilter";
 import Link from "next/link";
-import { Button } from "@/components/ui/navigation/Button";
+import { Button } from "@/components/shared/ui/navigation/Button";
 import { Suspense } from "react";
 import { Metadata } from "next";
-import HeroBanner from "@/components/public/banners/HeroBanner";
+import HeroBanner from "@/components/marketing/banner/public/HeroBanner";
 
 export const metadata: Metadata = {
   title: "Dự án",

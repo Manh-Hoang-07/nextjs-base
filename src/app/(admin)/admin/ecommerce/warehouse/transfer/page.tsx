@@ -1,4 +1,4 @@
-import WarehouseTransferList from "@/components/admin/ecommerce/warehouses/transfers/WarehouseTransferList";
+import WarehouseTransferList from "@/components/products/warehouse/admin/transfers/WarehouseTransferList";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -1,7 +1,7 @@
-﻿import { Suspense } from "react";
+import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminMenus from "@/components/admin/core/menus/AdminMenus";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminMenus from "@/components/core/menu/admin/AdminMenus";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Quản lý Menu | Admin",

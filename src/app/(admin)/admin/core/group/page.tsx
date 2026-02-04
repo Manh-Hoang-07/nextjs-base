@@ -1,7 +1,7 @@
-﻿import { Suspense } from "react";
+import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminGroups from "@/components/admin/core/groups/AdminGroups";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import AdminGroups from "@/components/core/group/admin/AdminGroups";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Quản lý Nhóm | Admin",

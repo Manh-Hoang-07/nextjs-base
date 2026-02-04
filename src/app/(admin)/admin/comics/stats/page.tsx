@@ -8,10 +8,10 @@ import {
     AdminAnalyticsComicStat
 } from "@/types/comic";
 import { useToastContext } from "@/contexts/ToastContext";
-import PageMeta from "@/components/ui/navigation/PageMeta";
-import SkeletonLoader from "@/components/ui/feedback/SkeletonLoader";
-import DateRangeFilter from "@/components/ui/filters/DateRangeFilter";
-import SelectFilter from "@/components/ui/filters/SelectFilter";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
+import SkeletonLoader from "@/components/shared/ui/feedback/SkeletonLoader";
+import DateRangeFilter from "@/components/shared/ui/filters/DateRangeFilter";
+import SelectFilter from "@/components/shared/ui/filters/SelectFilter";
 import Image from "next/image";
 import {
     Chart as ChartJS,

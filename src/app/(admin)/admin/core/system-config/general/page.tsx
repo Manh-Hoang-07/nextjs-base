@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import SystemConfigForm from "@/components/admin/core/system-configs/SystemConfigForm";
-import ContactChannelsManager from "@/components/admin/core/system-configs/ContactChannelsManager";
-import PageMeta from "@/components/ui/navigation/PageMeta";
+import SystemConfigForm from "@/components/core/system-config/admin/SystemConfigForm";
+import ContactChannelsManager from "@/components/core/system-config/admin/ContactChannelsManager";
+import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
   title: "Cấu hình chung | Admin",

@@ -1,5 +1,5 @@
 import { constructMetadata } from "@/lib/metadata";
-import { AdminLayoutClient } from "@/components/layout/admin/AdminLayoutClient";
+import { AdminLayoutClient } from "@/components/shared/layout/admin/AdminLayoutClient";
 
 export const metadata = constructMetadata({
     title: "Admin Dashboard",
