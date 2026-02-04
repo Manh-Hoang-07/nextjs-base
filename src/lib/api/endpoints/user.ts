@@ -29,4 +29,8 @@ export const userEndpoints = {
         update: (id: Id) => `/api/user/comic-comments/${id}`,
         delete: (id: Id) => `/api/user/comic-comments/${id}`,
     },
+    reviews: {
+        list: "/api/user/reviews",
+        comic: (comicId: Id) => `/api/user/reviews/comic/${comicId}`,
+    },
 } as const;

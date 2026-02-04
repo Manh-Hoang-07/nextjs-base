@@ -349,6 +349,7 @@ export const adminEndpoints = {
     reviews: {
         list: "/api/admin/reviews",
         create: "/api/admin/reviews",
+        statistics: "/api/admin/reviews/statistics",
         show: (id: Id) => `/api/admin/reviews/${id}`,
         update: (id: Id) => `/api/admin/reviews/${id}`,
         delete: (id: Id) => `/api/admin/reviews/${id}`,
