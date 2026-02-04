@@ -85,3 +85,4 @@ export function constructPageMetadata({
     image: siteConfig.ogImage,
   });
 }
+

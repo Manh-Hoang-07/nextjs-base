@@ -72,3 +72,5 @@ export function StaffCarousel({ staff }: StaffCarouselProps) {
         </>
     );
 }
+
+

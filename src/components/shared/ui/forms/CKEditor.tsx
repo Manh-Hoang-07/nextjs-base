@@ -136,3 +136,4 @@ export default function CKEditor({
     </div>
   );
 }
+

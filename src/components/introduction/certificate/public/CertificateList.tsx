@@ -214,7 +214,7 @@ export function CertificateList({ initialCertificates }: CertificateListProps) {
                                         </span>
                                     )}
                                 </div>
-                                <Link href={`/home/certificates/${certificate.id}`}>
+                                <Link href={`/certificates/${certificate.id}`}>
                                     <Button className="w-full">
                                         Xem chi tiết
                                     </Button>
@@ -227,3 +227,5 @@ export function CertificateList({ initialCertificates }: CertificateListProps) {
         </>
     );
 }
+
+

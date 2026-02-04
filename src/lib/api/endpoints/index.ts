@@ -21,3 +21,5 @@ export const publicEndpoints = {
 export type AdminEndpoints = typeof adminEndpoints;
 export type PublicEndpoints = typeof publicEndpoints;
 export type UserEndpoints = typeof userEndpoints;
+
+

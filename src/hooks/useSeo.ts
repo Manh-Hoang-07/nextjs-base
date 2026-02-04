@@ -248,7 +248,7 @@ export function useSeo(options: SeoOptions = {}): SeoResult {
         "@type": "SearchAction",
         target: {
           "@type": "EntryPoint",
-          urlTemplate: `${siteUrl}/home/products?search={search_term_string}`,
+          urlTemplate: `${siteUrl}/products?search={search_term_string}`,
         },
         "query-input": "required name=search_term_string",
       };
@@ -307,4 +307,6 @@ export function useSeo(options: SeoOptions = {}): SeoResult {
     structuredData,
   };
 }
+
+
 

@@ -70,3 +70,5 @@ export function PartnerCarousel({ partners }: PartnerCarouselProps) {
         </div>
     );
 }
+
+

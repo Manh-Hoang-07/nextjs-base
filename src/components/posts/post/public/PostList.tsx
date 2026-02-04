@@ -85,7 +85,7 @@ export function PostList({ initialPosts, categories }: PostListProps) {
             {/* Featured Post Hero */}
             {featuredPost && !filters.search && filters.category === 'all' && (
                 <div className="mb-20">
-                    <Link href={`/home/posts/${featuredPost.slug}`}>
+                    <Link href={`/posts/${featuredPost.slug}`}>
                         <div className="relative rounded-3xl overflow-hidden shadow-2xl group cursor-pointer bg-white">
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10 transition-opacity group-hover:opacity-90"></div>
                             <Image
@@ -185,7 +185,7 @@ export function PostList({ initialPosts, categories }: PostListProps) {
 
                             <div className="p-6 flex-1 flex flex-col">
                                 <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
-                                    <Link href={`/home/posts/${post.slug}`} className="hover:underline">{post.name}</Link>
+                                    <Link href={`/posts/${post.slug}`} className="hover:underline">{post.name}</Link>
                                 </h3>
 
                                 <p className="text-gray-600 mb-4 line-clamp-3 text-sm flex-1">
@@ -209,7 +209,7 @@ export function PostList({ initialPosts, categories }: PostListProps) {
                                     </div>
 
                                     <Link
-                                        href={`/home/posts/${post.slug}`}
+                                        href={`/posts/${post.slug}`}
                                         className="text-primary hover:text-primary-dark hover:bg-primary/5 px-3 py-1.5 rounded text-sm font-medium transition-colors"
                                     >
                                         Đọc tiếp →
@@ -229,3 +229,5 @@ export function PostList({ initialPosts, categories }: PostListProps) {
         </>
     );
 }
+
+

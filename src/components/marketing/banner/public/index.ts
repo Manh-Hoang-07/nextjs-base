@@ -20,3 +20,5 @@ export interface HeroBannerData {
     descriptionColor?: string;
     backgroundColor?: string;
 }
+
+

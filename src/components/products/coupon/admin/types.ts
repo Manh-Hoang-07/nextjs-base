@@ -3,3 +3,5 @@ export enum CouponType {
     PERCENTAGE = 'percentage',
     FREE_SHIPPING = 'free_shipping',
 }
+
+

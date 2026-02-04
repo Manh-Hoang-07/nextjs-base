@@ -31,3 +31,5 @@ export const metadata: Metadata = {
 export default function BirthdayHomePage() {
     return <BirthdayContent />;
 }
+
+

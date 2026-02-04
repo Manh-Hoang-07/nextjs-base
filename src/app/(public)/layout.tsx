@@ -1,7 +1,5 @@
 import { getSystemConfig } from "@/lib/api/public/general";
-import { PublicHeader } from "./PublicHeader";
-import { PublicFooter } from "./PublicFooter";
-import { PublicLayoutWrapper } from "@/components/shared/layout/public/PublicLayoutWrapper";
+import { PublicHeader, PublicFooter, PublicLayoutWrapper } from "@/components/shared/layout/public";
 
 export default async function PublicLayout({
   children,
@@ -20,6 +18,8 @@ export default async function PublicLayout({
     </PublicLayoutWrapper>
   );
 }
+
+
 
 
 

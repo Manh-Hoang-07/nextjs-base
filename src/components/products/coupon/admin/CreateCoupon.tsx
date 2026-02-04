@@ -19,3 +19,5 @@ export default function CreateCoupon({ show, onClose, onCreated, apiErrors }: Cr
         />
     );
 }
+
+

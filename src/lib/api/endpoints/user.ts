@@ -2,13 +2,13 @@ type Id = string | number;
 
 export const userEndpoints = {
     auth: {
-        login: "/api/auth/login",
-        register: "/api/auth/register",
-        sendOtpRegister: "/api/auth/register/send-otp",
-        sendOtpForgotPassword: "/api/auth/forgot-password/send-otp",
-        resetPassword: "/api/auth/reset-password",
-        logout: "/api/auth/logout",
-        refresh: "/api/auth/refresh",
+        login: "/api/login",
+        register: "/api/register",
+        sendOtpRegister: "/api/register/send-otp",
+        sendOtpForgotPassword: "/api/forgot-password/send-otp",
+        resetPassword: "/api/reset-password",
+        logout: "/api/logout",
+        refresh: "/api/refresh",
     },
     profile: {
         me: "/api/user/profile",
@@ -34,3 +34,5 @@ export const userEndpoints = {
         comic: (comicId: Id) => `/api/user/reviews/comic/${comicId}`,
     },
 } as const;
+
+

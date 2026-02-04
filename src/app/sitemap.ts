@@ -7,13 +7,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Các trang tĩnh
     const routes = [
         '',
-        '/home/about',
-        '/home/projects',
-        '/home/services',
-        '/home/staff',
-        '/home/blogs',
-        '/home/contact',
-        '/home/faqs',
+        '/about',
+        '/comics',
+        '/posts',
+        '/projects',
+        '/services',
+        '/staff',
+        '/contact',
+        '/faqs',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: currentDate,
@@ -23,3 +24,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     return [...routes];
 }
+
+

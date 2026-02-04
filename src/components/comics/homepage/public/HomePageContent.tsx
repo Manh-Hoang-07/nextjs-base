@@ -61,11 +61,11 @@ export default function HomePageContent() {
   }
 
   function filterByCategory(categoryId: number) {
-    router.push(`/home/comics?category=${categoryId}`);
+    router.push(`/comics?category=${categoryId}`);
   }
 
   function goToComic(slug: string) {
-    router.push(`/home/comics/${slug}`);
+    router.push(`/comics/${slug}`);
   }
 
   function formatNumber(num: number): string {
@@ -194,7 +194,7 @@ export default function HomePageContent() {
                     {comic.last_chapter && (
                       <div className="mb-4">
                         <Link
-                          href={`/home/comics/${comic.slug}/chapters/${comic.last_chapter.id}`}
+                          href={`/comics/${comic.slug}/chapters/${comic.last_chapter.id}`}
                           className="text-blue-600 hover:text-blue-700 font-medium text-sm block"
                           onClick={(e) => e.stopPropagation()}
                         >
@@ -223,7 +223,7 @@ export default function HomePageContent() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-900">Phân loại</h2>
             <Link
-              href="/home/comics"
+              href="/comics"
               className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center"
             >
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,7 +243,7 @@ export default function HomePageContent() {
               </button>
             ))}
             <Link
-              href="/home/comics"
+              href="/comics"
               className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-colors"
             >
               Xem thêm
@@ -256,7 +256,7 @@ export default function HomePageContent() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-900">Truyện Hot</h2>
             <Link
-              href="/home/comics?sort_by=view_count&sort_order=DESC"
+              href="/comics?sort_by=view_count&sort_order=DESC"
               className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center"
             >
               Xem tất cả
@@ -292,7 +292,7 @@ export default function HomePageContent() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-900">Mới Cập Nhật</h2>
             <Link
-              href="/home/comics?sort_by=updated_at&sort_order=DESC"
+              href="/comics?sort_by=updated_at&sort_order=DESC"
               className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center"
             >
               Xem tất cả
@@ -356,7 +356,7 @@ export default function HomePageContent() {
                     </h3>
                     {comic.last_chapter && (
                       <Link
-                        href={`/home/comics/${comic.slug}/chapters/${comic.last_chapter.id}`}
+                        href={`/comics/${comic.slug}/chapters/${comic.last_chapter.id}`}
                         className="text-blue-600 hover:text-blue-700 font-medium text-sm block mb-1"
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -395,7 +395,7 @@ export default function HomePageContent() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-900">Truyện Hot</h2>
             <Link
-              href="/home/comics?sort_by=view_count&sort_order=DESC"
+              href="/comics?sort_by=view_count&sort_order=DESC"
               className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center"
             >
               Xem tất cả
@@ -431,7 +431,7 @@ export default function HomePageContent() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-900">Truyện Mới</h2>
             <Link
-              href="/home/comics?sort_by=created_at&sort_order=DESC"
+              href="/comics?sort_by=created_at&sort_order=DESC"
               className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center"
             >
               Xem tất cả
@@ -465,4 +465,6 @@ export default function HomePageContent() {
     </div>
   );
 }
+
+
 

@@ -71,26 +71,26 @@ export function useUserNavigation(): UserNavigationResult {
       },
       {
         name: "Giới thiệu",
-        path: "/home/about",
+        path: "/about",
         api: "api/about-sections",
         icon: "ℹ️",
         status: "active",
         children: [
           {
             name: "Về chúng tôi",
-            path: "/home/about",
+            path: "/about",
             icon: "🏢",
             status: "active",
           },
           {
             name: "Đội ngũ",
-            path: "/home/staff",
+            path: "/staff",
             icon: "👥",
             status: "active",
           },
           {
             name: "Chứng chỉ",
-            path: "/home/certificates",
+            path: "/certificates",
             icon: "🏆",
             status: "active",
           },
@@ -98,35 +98,35 @@ export function useUserNavigation(): UserNavigationResult {
       },
       {
         name: "Dự án",
-        path: "/home/projects",
+        path: "/projects",
         api: "api/projects",
         icon: "🏗️",
         status: "active",
       },
       {
         name: "Dịch vụ",
-        path: "/home/services",
+        path: "/services",
         api: "",
         icon: "🛠️",
         status: "active",
       },
       {
         name: "Thư viện",
-        path: "/home/gallery",
+        path: "/gallery",
         api: "api/gallery",
         icon: "📸",
         status: "active",
       },
       {
         name: "FAQ",
-        path: "/home/faqs",
+        path: "/faqs",
         api: "api/faqs",
         icon: "❓",
         status: "active",
       },
       {
         name: "Liên hệ",
-        path: "/home/contact",
+        path: "/contact",
         api: "api/contact",
         icon: "📞",
         status: "active",
@@ -212,4 +212,6 @@ export function useUserNavigation(): UserNavigationResult {
     isActiveMenuItem,
   };
 }
+
+
 

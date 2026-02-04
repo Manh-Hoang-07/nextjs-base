@@ -9,7 +9,7 @@ interface ComicCardProps {
 
 export const ComicCard: React.FC<ComicCardProps> = ({ comic }) => {
     return (
-        <Link href={`/home/comics/${comic.slug}`} className="comic-card">
+        <Link href={`/comics/${comic.slug}`} className="comic-card">
             <div className="comic-card__image-container">
                 <Image
                     src={comic.cover_image || 'https://via.placeholder.com/300x450?text=No+Cover'}
@@ -49,3 +49,5 @@ export const ComicCard: React.FC<ComicCardProps> = ({ comic }) => {
         </Link>
     );
 };
+
+

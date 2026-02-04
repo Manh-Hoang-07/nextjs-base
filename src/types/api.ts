@@ -212,3 +212,5 @@ export interface ContentTemplate {
   updated_at?: string;
 }
 
+
+

@@ -134,7 +134,7 @@ export function ProjectFilter({ initialProjects }: ProjectFilterProps) {
                                 <p className="text-sm text-gray-500 mb-1">Khách hàng: {project.client_name}</p>
                                 <p className="text-sm text-gray-500">Địa điểm: {project.location}</p>
                             </div>
-                            <Link href={`/home/projects/${project.slug}`} className="block w-full">
+                            <Link href={`/projects/${project.slug}`} className="block w-full">
                                 <Button className="w-full">
                                     Xem chi tiết
                                 </Button>
@@ -152,3 +152,5 @@ export function ProjectFilter({ initialProjects }: ProjectFilterProps) {
         </>
     );
 }
+
+

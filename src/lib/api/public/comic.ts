@@ -98,3 +98,5 @@ export async function getChapterDetail(chapterId: string): Promise<any | null> {
     if (error) return null;
     return data;
 }
+
+

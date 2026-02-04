@@ -19,7 +19,7 @@ export const ChapterList: React.FC<ChapterListProps> = ({ chapters, comicSlug })
                     {chapters.map((chapter) => (
                         <Link
                             key={chapter.id}
-                            href={`/home/chapters/${chapter.id}`}
+                            href={`/chapters/${chapter.id}`}
                             className="bg-white p-4 hover:bg-gray-50 flex justify-between items-center transition-colors group"
                         >
                             <span className="text-gray-700 font-medium group-hover:text-red-500">
@@ -35,3 +35,5 @@ export const ChapterList: React.FC<ChapterListProps> = ({ chapters, comicSlug })
         </div>
     );
 };
+
+

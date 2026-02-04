@@ -101,8 +101,8 @@ apiClient.interceptors.response.use(
           document.cookie = "group_id=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 
           // Redirect về login
-          if (window.location.pathname !== "/auth/login") {
-            window.location.href = "/auth/login";
+          if (window.location.pathname !== "/login") {
+            window.location.href = "/login";
           }
         }
       }
@@ -141,4 +141,6 @@ export const api = {
 };
 
 export default apiClient;
+
+
 

@@ -9,3 +9,5 @@ export async function submitContact(payload: ContactPayload) {
     const { data } = await api.post(publicEndpoints.contacts.create, payload);
     return data;
 }
+
+

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo, isValidElement } from "react";
 import { usePathname } from "next/navigation";
-import FloatingContactChannels from "@/components/shared/layout/public/ContactChannels/FloatingContactChannels";
+import FloatingContactChannels from "@/components/shared/layout/public/contact-channels/FloatingContactChannels";
 
 interface PublicLayoutWrapperProps {
     children: React.ReactNode;
@@ -18,7 +18,7 @@ export function PublicLayoutWrapper({
     contactChannels,
 }: PublicLayoutWrapperProps) {
     const pathname = usePathname();
-    const isReadingPage = pathname?.includes("/home/chapters/");
+    const isReadingPage = pathname?.includes("/chapters/");
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -37,3 +37,5 @@ export function PublicLayoutWrapper({
         </div>
     );
 }
+
+

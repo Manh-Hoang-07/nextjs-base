@@ -52,7 +52,7 @@ export const TrendingHero: React.FC<TrendingHeroProps> = ({ comics }) => {
             >
                 {featuredComics.map((comic) => (
                     <SwiperSlide key={comic.id} className="relative w-full h-full group/slide cursor-pointer">
-                        <Link href={`/home/comics/${comic.slug}`} className="block w-full h-full">
+                        <Link href={`/comics/${comic.slug}`} className="block w-full h-full">
                             {/* 1. Dynamic Background Layer */}
                             <div className="absolute inset-0 w-full h-full overflow-hidden">
                                 {/* Blurry Bg - Lighter for light mode */}
@@ -177,3 +177,5 @@ export const TrendingHero: React.FC<TrendingHeroProps> = ({ comics }) => {
         </section>
     );
 };
+
+

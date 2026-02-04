@@ -108,3 +108,5 @@ export function stripTags(str: string): string {
   return str.replace(/<[^>]*>/g, "");
 }
 
+
+

@@ -16,15 +16,15 @@ export async function middleware(req: NextRequest) {
   if (pathname.startsWith("/admin")) {
     if (!authed) {
       const url = req.nextUrl.clone();
-      url.pathname = "/auth/login";
+      url.pathname = "/login";
       url.searchParams.set("next", pathname);
       response = NextResponse.redirect(url);
     } else {
       response = NextResponse.next();
     }
   }
-  // If already authenticated, prevent visiting /auth/login or /auth/register
-  else if (authed && (pathname === "/auth/login" || pathname === "/auth/register")) {
+  // If already authenticated, prevent visiting /login or /register
+  else if (authed && (pathname === "/login" || pathname === "/register")) {
     const url = req.nextUrl.clone();
     url.pathname = "/user";
     response = NextResponse.redirect(url);
@@ -41,7 +41,7 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/auth/:path*"],
+  matcher: ["/admin/:path*", "/login", "/register", "/forgot-password", "/reset-password"],
 };
 
 

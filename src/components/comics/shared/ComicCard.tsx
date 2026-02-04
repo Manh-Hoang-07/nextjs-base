@@ -33,7 +33,7 @@ export default function ComicCard({ comic }: ComicCardProps) {
   return (
     <div
       className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
-      onClick={() => router.push(`/home/comics/${comic.slug}`)}
+      onClick={() => router.push(`/comics/${comic.slug}`)}
     >
       <div className="aspect-[3/4] relative">
         {comic.cover_image ? (
@@ -84,4 +84,6 @@ export default function ComicCard({ comic }: ComicCardProps) {
     </div>
   );
 }
+
+
 

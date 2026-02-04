@@ -16,3 +16,5 @@ export const usePageStore = create<PageState>((set) => ({
     breadcrumbs: [],
     setPageMeta: ({ title, breadcrumbs = [] }) => set({ title, breadcrumbs }),
 }));
+
+

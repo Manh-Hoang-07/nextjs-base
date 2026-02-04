@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { AdminSidebar } from "@/components/shared/layout/admin/AdminSidebar";
-import { AdminHeader } from "@/components/shared/layout/admin/AdminHeader";
+import { AdminSidebar, AdminHeader } from "@/components/shared/layout/admin";
 
 export function AdminLayoutClient({
     children,
@@ -46,3 +45,5 @@ export function AdminLayoutClient({
         </div>
     );
 }
+
+

@@ -26,7 +26,7 @@ export const CategorySelect: React.FC<Props> = ({ categories }) => {
         // Reset page to 1 when category changes
         params.delete('page');
 
-        router.push(`/home/comics?${params.toString()}`);
+        router.push(`/comics?${params.toString()}`);
     };
 
     return (
@@ -51,3 +51,5 @@ export const CategorySelect: React.FC<Props> = ({ categories }) => {
         </div>
     );
 };
+
+

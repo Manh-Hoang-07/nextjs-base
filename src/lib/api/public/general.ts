@@ -38,3 +38,5 @@ export async function getSystemConfig(group: string = "general") {
     });
     return data;
 }
+
+

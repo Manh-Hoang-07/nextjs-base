@@ -22,3 +22,5 @@ export default function PageMeta({ title, breadcrumbs = [] }: PageMetaProps) {
 
     return null;
 }
+
+

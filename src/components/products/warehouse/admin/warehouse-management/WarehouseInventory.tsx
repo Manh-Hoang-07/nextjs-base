@@ -203,3 +203,5 @@ export default function WarehouseInventory({ warehouseId }: WarehouseInventoryPr
         </div>
     );
 }
+
+

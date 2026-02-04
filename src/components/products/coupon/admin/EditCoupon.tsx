@@ -21,3 +21,5 @@ export default function EditCoupon({ show, coupon, onClose, onUpdated, apiErrors
         />
     );
 }
+
+

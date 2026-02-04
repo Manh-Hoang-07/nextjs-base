@@ -28,3 +28,5 @@ export const getHomepageData = async (): Promise<HomepageData | null> => {
   });
   return data;
 };
+
+

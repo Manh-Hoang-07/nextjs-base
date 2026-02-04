@@ -134,3 +134,5 @@ export const generatePlaceholder = (
   return canvas.toDataURL();
 };
 
+
+

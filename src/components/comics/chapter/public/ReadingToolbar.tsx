@@ -54,7 +54,7 @@ export const ReadingToolbar: React.FC<ReadingToolbarProps> = ({
                     {/* Previous Icon Button */}
                     {prevChapter ? (
                         <Link
-                            href={`/home/chapters/${prevChapter.id}`}
+                            href={`/chapters/${prevChapter.id}`}
                             className="w-12 h-12 flex items-center justify-center bg-gray-50 hover:bg-gray-100 rounded-xl text-gray-700 transition-all active:scale-90"
                         >
                             <ChevronLeftIcon className="w-6 h-6" />
@@ -77,7 +77,7 @@ export const ReadingToolbar: React.FC<ReadingToolbarProps> = ({
                     {/* Next Icon Button */}
                     {nextChapter ? (
                         <Link
-                            href={`/home/chapters/${nextChapter.id}`}
+                            href={`/chapters/${nextChapter.id}`}
                             className="w-12 h-12 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-xl transition-all active:scale-90 shadow-lg shadow-red-200"
                         >
                             <ChevronRightIcon className="w-6 h-6" />
@@ -114,7 +114,7 @@ export const ReadingToolbar: React.FC<ReadingToolbarProps> = ({
                         {chapters.map((chapter) => (
                             <Link
                                 key={chapter.id}
-                                href={`/home/chapters/${chapter.id}`}
+                                href={`/chapters/${chapter.id}`}
                                 onClick={() => setShowSelector(false)}
                                 className={`flex items-center justify-between px-5 py-3.5 rounded-2xl text-sm font-bold transition-all ${chapter.id == currentChapterId ? 'bg-red-50 text-red-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
                             >
@@ -140,3 +140,5 @@ export const ReadingToolbar: React.FC<ReadingToolbarProps> = ({
         </>
     );
 };
+
+

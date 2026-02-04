@@ -153,7 +153,7 @@ export function ServiceFilter({ initialServices }: ServiceFilterProps) {
                                 <p className="text-sm text-gray-500 mb-1">Thời gian: {service.duration}</p>
                                 <p className="text-sm font-medium text-blue-600">{service.price}</p>
                             </div>
-                            <Link href={`/home/services/${service.id}`}>
+                            <Link href={`/services/${service.id}`}>
                                 <Button className="w-full">
                                     Xem chi tiết
                                 </Button>
@@ -171,3 +171,5 @@ export function ServiceFilter({ initialServices }: ServiceFilterProps) {
         </>
     );
 }
+
+

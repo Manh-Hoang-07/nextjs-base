@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { AdminSidebar } from "./AdminSidebar";
-import { AdminHeader } from "./AdminHeader";
+import { AdminSidebar, AdminHeader } from "@/components/shared/layout/admin";
 
 export default function AdminLayout({
   children,
@@ -53,7 +52,6 @@ export default function AdminLayout({
       <AdminSidebar
         isOpen={isMounted && sidebarOpen}
         onClose={closeSidebar}
-        currentPath={pathname}
       />
 
       {/* Mobile overlay */}
@@ -71,14 +69,14 @@ export default function AdminLayout({
       >
         <AdminHeader
           onToggleSidebar={toggleSidebar}
-          sidebarOpen={isMounted && sidebarOpen}
-          currentPath={pathname}
         />
         <main className="flex-1 min-w-0 pt-16">{children}</main>
       </div>
     </div>
   );
 }
+
+
 
 
 

@@ -152,3 +152,5 @@ export default function ChapterList({ comicId, onEdit, onManagePages, refreshTri
         </div>
     );
 }
+
+

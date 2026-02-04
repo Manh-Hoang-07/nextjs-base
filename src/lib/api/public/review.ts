@@ -27,3 +27,5 @@ export async function getComicReviews(comicId: string, params: {
 
     return { data: items, meta };
 }
+
+

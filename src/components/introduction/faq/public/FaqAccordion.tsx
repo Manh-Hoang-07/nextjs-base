@@ -42,3 +42,5 @@ export function FaqAccordion({ faqs }: FaqAccordionProps) {
         </div>
     );
 }
+
+

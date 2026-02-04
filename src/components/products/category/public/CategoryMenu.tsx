@@ -46,3 +46,5 @@ export default function CategoryMenu({ categories, title }: CategoryMenuProps) {
 }
 
 
+
+
