@@ -55,6 +55,10 @@ const config: Config = {
                 md: "calc(var(--radius) - 2px)",
                 sm: "calc(var(--radius) - 4px)",
             },
+            fontFamily: {
+                sans: ["var(--font-geist-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+                mono: ["var(--font-geist-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
+            },
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
                 "gradient-conic":

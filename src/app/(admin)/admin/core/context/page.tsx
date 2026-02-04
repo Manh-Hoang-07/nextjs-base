@@ -4,27 +4,24 @@ import AdminContexts from "@/components/admin/core/contexts/AdminContexts";
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-  title: "Quáº£n lÃ½ Context | Admin",
-  description: "Quáº£n lÃ½ ngá»¯ cáº£nh vÃ  phÃ¢n quyá»n chuyÃªn sÃ¢u",
+  title: "Quản lý Context | Admin",
+  description: "Quản lý ngữ cảnh và phân quyền chuyên sâu",
 };
 
 export default function AdminContextsPage() {
   return (
     <div className="w-full p-4">
       <PageMeta
-        title="Quáº£n lÃ½ Context"
+        title="Quản lý Context"
         breadcrumbs={[
-          { label: "Trang quáº£n trá»‹", href: "/admin", },
-          { label: "NhÃ³m & Context", href: "/admin/groups" },
+          { label: "Trang quản trị", href: "/admin", },
+          { label: "Nhóm & Context", href: "/admin/groups" },
           { label: "Context" },
         ]}
       />
-      <Suspense fallback={<div>Äang táº£i...</div>}>
+      <Suspense fallback={<div>Đang tải...</div>}>
         <AdminContexts />
       </Suspense>
     </div>
   );
 }
-
-
-

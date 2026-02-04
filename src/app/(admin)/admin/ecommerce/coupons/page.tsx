@@ -4,25 +4,24 @@ import AdminCoupons from "@/components/admin/ecommerce/coupons/AdminCoupons";
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-    title: "MÃ£ khuyáº¿n mÃ£i | Admin",
-    description: "Quáº£n lÃ½ mÃ£ giáº£m giÃ¡ vÃ  chÆ°Æ¡ng trÃ¬nh khuyáº¿n mÃ£i",
+    title: "Mã khuyến mãi | Admin",
+    description: "Quản lý mã giảm giá và chương trình khuyến mãi",
 };
 
 export default function AdminCouponsPage() {
     return (
         <div className="w-full p-4">
             <PageMeta
-                title="MÃ£ khuyáº¿n mÃ£i"
+                title="Mã khuyến mãi"
                 breadcrumbs={[
-                    { label: "Trang quáº£n trá»‹", href: "/admin" },
+                    { label: "Trang quản trị", href: "/admin" },
                     { label: "Ecommerce" },
-                    { label: "MÃ£ khuyáº¿n mÃ£i" },
+                    { label: "Mã khuyến mãi" },
                 ]}
             />
-            <Suspense fallback={<div>Äang táº£i...</div>}>
+            <Suspense fallback={<div>Đang tải...</div>}>
                 <AdminCoupons />
             </Suspense>
         </div>
     );
 }
-

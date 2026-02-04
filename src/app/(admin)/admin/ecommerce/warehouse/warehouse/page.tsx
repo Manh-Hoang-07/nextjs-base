@@ -4,27 +4,24 @@ import AdminWarehouses from "@/components/admin/ecommerce/warehouses/warehouse-m
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-  title: "Kho hÃ ng | Admin",
-  description: "Quáº£n lÃ½ kho hÃ ng",
+  title: "Kho hàng | Admin",
+  description: "Quản lý kho hàng",
 };
 
 export default function AdminWarehousesPage() {
   return (
     <div className="w-full p-4">
       <PageMeta
-        title="Kho hÃ ng"
+        title="Kho hàng"
         breadcrumbs={[
-          { label: "Trang quáº£n trá»‹", href: "/admin" },
+          { label: "Trang quản trị", href: "/admin" },
           { label: "Ecommerce" },
-          { label: "Kho hÃ ng" },
+          { label: "Kho hàng" },
         ]}
       />
-      <Suspense fallback={<div>Äang táº£i...</div>}>
+      <Suspense fallback={<div>Đang tải...</div>}>
         <AdminWarehouses />
       </Suspense>
     </div>
   );
 }
-
-
-

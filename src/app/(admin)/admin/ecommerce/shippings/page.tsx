@@ -4,27 +4,24 @@ import AdminShippingMethods from "@/components/admin/ecommerce/shippings/AdminSh
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-  title: "PhÆ°Æ¡ng thá»©c váº­n chuyá»ƒn | Admin",
-  description: "Quáº£n lÃ½ danh sÃ¡ch phÆ°Æ¡ng thá»©c váº­n chuyá»ƒn (Standard, Express, ...)",
+  title: "Phương thức vận chuyển | Admin",
+  description: "Quản lý danh sách phương thức vận chuyển (Standard, Express, ...)",
 };
 
 export default function AdminShippingMethodsPage() {
   return (
     <div className="w-full p-4">
       <PageMeta
-        title="PhÆ°Æ¡ng thá»©c váº­n chuyá»ƒn"
+        title="Phương thức vận chuyển"
         breadcrumbs={[
-          { label: "Trang quáº£n trá»‹", href: "/admin" },
+          { label: "Trang quản trị", href: "/admin" },
           { label: "Ecommerce" },
-          { label: "PhÆ°Æ¡ng thá»©c váº­n chuyá»ƒn" },
+          { label: "Phương thức vận chuyển" },
         ]}
       />
-      <Suspense fallback={<div>Äang táº£i...</div>}>
+      <Suspense fallback={<div>Đang tải...</div>}>
         <AdminShippingMethods />
       </Suspense>
     </div>
   );
 }
-
-
-

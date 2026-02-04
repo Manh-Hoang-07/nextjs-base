@@ -4,27 +4,24 @@ import AdminMenus from "@/components/admin/core/menus/AdminMenus";
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-  title: "Quáº£n lÃ½ Menu | Admin",
-  description: "Quáº£n lÃ½ cáº¥u trÃºc danh má»¥c vÃ  liÃªn káº¿t",
+  title: "Quản lý Menu | Admin",
+  description: "Quản lý cấu trúc danh mục và liên kết",
 };
 
 export default function AdminMenusPage() {
   return (
     <div className="w-full p-4">
       <PageMeta
-        title="Quáº£n lÃ½ Menu"
+        title="Quản lý Menu"
         breadcrumbs={[
-          { label: "Trang quáº£n trá»‹", href: "/admin", },
-          { label: "Giao diá»‡n" },
+          { label: "Trang quản trị", href: "/admin", },
+          { label: "Giao diện" },
           { label: "Menu" },
         ]}
       />
-      <Suspense fallback={<div>Äang táº£i...</div>}>
+      <Suspense fallback={<div>Đang tải...</div>}>
         <AdminMenus />
       </Suspense>
     </div>
   );
 }
-
-
-

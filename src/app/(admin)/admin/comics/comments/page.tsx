@@ -2,8 +2,8 @@ import AdminComicComments from "@/components/admin/comics/comments/AdminComicCom
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Quáº£n lÃ½ bÃ¬nh luáº­n truyá»‡n | Admin",
-    description: "Quáº£n lÃ½ bÃ¬nh luáº­n cá»§a ngÆ°á»i dÃ¹ng trÃªn cÃ¡c bá»™ truyá»‡n",
+    title: "Quản lý bình luận truyện | Admin",
+    description: "Quản lý bình luận của người dùng trên các bộ truyện",
 };
 
 export default function AdminComicCommentsPage() {
@@ -13,4 +13,3 @@ export default function AdminComicCommentsPage() {
         </div>
     );
 }
-

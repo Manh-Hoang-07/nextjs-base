@@ -4,26 +4,26 @@ import ContactChannelsManager from "@/components/admin/core/system-configs/Conta
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-  title: "Cáº¥u hÃ¬nh chung | Admin",
-  description: "Quáº£n lÃ½ thÃ´ng tin chung cá»§a há»‡ thá»‘ng",
+  title: "Cấu hình chung | Admin",
+  description: "Quản lý thông tin chung của hệ thống",
 };
 
 export default function AdminSystemConfigGeneralPage() {
   const fields: any[] = [
-    { key: "site_name", label: "TÃªn Website", type: "text", placeholder: "Nháº­p tÃªn website" },
-    { key: "site_description", label: "MÃ´ táº£ Website", type: "textarea", placeholder: "Nháº­p mÃ´ táº£ ngáº¯n vá» website" },
-    { key: "site_logo", label: "Logo", type: "image", description: "Logo hiá»ƒn thá»‹ trÃªn Header vÃ  cÃ¡c trang" },
-    { key: "site_favicon", label: "Favicon", type: "image", description: "Biá»ƒu tÆ°á»£ng hiá»ƒn thá»‹ trÃªn tab trÃ¬nh duyá»‡t" },
-    { key: "site_email", label: "Email liÃªn há»‡", type: "email", placeholder: "contact@example.com" },
-    { key: "site_phone", label: "Sá»‘ Ä‘iá»‡n thoáº¡i", type: "text", placeholder: "19001234" },
-    { key: "site_addres", label: "Äá»‹a chá»‰", type: "textarea", placeholder: "Nháº­p Ä‘á»‹a chá»‰ trá»¥ sá»Ÿ" },
-    { key: "site_copyright", label: "ThÃ´ng tin báº£n quyá»n", type: "text", placeholder: "Â© 2024. All rights reserved." },
-    { key: "timezone", label: "MÃºi giá» (Timezone)", type: "text", placeholder: "Asia/Ho_Chi_Minh" },
-    { key: "locale", label: "NgÃ´n ngá»¯ (Locale)", type: "text", placeholder: "vi" },
-    { key: "currency", label: "Tiá»n tá»‡ (Currency)", type: "text", placeholder: "VND" },
+    { key: "site_name", label: "Tên Website", type: "text", placeholder: "Nhập tên website" },
+    { key: "site_description", label: "Mô tả Website", type: "textarea", placeholder: "Nhập mô tả ngắn về website" },
+    { key: "site_logo", label: "Logo", type: "image", description: "Logo hiển thị trên Header và các trang" },
+    { key: "site_favicon", label: "Favicon", type: "image", description: "Biểu tượng hiển thị trên tab trình duyệt" },
+    { key: "site_email", label: "Email liên hệ", type: "email", placeholder: "contact@example.com" },
+    { key: "site_phone", label: "Số điện thoại", type: "text", placeholder: "19001234" },
+    { key: "site_addres", label: "Địa chỉ", type: "textarea", placeholder: "Nhập địa chỉ trụ sở" },
+    { key: "site_copyright", label: "Thông tin bản quyền", type: "text", placeholder: "© 2024. All rights reserved." },
+    { key: "timezone", label: "Múi giờ (Timezone)", type: "text", placeholder: "Asia/Ho_Chi_Minh" },
+    { key: "locale", label: "Ngôn ngữ (Locale)", type: "text", placeholder: "vi" },
+    { key: "currency", label: "Tiền tệ (Currency)", type: "text", placeholder: "VND" },
     {
       key: "contact_channels",
-      label: "KÃªnh liÃªn há»‡ (Contact Channels)",
+      label: "Kênh liên hệ (Contact Channels)",
       type: "custom",
       component: ContactChannelsManager
     },
@@ -42,16 +42,16 @@ export default function AdminSystemConfigGeneralPage() {
   return (
     <div className="w-full p-4">
       <PageMeta
-        title="Cáº¥u hÃ¬nh chung"
+        title="Cấu hình chung"
         breadcrumbs={[
-          { label: "Trang quáº£n trá»‹", href: "/admin", },
-          { label: "Cáº¥u hÃ¬nh há»‡ thá»‘ng" },
-          { label: "Cáº¥u hÃ¬nh chung" },
+          { label: "Trang quản trị", href: "/admin", },
+          { label: "Cấu hình hệ thống" },
+          { label: "Cấu hình chung" },
         ]}
       />
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Cáº¥u hÃ¬nh chung</h1>
-        <p className="text-gray-500 mt-2">Quáº£n lÃ½ thÃ´ng tin cÆ¡ báº£n vÃ  SEO cá»§a website</p>
+        <h1 className="text-3xl font-bold text-gray-900">Cấu hình chung</h1>
+        <p className="text-gray-500 mt-2">Quản lý thông tin cơ bản và SEO của website</p>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -62,5 +62,3 @@ export default function AdminSystemConfigGeneralPage() {
     </div>
   );
 }
-
-

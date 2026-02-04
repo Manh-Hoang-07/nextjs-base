@@ -4,25 +4,24 @@ import AdminChapters from "@/components/admin/comics/chapters/AdminChapters";
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-    title: "Quáº£n lÃ½ ChÆ°Æ¡ng truyá»‡n | Admin",
-    description: "Quáº£n lÃ½ ná»™i dung chÆ°Æ¡ng truyá»‡n",
+    title: "Quản lý Chương truyện | Admin",
+    description: "Quản lý nội dung chương truyện",
 };
 
 export default function ChaptersPage() {
     return (
         <div className="w-full p-4">
             <PageMeta
-                title="ChÆ°Æ¡ng truyá»‡n"
+                title="Chương truyện"
                 breadcrumbs={[
-                    { label: "Trang quáº£n trá»‹", href: "/admin" },
+                    { label: "Trang quản trị", href: "/admin" },
                     { label: "Comic" },
-                    { label: "ChÆ°Æ¡ng truyá»‡n" },
+                    { label: "Chương truyện" },
                 ]}
             />
-            <Suspense fallback={<div>Äang táº£i...</div>}>
+            <Suspense fallback={<div>Đang tải...</div>}>
                 <AdminChapters />
             </Suspense>
         </div>
     );
 }
-

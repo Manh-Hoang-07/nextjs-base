@@ -4,27 +4,24 @@ import PageMeta from "@/components/ui/navigation/PageMeta";
 import AdminProductVariants from "@/components/admin/ecommerce/products/variants/AdminProductVariants";
 
 export const metadata: Metadata = {
-  title: "Biáº¿n thá»ƒ sáº£n pháº©m | Admin",
-  description: "Quáº£n lÃ½ biáº¿n thá»ƒ sáº£n pháº©m",
+  title: "Biến thể sản phẩm | Admin",
+  description: "Quản lý biến thể sản phẩm",
 };
 
 export default function AdminProductVariantsPage() {
   return (
     <div className="w-full p-4">
       <PageMeta
-        title="Biáº¿n thá»ƒ sáº£n pháº©m"
+        title="Biến thể sản phẩm"
         breadcrumbs={[
-          { label: "Trang quáº£n trá»‹", href: "/admin" },
+          { label: "Trang quản trị", href: "/admin" },
           { label: "Ecommerce" },
-          { label: "Biáº¿n thá»ƒ sáº£n pháº©m" },
+          { label: "Biến thể sản phẩm" },
         ]}
       />
-      <Suspense fallback={<div>Äang táº£i...</div>}>
+      <Suspense fallback={<div>Đang tải...</div>}>
         <AdminProductVariants />
       </Suspense>
     </div>
   );
 }
-
-
-

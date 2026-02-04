@@ -4,26 +4,24 @@ import AdminGroups from "@/components/admin/core/groups/AdminGroups";
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-  title: "Quáº£n lÃ½ NhÃ³m | Admin",
-  description: "Quáº£n lÃ½ nhÃ³m ngÆ°á»i dÃ¹ng",
+  title: "Quản lý Nhóm | Admin",
+  description: "Quản lý nhóm người dùng",
 };
 
 export default function AdminGroupsPage() {
   return (
     <div className="w-full p-4">
       <PageMeta
-        title="Quáº£n lÃ½ NhÃ³m"
+        title="Quản lý Nhóm"
         breadcrumbs={[
-          { label: "Trang quáº£n trá»‹", href: "/admin", },
-          { label: "NhÃ³m & Context", href: "/admin/groups" },
-          { label: "NhÃ³m" },
+          { label: "Trang quản trị", href: "/admin", },
+          { label: "Nhóm & Context", href: "/admin/groups" },
+          { label: "Nhóm" },
         ]}
       />
-      <Suspense fallback={<div>Äang táº£i...</div>}>
+      <Suspense fallback={<div>Đang tải...</div>}>
         <AdminGroups />
       </Suspense>
     </div>
   );
 }
-
-

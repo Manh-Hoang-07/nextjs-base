@@ -7,8 +7,8 @@ import { CategorySidebar } from "@/components/public/comics/CategorySidebar";
 import "@/styles/comic.css";
 
 export const metadata: Metadata = {
-  title: "Trang Chá»§ | Comic Haven - Tháº¿ Giá»›i Truyá»‡n Tranh Miá»…n PhÃ­",
-  description: "Trang web Ä‘á»c truyá»‡n tranh online lá»›n nháº¥t vá»›i hÃ ng ngÃ n Ä‘áº§u truyá»‡n háº¥p dáº«n Ä‘Æ°á»£c cáº­p nháº­t má»—i ngÃ y.",
+  title: "Trang Chủ | Comic Haven - Thế Giới Truyện Tranh Miễn Phí",
+  description: "Trang web đọc truyện tranh online lớn nhất với hàng ngàn đầu truyện hấp dẫn được cập nhật mỗi ngày.",
 };
 
 export default async function ComicHomePage() {
@@ -21,10 +21,10 @@ export default async function ComicHomePage() {
           <svg className="w-20 h-20 text-red-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops! CÃ³ lá»—i xáº£y ra</h2>
-          <p className="text-gray-600 mb-6">KhÃ´ng thá»ƒ káº¿t ná»‘i Ä‘Æ°á»£c vá»›i mÃ¡y chá»§ Ä‘á»ƒ láº¥y dá»¯ liá»‡u trang chá»§.</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops! Có lỗi xảy ra</h2>
+          <p className="text-gray-600 mb-6">Không thể kết nối được với máy chủ để lấy dữ liệu trang chủ.</p>
           <a href="/home" className="inline-block px-6 py-2 bg-red-600 text-white rounded-full font-bold hover:bg-red-700 transition">
-            Thá»­ láº¡i
+            Thử lại
           </a>
         </div>
       </div>
@@ -42,21 +42,21 @@ export default async function ComicHomePage() {
           <div className="flex-1">
             {/* Newest Updates */}
             <ComicSection
-              title="Má»›i cáº­p nháº­t"
+              title="Mới cập nhật"
               comics={data.recent_update_comics || []}
               viewAllLink="/home/comics?sort=last_chapter_updated_at:desc"
             />
 
             {/* Popular Comics */}
             <ComicSection
-              title="Truyá»‡n phá»• biáº¿n"
+              title="Truyện phổ biến"
               comics={data.popular_comics || []}
               viewAllLink="/home/comics?sort=view_count:desc"
             />
 
             {/* New Comics */}
             <ComicSection
-              title="Truyá»‡n má»›i Ä‘Äƒng"
+              title="Truyện mới đăng"
               comics={data.newest_comics || []}
               viewAllLink="/home/comics?sort=created_at:desc"
             />
@@ -71,7 +71,7 @@ export default async function ComicHomePage() {
               {/* Top Viewed (Mini list) */}
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                 <h3 className="text-xl font-extrabold mb-6 border-b pb-2 text-gray-800 uppercase tracking-tighter">
-                  Xem nhiá»u nháº¥t
+                  Xem nhiều nhất
                 </h3>
                 <div className="space-y-4">
                   {(data.top_viewed_comics || []).map((comic, idx) => (
@@ -94,7 +94,7 @@ export default async function ComicHomePage() {
                           {comic.title}
                         </h4>
                         <p className="text-xs text-gray-500 mt-1">
-                          {parseInt(comic.stats.view_count).toLocaleString()} lÆ°á»£t xem
+                          {parseInt(comic.stats.view_count).toLocaleString()} lượt xem
                         </p>
                       </div>
                     </div>
@@ -108,4 +108,3 @@ export default async function ComicHomePage() {
     </main>
   );
 }
-

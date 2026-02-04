@@ -4,26 +4,24 @@ import AdminProductAttributeValues from "@/components/admin/ecommerce/products/a
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-  title: "GiÃ¡ trá»‹ thuá»™c tÃ­nh sáº£n pháº©m | Admin",
-  description: "Quáº£n lÃ½ giÃ¡ trá»‹ thuá»™c tÃ­nh sáº£n pháº©m",
+  title: "Giá trị thuộc tính sản phẩm | Admin",
+  description: "Quản lý giá trị thuộc tính sản phẩm",
 };
 
 export default function AdminProductAttributeValuesPage() {
   return (
     <div className="w-full p-4">
       <PageMeta
-        title="GiÃ¡ trá»‹ thuá»™c tÃ­nh sáº£n pháº©m"
+        title="Giá trị thuộc tính sản phẩm"
         breadcrumbs={[
-          { label: "Trang quáº£n trá»‹", href: "/admin" },
+          { label: "Trang quản trị", href: "/admin" },
           { label: "Ecommerce" },
-          { label: "GiÃ¡ trá»‹ thuá»™c tÃ­nh sáº£n pháº©m" },
+          { label: "Giá trị thuộc tính sản phẩm" },
         ]}
       />
-      <Suspense fallback={<div>Äang táº£i...</div>}>
+      <Suspense fallback={<div>Đang tải...</div>}>
         <AdminProductAttributeValues />
       </Suspense>
     </div>
   );
 }
-
-

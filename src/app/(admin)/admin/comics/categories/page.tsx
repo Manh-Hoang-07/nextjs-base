@@ -4,25 +4,24 @@ import AdminComicCategories from "@/components/admin/comics/categories/AdminComi
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-    title: "Danh má»¥c truyá»‡n | Admin",
-    description: "Quáº£n lÃ½ phÃ¢n loáº¡i truyá»‡n tranh",
+    title: "Danh mục truyện | Admin",
+    description: "Quản lý phân loại truyện tranh",
 };
 
 export default function ComicCategoriesPage() {
     return (
         <div className="w-full p-4">
             <PageMeta
-                title="Danh má»¥c truyá»‡n"
+                title="Danh mục truyện"
                 breadcrumbs={[
-                    { label: "Trang quáº£n trá»‹", href: "/admin" },
+                    { label: "Trang quản trị", href: "/admin" },
                     { label: "Comic" },
-                    { label: "Danh má»¥c truyá»‡n" },
+                    { label: "Danh mục truyện" },
                 ]}
             />
-            <Suspense fallback={<div>Äang táº£i...</div>}>
+            <Suspense fallback={<div>Đang tải...</div>}>
                 <AdminComicCategories />
             </Suspense>
         </div>
     );
 }
-

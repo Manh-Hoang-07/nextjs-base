@@ -83,22 +83,22 @@ export function PublicHeader({
 
   // Navigation items
   const navigationItems = [
-    { name: "Trang chá»§", path: "/home", icon: "" },
+    { name: "Trang chủ", path: "/home", icon: "" },
     {
-      name: "Thá»ƒ loáº¡i",
+      name: "Thể loại",
       path: "/home/categories",
       icon: "",
       children: [
-        { name: "HÃ nh Ä‘á»™ng", path: "/home/categories/hanh-dong", icon: "" },
-        { name: "PhiÃªu lÆ°u", path: "/home/categories/phieu-luu", icon: "" },
-        { name: "Há»c Ä‘Æ°á»ng", path: "/home/categories/hoc-duong", icon: "" },
-        { name: "Chuyá»ƒn sinh", path: "/home/categories/chuyen-sinh", icon: "" },
+        { name: "Hành động", path: "/home/categories/hanh-dong", icon: "" },
+        { name: "Phiêu lưu", path: "/home/categories/phieu-luu", icon: "" },
+        { name: "Học đường", path: "/home/categories/hoc-duong", icon: "" },
+        { name: "Chuyển sinh", path: "/home/categories/chuyen-sinh", icon: "" },
       ],
     },
-    { name: "Má»›i cáº­p nháº­t", path: "/home/comics?sort=last_chapter_updated_at:desc", icon: "" },
-    { name: "Truyá»‡n HOT", path: "/home/comics?sort=view_count:desc", icon: "" },
-    { name: "HoÃ n thÃ nh", path: "/home/comics?status=completed", icon: "" },
-    { name: "Tin tá»©c", path: "/home/posts", icon: "" },
+    { name: "Mới cập nhật", path: "/home/comics?sort=last_chapter_updated_at:desc", icon: "" },
+    { name: "Truyện HOT", path: "/home/comics?sort=view_count:desc", icon: "" },
+    { name: "Hoàn thành", path: "/home/comics?status=completed", icon: "" },
+    { name: "Tin tức", path: "/home/posts", icon: "" },
   ];
 
   const isActive = (path: string) => pathname === path || pathname?.startsWith(path + "/");
@@ -204,7 +204,7 @@ export function PublicHeader({
               <Link href="/home/contact" className="hidden lg:flex">
                 <button className="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-full font-medium shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all whitespace-nowrap">
                   <PhoneIcon className="w-4 h-4" />
-                  <span>TÃ i khoáº£n</span>
+                  <span>Tài khoản</span>
                 </button>
               </Link>
 
@@ -233,7 +233,7 @@ export function PublicHeader({
         }`}>
         <div className="flex flex-col h-full">
           <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-            <span className="font-bold text-lg text-gray-900">Danh má»¥c</span>
+            <span className="font-bold text-lg text-gray-900">Danh mục</span>
             <button
               onClick={handleClose}
               className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
@@ -303,7 +303,7 @@ export function PublicHeader({
             <Link href="/home/contact" onClick={handleClose}>
               <button className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium shadow-lg shadow-primary/25 active:scale-95 transition-all">
                 <PhoneIcon className="w-5 h-5" />
-                <span>LiÃªn há»‡ ngay</span>
+                <span>Liên hệ ngay</span>
               </button>
             </Link>
           </div>

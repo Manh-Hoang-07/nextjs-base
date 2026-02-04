@@ -16,8 +16,8 @@ interface Props {
 }
 
 export const metadata: Metadata = {
-    title: "Danh sÃ¡ch truyá»‡n tranh | Comic Haven",
-    description: "KhÃ¡m phÃ¡ hÃ ng ngÃ n bá»™ truyá»‡n tranh háº¥p dáº«n vá»›i nhiá»u thá»ƒ loáº¡i khÃ¡c nhau.",
+    title: "Danh sách truyện tranh | Comic Haven",
+    description: "Khám phá hàng ngàn bộ truyện tranh hấp dẫn với nhiều thể loại khác nhau.",
 };
 
 export default async function ComicListPage({ searchParams }: Props) {
@@ -38,7 +38,7 @@ export default async function ComicListPage({ searchParams }: Props) {
                     {/* Header Controls */}
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
                         <h1 className="text-3xl font-black text-gray-900 uppercase">
-                            Táº¥t cáº£ truyá»‡n
+                            Tất cả truyện
                         </h1>
 
                         <div className="flex flex-wrap items-center gap-3">
@@ -51,13 +51,13 @@ export default async function ComicListPage({ searchParams }: Props) {
                                     href={`/home/comics?sort=last_chapter_updated_at:desc${sp.comic_category_id ? `&comic_category_id=${sp.comic_category_id}` : ''}`}
                                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${!sp.sort || sp.sort === 'last_chapter_updated_at:desc' ? 'bg-red-600 text-white shadow-md' : 'text-gray-600 hover:text-red-500'}`}
                                 >
-                                    Má»›i cáº­p nháº­t
+                                    Mới cập nhật
                                 </Link>
                                 <Link
                                     href={`/home/comics?sort=view_count:desc${sp.comic_category_id ? `&comic_category_id=${sp.comic_category_id}` : ''}`}
                                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${sp.sort === 'view_count:desc' ? 'bg-red-600 text-white shadow-md' : 'text-gray-600 hover:text-red-500'}`}
                                 >
-                                    Xem nhiá»u
+                                    Xem nhiều
                                 </Link>
                             </div>
                         </div>
@@ -82,8 +82,8 @@ export default async function ComicListPage({ searchParams }: Props) {
                             </>
                         ) : (
                             <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-dashed border-gray-300">
-                                <p className="text-xl text-gray-500 font-bold mb-4">KhÃ´ng tÃ¬m tháº¥y bá»™ truyá»‡n nÃ o phÃ¹ há»£p!</p>
-                                <Link href="/home/comics" className="text-red-500 font-bold hover:underline">Xem táº¥t cáº£ truyá»‡n</Link>
+                                <p className="text-xl text-gray-500 font-bold mb-4">Không tìm thấy bộ truyện nào phù hợp!</p>
+                                <Link href="/home/comics" className="text-red-500 font-bold hover:underline">Xem tất cả truyện</Link>
                             </div>
                         )}
                     </div>
@@ -92,4 +92,3 @@ export default async function ComicListPage({ searchParams }: Props) {
         </main>
     );
 }
-

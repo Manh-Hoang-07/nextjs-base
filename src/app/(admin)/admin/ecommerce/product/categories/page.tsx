@@ -4,27 +4,24 @@ import AdminProductCategories from "@/components/admin/ecommerce/products/catego
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-  title: "Danh má»¥c sáº£n pháº©m | Admin",
-  description: "Quáº£n lÃ½ danh má»¥c sáº£n pháº©m",
+  title: "Danh mục sản phẩm | Admin",
+  description: "Quản lý danh mục sản phẩm",
 };
 
 export default function AdminProductCategoriesPage() {
   return (
     <div className="w-full p-4">
       <PageMeta
-        title="Danh má»¥c sáº£n pháº©m"
+        title="Danh mục sản phẩm"
         breadcrumbs={[
-          { label: "Trang quáº£n trá»‹", href: "/admin" },
+          { label: "Trang quản trị", href: "/admin" },
           { label: "Ecommerce" },
-          { label: "Danh má»¥c sáº£n pháº©m" },
+          { label: "Danh mục sản phẩm" },
         ]}
       />
-      <Suspense fallback={<div>Äang táº£i...</div>}>
+      <Suspense fallback={<div>Đang tải...</div>}>
         <AdminProductCategories />
       </Suspense>
     </div>
   );
 }
-
-
-

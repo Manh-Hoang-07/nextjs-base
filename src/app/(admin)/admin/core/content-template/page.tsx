@@ -4,18 +4,18 @@ import AdminContentTemplates from "@/components/admin/core/content-templates/Adm
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-    title: "Quáº£n lÃ½ Máº«u ná»™i dung | Admin",
-    description: "Quáº£n lÃ½ danh sÃ¡ch cÃ¡c máº«u ná»™i dung Email, SMS, Telegram, Zalo",
+    title: "Quản lý Mẫu nội dung | Admin",
+    description: "Quản lý danh sách các mẫu nội dung Email, SMS, Telegram, Zalo",
 };
 
 export default function AdminContentTemplatesPage() {
     return (
         <div className="w-full">
             <PageMeta
-                title="Quáº£n lÃ½ Máº«u ná»™i dung"
+                title="Quản lý Mẫu nội dung"
                 breadcrumbs={[
-                    { label: "Trang quáº£n trá»‹", href: "/admin", },
-                    { label: "Máº«u ná»™i dung" },
+                    { label: "Trang quản trị", href: "/admin", },
+                    { label: "Mẫu nội dung" },
                 ]}
             />
             <Suspense fallback={
@@ -28,4 +28,3 @@ export default function AdminContentTemplatesPage() {
         </div>
     );
 }
-

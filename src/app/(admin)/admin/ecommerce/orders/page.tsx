@@ -4,25 +4,24 @@ import AdminOrders from "@/components/admin/ecommerce/orders/AdminOrders";
 import PageMeta from "@/components/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-    title: "ÄÆ¡n hÃ ng | Admin",
-    description: "Quáº£n lÃ½ Ä‘Æ¡n hÃ ng khÃ¡ch hÃ ng",
+    title: "Đơn hàng | Admin",
+    description: "Quản lý đơn hàng khách hàng",
 };
 
 export default function AdminOrdersPage() {
     return (
         <div className="w-full p-4">
             <PageMeta
-                title="ÄÆ¡n hÃ ng"
+                title="Đơn hàng"
                 breadcrumbs={[
-                    { label: "Trang quáº£n trá»‹", href: "/admin" },
+                    { label: "Trang quản trị", href: "/admin" },
                     { label: "Ecommerce" },
-                    { label: "ÄÆ¡n hÃ ng" },
+                    { label: "Đơn hàng" },
                 ]}
             />
-            <Suspense fallback={<div>Äang táº£i...</div>}>
+            <Suspense fallback={<div>Đang tải...</div>}>
                 <AdminOrders />
             </Suspense>
         </div>
     );
 }
-
