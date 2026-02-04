@@ -86,13 +86,13 @@ export function PublicHeader({
     { name: "Trang chủ", path: "/", icon: "" },
     {
       name: "Thể loại",
-      path: "/comics/category",
+      path: "/comics/categories",
       icon: "",
       children: [
-        { name: "Hành động", path: "/comics/category/hanh-dong", icon: "" },
-        { name: "Phiêu lưu", path: "/comics/category/phieu-luu", icon: "" },
-        { name: "Học đường", path: "/comics/category/hoc-duong", icon: "" },
-        { name: "Chuyển sinh", path: "/comics/category/chuyen-sinh", icon: "" },
+        { name: "Hành động", path: "/comics/categories/hanh-dong", icon: "" },
+        { name: "Phiêu lưu", path: "/comics/categories/phieu-luu", icon: "" },
+        { name: "Học đường", path: "/comics/categories/hoc-duong", icon: "" },
+        { name: "Chuyển sinh", path: "/comics/categories/chuyen-sinh", icon: "" },
       ],
     },
     { name: "Mới cập nhật", path: "/comics?sort=last_chapter_updated_at:desc", icon: "" },
@@ -312,5 +312,6 @@ export function PublicHeader({
     </>
   );
 }
+
 
 

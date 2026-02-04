@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminComicCategories from "@/components/comics/category/admin/AdminComicCategories";
+import AdminComicCategories from "@/components/comics/categories/admin/AdminComicCategories";
 import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
@@ -25,5 +25,6 @@ export default function ComicCategoriesPage() {
         </div>
     );
 }
+
 
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getComics, getComicCategories } from "@/lib/api/public/comic";
 import { ComicCard } from "@/components/comics/comic/public/ComicCard";
 import { Pagination } from "@/components/comics/chapter/public/Pagination";
-import { CategorySelect } from "@/components/comics/category/public/CategorySelect";
+import { CategorySelect } from "@/components/comics/categories/public/CategorySelect";
 import "@/styles/comic.css";
 
 interface Props {
@@ -92,5 +92,6 @@ export default async function ComicListPage({ searchParams }: Props) {
         </main>
     );
 }
+
 
 

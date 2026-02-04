@@ -338,7 +338,7 @@ export default function AdminPostStatistics() {
                             </div>
                             <div className="flex-1 min-w-0">
                                 <Link
-                                    href={`/admin/posts/${post.id}`}
+                                    href={`/admin/postsss/${post.id}`}
                                     className="text-sm font-semibold text-gray-900 hover:text-blue-600 transition-colors block truncate"
                                 >
                                     {post.name}
@@ -465,5 +465,7 @@ export default function AdminPostStatistics() {
         </div>
     );
 }
+
+
 
 

@@ -20,18 +20,18 @@ export const adminEndpoints = {
         overview: "/api/admin/posts/statistics/overview",
     },
     postCategories: {
-        list: "/api/admin/post-categories",
-        create: "/api/admin/post-categories",
-        show: (id: Id) => `/api/admin/post-categories/${id}`,
-        update: (id: Id) => `/api/admin/post-categories/${id}`,
-        delete: (id: Id) => `/api/admin/post-categories/${id}`,
+        list: "/api/admin/posts-categories",
+        create: "/api/admin/posts-categories",
+        show: (id: Id) => `/api/admin/posts-categories/${id}`,
+        update: (id: Id) => `/api/admin/posts-categories/${id}`,
+        delete: (id: Id) => `/api/admin/posts-categories/${id}`,
     },
     postTags: {
-        list: "/api/admin/post-tags",
-        create: "/api/admin/post-tags",
-        show: (id: Id) => `/api/admin/post-tags/${id}`,
-        update: (id: Id) => `/api/admin/post-tags/${id}`,
-        delete: (id: Id) => `/api/admin/post-tags/${id}`,
+        list: "/api/admin/posts-tags",
+        create: "/api/admin/posts-tags",
+        show: (id: Id) => `/api/admin/posts-tags/${id}`,
+        update: (id: Id) => `/api/admin/posts-tags/${id}`,
+        delete: (id: Id) => `/api/admin/posts-tags/${id}`,
     },
     roles: {
         list: "/api/admin/roles",
@@ -224,9 +224,9 @@ export const adminEndpoints = {
         update: (group: string) => `/api/admin/system-configs/${group}`,
     },
     postComments: {
-        list: "/api/admin/post-comments",
-        updateStatus: (id: Id) => `/api/admin/post-comments/${id}/status`,
-        delete: (id: Id) => `/api/admin/post-comments/${id}`,
+        list: "/api/admin/posts-comments",
+        updateStatus: (id: Id) => `/api/admin/posts-comments/${id}/status`,
+        delete: (id: Id) => `/api/admin/posts-comments/${id}`,
     },
     comicComments: {
         list: "/api/admin/comic-comments",
@@ -355,6 +355,8 @@ export const adminEndpoints = {
         delete: (id: Id) => `/api/admin/reviews/${id}`,
     },
 } as const;
+
+
 
 
 

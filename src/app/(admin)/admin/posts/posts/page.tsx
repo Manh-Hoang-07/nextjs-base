@@ -1,30 +1,32 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import AdminPostTags from "@/components/posts/tag/admin/AdminPostTags";
+import AdminPosts from "@/components/posts/post/admin/AdminPosts";
 import PageMeta from "@/components/shared/ui/navigation/PageMeta";
 
 export const metadata: Metadata = {
-  title: "Thẻ bài viết | Admin",
-  description: "Quản lý thẻ (tags) bài viết",
+  title: "Quản lý bài viết | Admin",
+  description: "Quản lý bài viết và tin tức",
 };
 
-export default function AdminPostTagsPage() {
+export default function AdminPostsPage() {
   return (
     <div className="w-full p-4">
       <PageMeta
-        title="Thẻ bài viết"
+        title="Quản lý bài viết"
         breadcrumbs={[
           { label: "Trang quản trị", href: "/admin", },
-          { label: "Bài viết", href: "/admin/posts" },
-          { label: "Thẻ (Tags)" },
+          { label: "Bài viết", href: "/admin/postsss" },
+          { label: "Danh sách" },
         ]}
       />
       <Suspense fallback={<div>Đang tải...</div>}>
-        <AdminPostTags />
+        <AdminPosts />
       </Suspense>
     </div>
   );
 }
+
+
 
 
 

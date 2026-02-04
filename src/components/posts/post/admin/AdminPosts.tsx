@@ -185,7 +185,7 @@ export default function AdminPosts({
                         additionalActions={[
                           {
                             label: "Xem bình luận",
-                            action: () => window.location.href = `/admin/post-comments?post_id=${post.id}`,
+                            action: () => window.location.href = `/admin/postss-comments?post_id=${post.id}`,
                             icon: "message",
                           },
                           {
@@ -256,5 +256,7 @@ export default function AdminPosts({
     </div>
   );
 }
+
+
 
 

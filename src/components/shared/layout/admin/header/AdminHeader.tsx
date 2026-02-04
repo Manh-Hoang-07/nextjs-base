@@ -25,6 +25,10 @@ const PATH_MAP: Record<string, string> = {
   chapters: "Chương truyện",
   "comic-categories": "Danh mục truyện",
   "comic-stats": "Thống kê",
+  warehouses: "Kho bãi",
+  exports: "Xuất kho",
+  imports: "Nhập kho",
+  transfers: "Điều chuyển",
 };
 
 function Breadcrumbs() {

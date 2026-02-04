@@ -3,7 +3,7 @@ import Image from "next/image";
 import { getComicHomepageData } from "@/lib/api/public/comic";
 import { TrendingHero } from "@/components/comics/comic/public/TrendingHero";
 import { ComicSection } from "@/components/comics/comic/public/ComicSection";
-import { CategorySidebar } from "@/components/comics/category/public/CategorySidebar";
+import { CategorySidebar } from "@/components/comics/categories/public/CategorySidebar";
 import "@/styles/comic.css";
 
 export const metadata: Metadata = {
@@ -108,5 +108,6 @@ export default async function ComicHomePage() {
     </main>
   );
 }
+
 
 
