@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["ckeditor5", "@ckeditor/ckeditor5-react"],
+  experimental: {
+    optimizePackageImports: ["lucide-react", "date-fns", "lodash", "react-hook-form"],
+  },
   images: {
     remotePatterns: [
       {

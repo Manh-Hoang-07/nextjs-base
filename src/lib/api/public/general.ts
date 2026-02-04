@@ -32,7 +32,7 @@ export async function getStaffList() {
  */
 export async function getSystemConfig(group: string = "general") {
     const { data } = await serverFetch<SystemConfig>(publicEndpoints.systemConfigs.getByGroup(group), {
-        revalidate: 7200, // Cache 2 giờ (thay vì 1 giờ)
+        revalidate: 600, // Cache 10 phút
         tags: ["system-config", `system-config-${group}`], // Tag cụ thể để revalidate
         skipCookies: true // Giúp trang có thể render tĩnh (static)
     });
