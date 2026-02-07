@@ -79,7 +79,7 @@ export default async function GalleryDetailPage({ params }: PageProps) {
     return (
         <div className="container mx-auto p-6 max-w-5xl">
             <div className="mb-6">
-                <Link href="/home/gallery" className="text-gray-600 hover:text-gray-900 flex items-center">
+                <Link href="/gallery" className="text-gray-600 hover:text-gray-900 flex items-center">
                     <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
@@ -180,7 +180,7 @@ export default async function GalleryDetailPage({ params }: PageProps) {
                             Liên hệ ngay
                         </Button>
                     </Link>
-                    <Link href="/home/gallery">
+                    <Link href="/gallery">
                         <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
                             Xem dự án khác
                         </Button>

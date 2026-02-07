@@ -137,7 +137,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
                             <div className="space-y-3">
                                 <Button className="w-full">Yêu cầu báo giá</Button>
-                                <Link href="/home/services" className="block w-full text-center py-2 text-gray-600 hover:text-primary transition-colors">
+                                <Link href="/services" className="block w-full text-center py-2 text-gray-600 hover:text-primary transition-colors">
                                     ← Quay lại danh sách
                                 </Link>
                             </div>

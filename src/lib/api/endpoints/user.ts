@@ -33,6 +33,22 @@ export const userEndpoints = {
         list: "/api/user/reviews",
         comic: (comicId: Id) => `/api/user/reviews/comic/${comicId}`,
     },
+    bookmarks: {
+        list: "/api/user/bookmarks",
+        create: "/api/user/bookmarks",
+        delete: (id: Id) => `/api/user/bookmarks/${id}`,
+    },
+    readingHistory: {
+        list: "/api/user/reading-history",
+        update: "/api/user/reading-history",
+        delete: (comicId: Id) => `/api/user/reading-history/${comicId}`,
+    },
+    follows: {
+        list: "/api/user/follows",
+        follow: (comicId: Id) => `/api/user/follows/comics/${comicId}`,
+        unfollow: (comicId: Id) => `/api/user/follows/comics/${comicId}`,
+        checkStatus: (comicId: Id) => `/api/user/follows/comics/${comicId}/is-following`,
+    },
 } as const;
 
 

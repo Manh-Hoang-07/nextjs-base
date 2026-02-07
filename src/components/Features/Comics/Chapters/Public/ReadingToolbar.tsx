@@ -9,6 +9,7 @@ import {
     XMarkIcon,
     CheckIcon
 } from "@heroicons/react/24/outline";
+import { BookmarkButton } from "./BookmarkButton";
 
 interface ReadingToolbarProps {
     nextChapter: { id: string } | null;
@@ -64,6 +65,8 @@ export const ReadingToolbar: React.FC<ReadingToolbarProps> = ({
                             <ChevronLeftIcon className="w-6 h-6" />
                         </div>
                     )}
+
+                    <BookmarkButton chapterId={currentChapterId} />
 
                     {/* Chapter Selector Pill */}
                     <button

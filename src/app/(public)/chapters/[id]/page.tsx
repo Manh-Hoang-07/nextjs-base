@@ -4,7 +4,10 @@ import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon, ListBulletIcon } from "@heroicons/react/24/outline";
 import { notFound } from "next/navigation";
 import { getChapterPages, getChapterNavigation, getChapterDetail, getComicChapters } from "@/lib/api/public/comic";
+import { getChapterComments } from "@/lib/api/public/comment";
 import { ReadingToolbar } from "@/components/Features/Comics/Chapters/Public/ReadingToolbar";
+import { ReadingHistoryTracker } from "@/components/Features/Comics/Chapters/Public/ReadingHistoryTracker";
+import { CommentSection } from "@/components/Features/Comics/Comments/Public/CommentSection";
 import "@/styles/comic.css";
 
 interface Props {
@@ -22,11 +25,12 @@ export default async function ReadingPage({ params }: Props) {
     const { id } = await params;
     const chapterDetail = await getChapterDetail(id);
 
-    const [pages, nextChapter, prevChapter, chaptersData] = await Promise.all([
+    const [pages, nextChapter, prevChapter, chaptersData, commentsData] = await Promise.all([
         getChapterPages(id),
         getChapterNavigation(id, 'next'),
         getChapterNavigation(id, 'prev'),
-        chapterDetail?.comic?.slug ? getComicChapters(chapterDetail.comic.slug, 1) : Promise.resolve(null)
+        chapterDetail?.comic?.slug ? getComicChapters(chapterDetail.comic.slug, 1) : Promise.resolve(null),
+        getChapterComments(id, 1)
     ]);
 
     if (!pages) notFound();
@@ -40,6 +44,13 @@ export default async function ReadingPage({ params }: Props) {
                 chapters={chaptersData ? (Array.isArray(chaptersData) ? chaptersData : (chaptersData.data || [])) : []}
                 currentChapterId={id}
             />
+
+            {(chapterDetail?.comic?.id || chapterDetail?.comic_id) && (
+                <ReadingHistoryTracker
+                    comicId={chapterDetail?.comic?.id || chapterDetail?.comic_id}
+                    chapterId={id}
+                />
+            )}
 
             {/* Content Area */}
             <div className="container mx-auto max-w-4xl py-6 flex flex-col items-center">
@@ -74,7 +85,7 @@ export default async function ReadingPage({ params }: Props) {
                     <div className="flex flex-row gap-3 w-full max-w-2xl">
                         {prevChapter && (
                             <Link
-                                href={`/home/chapters/${prevChapter.id}`}
+                                href={`/chapters/${prevChapter.id}`}
                                 className="flex-1 flex items-center justify-center gap-2 p-4 bg-white hover:border-red-500 border border-gray-200 rounded-2xl transition-all text-sm font-bold shadow-sm active:scale-95"
                             >
                                 <ChevronLeftIcon className="w-5 h-5 text-gray-400" />
@@ -84,7 +95,7 @@ export default async function ReadingPage({ params }: Props) {
 
                         {nextChapter && (
                             <Link
-                                href={`/home/chapters/${nextChapter.id}`}
+                                href={`/chapters/${nextChapter.id}`}
                                 className="flex-1 flex items-center justify-center gap-2 p-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl transition-all text-sm font-bold shadow-lg shadow-red-200 active:scale-95"
                             >
                                 <span>Chương tiếp</span>
@@ -97,7 +108,14 @@ export default async function ReadingPage({ params }: Props) {
                                 Đã hết chương mới
                             </div>
                         )}
+                    </div>
 
+                    <div className="w-full mt-16 border-t border-gray-100 pt-12">
+                        <CommentSection
+                            comicId={chapterDetail?.comic?.id || chapterDetail?.comic_id || ""}
+                            chapterId={id}
+                            comments={commentsData?.data || []}
+                        />
                     </div>
                 </div>
             </div>

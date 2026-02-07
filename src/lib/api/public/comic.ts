@@ -1,9 +1,11 @@
 import { HomepageData, Comic, ComicChapter, ChapterDetail, PaginatedResponse, ComicCategory, ComicPage } from "@/types/comic";
 import { serverFetch } from "@/lib/api/server-client";
+import { publicEndpoints } from "@/lib/api/endpoints";
 
 export async function getComicHomepageData(): Promise<HomepageData | null> {
-    const { data, error } = await serverFetch<HomepageData>("/public/homepage", {
+    const { data, error } = await serverFetch<HomepageData>(publicEndpoints.homepage, {
         revalidate: 120,
+        skipCookies: true,
     });
     if (error) {
         console.error("Error fetching comic homepage data:", error);
@@ -28,12 +30,14 @@ export async function getComics(params: {
     if (params.comic_category_id) query.append("comic_category_id", params.comic_category_id);
     if (params.is_featured !== undefined) query.append("is_featured", params.is_featured.toString());
 
-    const { data, meta: responseMeta, error } = await serverFetch<Comic[]>(`/public/comics?${query.toString()}`);
+    const { data, meta: responseMeta, error } = await serverFetch<any>(`${publicEndpoints.comics.list}?${query.toString()}`, {
+        skipCookies: true,
+    });
     if (error || !data) return null;
 
-    // Chuẩn hóa response data
-    const items = Array.isArray(data) ? data : [];
-    const meta = responseMeta || {
+    // Chuẩn hóa response data: chấp nhận cả data là mảng trực tiếp hoặc data { data: [] }
+    const items = Array.isArray(data) ? data : (Array.isArray(data.data) ? data.data : []);
+    const meta = responseMeta || data.meta || {
         page: params.page || 1,
         limit: params.limit || 20,
         totalItems: items.length,
@@ -46,18 +50,21 @@ export async function getComics(params: {
 }
 
 export async function getComicDetail(slug: string): Promise<Comic | null> {
-    const { data, error } = await serverFetch<Comic>(`/public/comics/${slug}`);
+    const { data, error } = await serverFetch<Comic>(publicEndpoints.comics.detail(slug), {
+        skipCookies: true,
+    });
     if (error) return null;
     return data;
 }
 
 export async function getComicChapters(slug: string, page: number = 1): Promise<PaginatedResponse<ComicChapter> | null> {
-    const { data, meta: responseMeta, error } = await serverFetch<ComicChapter[]>(`/public/comics/${slug}/chapters?page=${page}`);
+    const { data, meta: responseMeta, error } = await serverFetch<any>(`${publicEndpoints.comics.chapters(slug)}?page=${page}`, {
+        skipCookies: true,
+    });
     if (error || !data) return null;
 
-    // Chuẩn hóa response data
-    const items = Array.isArray(data) ? data : [];
-    const meta = responseMeta || {
+    const items = Array.isArray(data) ? data : (Array.isArray(data.data) ? data.data : []);
+    const meta = responseMeta || data.meta || {
         page: page,
         limit: 20,
         totalItems: items.length,
@@ -70,31 +77,41 @@ export async function getComicChapters(slug: string, page: number = 1): Promise<
 }
 
 export async function getChapterPages(chapterId: string): Promise<ComicPage[] | null> {
-    const { data, error } = await serverFetch<ComicPage[]>(`/public/chapters/${chapterId}/pages`);
+    const { data, error } = await serverFetch<ComicPage[]>(`/public/chapters/${chapterId}/pages`, {
+        skipCookies: true
+    });
     if (error) return null;
     return data;
 }
 
 export async function getChapterNavigation(chapterId: string, direction: 'next' | 'prev'): Promise<{ id: string } | null> {
-    const { data, error } = await serverFetch<{ id: string }>(`/public/chapters/${chapterId}/${direction}`);
+    const { data, error } = await serverFetch<{ id: string }>(`/public/chapters/${chapterId}/${direction}`, {
+        skipCookies: true
+    });
     if (error) return null;
     return data;
 }
 
 export async function getComicCategories(): Promise<ComicCategory[]> {
-    const { data, error } = await serverFetch<ComicCategory[]>("/public/comic-categories");
-    if (error) return [];
-    return data || [];
+    const { data, error } = await serverFetch<any>(publicEndpoints.comicCategories.list, {
+        skipCookies: true,
+    });
+    if (error || !data) return [];
+
+    return Array.isArray(data) ? data : (Array.isArray(data.data) ? data.data : []);
 }
 
 export async function trackView(chapterId: string): Promise<void> {
     await serverFetch(`/public/chapters/${chapterId}/view`, {
         method: 'POST',
+        skipCookies: true
     });
 }
 
 export async function getChapterDetail(chapterId: string): Promise<any | null> {
-    const { data, error } = await serverFetch<any>(`/public/chapters/${chapterId}`);
+    const { data, error } = await serverFetch<any>(`/public/chapters/${chapterId}`, {
+        skipCookies: true
+    });
     if (error) return null;
     return data;
 }

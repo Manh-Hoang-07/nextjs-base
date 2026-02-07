@@ -12,6 +12,7 @@ import { useAuthStore } from "@/lib/store/authStore";
 
 interface CommentSectionProps {
     comicId: string | number;
+    chapterId?: string | number;
     comments: ComicComment[];
     onCommentSuccess?: () => void;
 }
@@ -23,9 +24,10 @@ interface CommentItemProps {
     onEdit: (commentId: string | number, content: string) => Promise<void>;
     onDelete: (commentId: string | number) => Promise<void>;
     comicId: string | number;
+    chapterId?: string | number;
 }
 
-const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicId }: CommentItemProps) => {
+const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicId, chapterId }: CommentItemProps) => {
     const [isReplying, setIsReplying] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [replyContent, setReplyContent] = useState("");
@@ -33,7 +35,7 @@ const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicI
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showActions, setShowActions] = useState(false);
 
-    const isOwner = currentUserId === comment.user.id.toString();
+    const isOwner = currentUserId && comment.user?.id && currentUserId === comment.user.id.toString();
 
     const handleReplySubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -72,7 +74,7 @@ const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicI
         <div className="flex gap-4 group">
             <div className="flex-shrink-0">
                 <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden border border-gray-200">
-                    {comment.user.image ? (
+                    {comment.user?.image ? (
                         <Image
                             src={comment.user.image}
                             alt={comment.user.name || "User"}
@@ -81,8 +83,8 @@ const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicI
                             className="object-cover w-full h-full"
                         />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400 font-bold bg-gray-50">
-                            {comment.user.name?.charAt(0).toUpperCase() || "?"}
+                        <div className="w-full h-full flex items-center justify-center text-gray-400 font-bold bg-gray-50 uppercase">
+                            {comment.user?.name?.charAt(0) || comment.user?.username?.charAt(0) || "?"}
                         </div>
                     )}
                 </div>
@@ -92,7 +94,9 @@ const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicI
                 <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm relative hover:border-blue-100 transition-colors">
                     <div className="flex justify-between items-start mb-1">
                         <div className="flex flex-col">
-                            <span className="font-bold text-gray-900 text-sm">{comment.user.name}</span>
+                            <span className="font-bold text-gray-900 text-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">
+                                {comment.user?.name || comment.user?.username || "Người dùng"}
+                            </span>
                             <span className="text-[10px] text-gray-400 uppercase font-medium">{formatDate(comment.created_at)}</span>
                         </div>
 
@@ -178,7 +182,7 @@ const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicI
                                 <textarea
                                     value={replyContent}
                                     onChange={(e) => setReplyContent(e.target.value)}
-                                    placeholder={`Trả lời ${comment.user.name}...`}
+                                    placeholder={`Trả lời ${comment.user?.name || comment.user?.username || "người dùng"}...`}
                                     className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm resize-none h-20"
                                 />
                             </div>
@@ -203,6 +207,7 @@ const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicI
                                 onEdit={onEdit}
                                 onDelete={onDelete}
                                 comicId={comicId}
+                                chapterId={chapterId}
                             />
                         ))}
                     </div>
@@ -212,8 +217,11 @@ const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicI
     );
 };
 
-export function CommentSection({ comicId, comments: initialComments, onCommentSuccess }: CommentSectionProps) {
+export function CommentSection({ comicId, chapterId, comments: initialComments, onCommentSuccess }: CommentSectionProps) {
     const [comments, setComments] = useState<ComicComment[]>(initialComments || []);
+
+    // Debug Client-side
+    // console.log(`[CommentSection] Rendered with ${comments.length} comments`);
     const [content, setContent] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { showSuccess, showError } = useToastContext();
@@ -234,6 +242,7 @@ export function CommentSection({ comicId, comments: initialComments, onCommentSu
         try {
             const newComment = await commentService.postComment({
                 comic_id: comicId,
+                chapter_id: chapterId,
                 content: content
             });
 
@@ -246,7 +255,13 @@ export function CommentSection({ comicId, comments: initialComments, onCommentSu
             // We need to cast or ensure types match.
             const commentToAdd = {
                 ...newComment,
-                replies: [] // Ensure replies exists
+                replies: [],
+                user: newComment.user || {
+                    id: user?.id || "",
+                    name: user?.name || user?.username || "Người dùng",
+                    image: user?.image || user?.avatar || null,
+                    username: user?.username || ""
+                }
             } as ComicComment;
 
             setComments([commentToAdd, ...comments]);
@@ -269,6 +284,7 @@ export function CommentSection({ comicId, comments: initialComments, onCommentSu
         try {
             const newReply = await commentService.postComment({
                 comic_id: comicId,
+                chapter_id: chapterId,
                 parent_id: parentId,
                 content: replyContent
             });
@@ -278,9 +294,20 @@ export function CommentSection({ comicId, comments: initialComments, onCommentSu
             const addReplyToTree = (list: ComicComment[]): ComicComment[] => {
                 return list.map(item => {
                     if (item.id === parentId) {
+                        const replyToAdd = {
+                            ...newReply,
+                            replies: [],
+                            user: (newReply as any).user || {
+                                id: user?.id || "",
+                                name: user?.name || user?.username || "Người dùng",
+                                image: user?.image || user?.avatar || null,
+                                username: user?.username || ""
+                            }
+                        } as ComicComment;
+
                         return {
                             ...item,
-                            replies: [newReply as ComicComment, ...(item.replies || [])]
+                            replies: [replyToAdd, ...(item.replies || [])]
                         };
                     } else if (item.replies && item.replies.length > 0) {
                         return {
@@ -388,6 +415,7 @@ export function CommentSection({ comicId, comments: initialComments, onCommentSu
                             onEdit={handleEdit}
                             onDelete={handleDelete}
                             comicId={comicId}
+                            chapterId={chapterId}
                         />
                     ))
                 )}

@@ -280,5 +280,48 @@ export interface AdminViewHistoryItem {
     count: number;
 }
 
+export interface Bookmark {
+    id: number | string;
+    user_id: number | string;
+    chapter_id: number | string;
+    page_number: number;
+    created_at: string;
+    chapter: {
+        id: number | string;
+        title: string;
+        comic: {
+            id: number | string;
+            title: string;
+            slug: string;
+            cover_image: string;
+        };
+    };
+}
+
+export interface ReadingHistory {
+    id: number | string;
+    comic_id: number | string;
+    chapter_id: number | string;
+    updated_at: string;
+    comic: {
+        id: number | string;
+        title: string;
+        slug: string;
+        cover_image: string;
+    };
+    chapter: {
+        id: number | string;
+        title: string;
+    };
+}
+
+export interface Follow {
+    id: number | string;
+    comic_id: number | string;
+    created_at: string;
+    comic: Comic;
+}
+
+
 
 

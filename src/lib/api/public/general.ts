@@ -26,17 +26,19 @@ export async function getStaffList() {
     return data || [];
 }
 
+import { cache } from "react";
+
 /**
  * Lấy cấu hình hệ thống
- * Cache 2 giờ vì system config ít khi thay đổi
+ * Sử dụng React.cache để memoize trong cùng một request
  */
-export async function getSystemConfig(group: string = "general") {
+export const getSystemConfig = cache(async (group: string = "general") => {
     const { data } = await serverFetch<SystemConfig>(publicEndpoints.systemConfigs.getByGroup(group), {
         revalidate: 600, // Cache 10 phút
-        tags: ["system-config", `system-config-${group}`], // Tag cụ thể để revalidate
-        skipCookies: true // Giúp trang có thể render tĩnh (static)
+        tags: ["system-config", `system-config-${group}`],
+        skipCookies: true
     });
     return data;
-}
+});
 
 

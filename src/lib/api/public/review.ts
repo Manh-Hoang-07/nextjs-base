@@ -10,7 +10,8 @@ export async function getComicReviews(comicId: string, params: {
     if (params.limit) query.append("limit", params.limit.toString());
 
     const { data, meta: responseMeta, error } = await serverFetch<ComicReview[]>(
-        `/public/reviews/comics/${comicId}?${query.toString()}`
+        `/public/reviews/comics/${comicId}?${query.toString()}`,
+        { skipCookies: true }
     );
 
     if (error || !data) return null;

@@ -91,6 +91,7 @@ export async function serverFetch<T = any>(
         // Chỉ log slow requests hoặc errors
         if (duration > 1000 || !response.ok) {
             const level = response.ok ? 'SLOW' : 'ERROR';
+            // console.log(`[API Fetch] ${level}: ${url} (${duration}ms) - Status: ${statusStr}`); // Removed debug log
         }
 
         if (!response.ok) {
@@ -101,6 +102,10 @@ export async function serverFetch<T = any>(
         }
 
         const json = await response.json();
+
+        // DEBUG LOG: Hữu ích để kiểm tra cấu trúc API khi integration
+        // console.log(`[API Debug] ${url}:`, JSON.stringify(json, null, 2).substring(0, 500) + "..."); // Removed debug log
+
         return { data: json.data, meta: json.meta, error: null };
     } catch (error: any) {
         if (error.name === 'AbortError') {

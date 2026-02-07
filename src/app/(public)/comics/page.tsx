@@ -27,9 +27,11 @@ export default async function ComicListPage({ searchParams }: Props) {
         page,
         sort: sp.sort || "last_chapter_updated_at:desc",
         comic_category_id: sp.comic_category_id,
-        is_featured: sp.is_featured === 'true'
+        is_featured: sp.is_featured === 'true' ? true : (sp.is_featured === 'false' ? false : undefined)
     });
     const categories = await getComicCategories();
+
+    console.log("Comics Data in Page:", JSON.stringify(comicsData, null, 2));
 
     return (
         <main className="bg-[#f8f9fa] min-h-screen py-8">

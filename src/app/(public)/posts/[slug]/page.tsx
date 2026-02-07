@@ -121,7 +121,7 @@ export default async function PostDetailPage({ params }: { params: Promise<{ slu
           {/* Footer Actions */}
           <div className="pt-8 border-t border-gray-100 flex justify-between items-center">
             <Link
-              href="/home/posts"
+              href="/posts"
               className="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors"
             >
               <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">

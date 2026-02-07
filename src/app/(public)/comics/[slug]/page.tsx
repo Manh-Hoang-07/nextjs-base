@@ -6,6 +6,7 @@ import { getComicDetail, getComicChapters } from "@/lib/api/public/comic";
 import { getComicComments } from "@/lib/api/public/comment";
 import { ChapterList } from "@/components/Features/Comics/Chapters/Public/ChapterList";
 import { CommentSection } from "@/components/Features/Comics/Comments/Public/CommentSection";
+import { FollowButton } from "@/components/Features/Comics/Shared/FollowButton";
 import "@/styles/comic.css";
 
 interface Props {
@@ -42,9 +43,9 @@ export default async function ComicDetailPage({ params }: Props) {
             <div className="container mx-auto px-4">
                 {/* Breadcrumbs */}
                 <nav className="flex mb-6 text-sm font-medium text-gray-500">
-                    <Link href="/home" className="hover:text-red-500">Trang chủ</Link>
+                    <Link href="/" className="hover:text-red-500">Trang chủ</Link>
                     <span className="mx-2">/</span>
-                    <Link href="/home/comics" className="hover:text-red-500">Truyện tranh</Link>
+                    <Link href="/comics" className="hover:text-red-500">Truyện tranh</Link>
                     <span className="mx-2">/</span>
                     <span className="text-gray-900 truncate">{comic.title}</span>
                 </nav>
@@ -70,7 +71,7 @@ export default async function ComicDetailPage({ params }: Props) {
                             {comic.categories.map(cat => (
                                 <Link
                                     key={cat.id}
-                                    href={`/home/categories/${cat.slug}`}
+                                    href={`/categories/${cat.slug}`}
                                     className="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-bold text-gray-600 hover:border-red-500 hover:text-red-500 transition-colors"
                                 >
                                     {cat.name}
@@ -102,15 +103,16 @@ export default async function ComicDetailPage({ params }: Props) {
                         <div className="flex flex-wrap gap-4 mb-8">
                             {chaptersData && (Array.isArray(chaptersData) ? chaptersData.length > 0 : chaptersData.data?.length > 0) && (
                                 <Link
-                                    href={`/home/chapters/${Array.isArray(chaptersData) ? chaptersData[chaptersData.length - 1].id : chaptersData.data[chaptersData.data.length - 1].id}`}
+                                    href={`/chapters/${Array.isArray(chaptersData) ? chaptersData[chaptersData.length - 1].id : chaptersData.data[chaptersData.data.length - 1].id}`}
                                     className="px-8 py-3 bg-red-600 text-white rounded-full font-bold hover:bg-red-700 transition shadow-lg shadow-red-200"
                                 >
                                     Đọc từ đầu
                                 </Link>
                             )}
-                            <button className="px-8 py-3 bg-white border-2 border-red-600 text-red-600 rounded-full font-bold hover:bg-red-50 transition">
-                                Theo dõi
-                            </button>
+                            <FollowButton
+                                comicId={comic.id}
+                                initialFollowCount={parseInt(comic.stats.follow_count)}
+                            />
                         </div>
 
                         <div className="bg-white p-6 rounded-2xl border border-gray-100 italic text-gray-600 leading-relaxed shadow-sm">

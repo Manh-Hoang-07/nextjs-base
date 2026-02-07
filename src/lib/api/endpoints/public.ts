@@ -104,7 +104,17 @@ export const publicEndpoints = {
         comic: (comicId: Id) => `/api/public/reviews/comics/${comicId}`,
     },
     comments: {
-        comic: (comicId: Id) => `/api/public/comics/${comicId}/comments`,
+        comic: (comicId: Id) => `/api/public/comic-comments/comics/${comicId}`,
+        chapter: (chapterId: Id) => `/api/public/comic-comments/chapters/${chapterId}`,
+    },
+    comics: {
+        list: "/api/public/comics",
+        detail: (slug: string) => `/api/public/comics/${slug}`,
+        chapters: (slug: string) => `/api/public/comics/${slug}/chapters`,
+    },
+    comicCategories: {
+        list: "/api/public/comic-categories",
+        show: (id: Id) => `/api/public/comic-categories/${id}`,
     },
 } as const;
 

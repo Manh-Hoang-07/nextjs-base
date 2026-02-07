@@ -97,11 +97,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               </dl>
 
               <div className="space-y-3">
-                <Link href="/home/contact">
+                <Link href="/contact">
                   <Button className="w-full">Liên hệ về dự án</Button>
                 </Link>
                 <Link
-                  href="/home/projects"
+                  href="/projects"
                   className="block w-full text-center py-2 text-gray-600 hover:text-primary transition-colors"
                 >
                   ← Quay lại danh sách
