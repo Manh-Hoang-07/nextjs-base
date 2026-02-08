@@ -5,6 +5,7 @@ import { ComicCard } from "@/components/Features/Comics/ComicList/Public/ComicCa
 import { Pagination } from "@/components/Features/Comics/Chapters/Public/Pagination";
 import { CategorySelect } from "@/components/Features/Comics/Categories/Public/CategorySelect";
 import "@/styles/comic.css";
+import SearchInput from "@/components/Features/Comics/Search/Public/SearchInput";
 
 interface Props {
     searchParams: Promise<{
@@ -12,6 +13,7 @@ interface Props {
         sort?: string;
         comic_category_id?: string;
         is_featured?: string;
+        search?: string;
     }>;
 }
 
@@ -27,11 +29,10 @@ export default async function ComicListPage({ searchParams }: Props) {
         page,
         sort: sp.sort || "last_chapter_updated_at:desc",
         comic_category_id: sp.comic_category_id,
-        is_featured: sp.is_featured === 'true' ? true : (sp.is_featured === 'false' ? false : undefined)
+        is_featured: sp.is_featured === 'true' ? true : (sp.is_featured === 'false' ? false : undefined),
+        search: sp.search
     });
     const categories = await getComicCategories();
-
-    console.log("Comics Data in Page:", JSON.stringify(comicsData, null, 2));
 
     return (
         <main className="bg-[#f8f9fa] min-h-screen py-8">
@@ -43,20 +44,22 @@ export default async function ComicListPage({ searchParams }: Props) {
                             Tất cả truyện
                         </h1>
 
-                        <div className="flex flex-wrap items-center gap-3">
+                        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                            <SearchInput />
+
                             {/* Category Select Dropdown */}
                             <CategorySelect categories={categories} />
 
                             {/* Sort Buttons */}
                             <div className="flex bg-white rounded-xl p-1 border border-gray-100 shadow-sm">
                                 <Link
-                                    href={`/comics?sort=last_chapter_updated_at:desc${sp.comic_category_id ? `&comic_category_id=${sp.comic_category_id}` : ''}`}
+                                    href={`/comics?sort=last_chapter_updated_at:desc${sp.comic_category_id ? `&comic_category_id=${sp.comic_category_id}` : ''}${sp.search ? `&search=${sp.search}` : ''}`}
                                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${!sp.sort || sp.sort === 'last_chapter_updated_at:desc' ? 'bg-red-600 text-white shadow-md' : 'text-gray-600 hover:text-red-500'}`}
                                 >
                                     Mới cập nhật
                                 </Link>
                                 <Link
-                                    href={`/comics?sort=view_count:desc${sp.comic_category_id ? `&comic_category_id=${sp.comic_category_id}` : ''}`}
+                                    href={`/comics?sort=view_count:desc${sp.comic_category_id ? `&comic_category_id=${sp.comic_category_id}` : ''}${sp.search ? `&search=${sp.search}` : ''}`}
                                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${sp.sort === 'view_count:desc' ? 'bg-red-600 text-white shadow-md' : 'text-gray-600 hover:text-red-500'}`}
                                 >
                                     Xem nhiều
@@ -84,7 +87,9 @@ export default async function ComicListPage({ searchParams }: Props) {
                             </>
                         ) : (
                             <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-dashed border-gray-300">
-                                <p className="text-xl text-gray-500 font-bold mb-4">Không tìm thấy bộ truyện nào phù hợp!</p>
+                                <p className="text-xl text-gray-500 font-bold mb-4">
+                                    {sp.search ? `Không tìm thấy truyện nào với từ khóa "${sp.search}"` : 'Không tìm thấy bộ truyện nào phù hợp!'}
+                                </p>
                                 <Link href="/comics" className="text-red-500 font-bold hover:underline">Xem tất cả truyện</Link>
                             </div>
                         )}

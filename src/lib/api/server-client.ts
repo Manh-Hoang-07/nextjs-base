@@ -84,7 +84,7 @@ export async function serverFetch<T = any>(
         } finally {
             clearTimeout(timeoutId);
         }
-
+        console.log(url);
         const duration = Date.now() - start;
         const statusStr = response.ok ? 'SUCCESS' : `ERROR ${response.status}`;
 
