@@ -5,9 +5,10 @@ import { Comic } from '@/types/comic';
 
 interface ComicCardProps {
     comic: Comic;
+    priority?: boolean;
 }
 
-export const ComicCard: React.FC<ComicCardProps> = ({ comic }) => {
+export const ComicCard: React.FC<ComicCardProps> = ({ comic, priority = false }) => {
     return (
         <Link href={`/comics/${comic.slug}`} className="comic-card">
             <div className="comic-card__image-container">
@@ -17,6 +18,7 @@ export const ComicCard: React.FC<ComicCardProps> = ({ comic }) => {
                     fill
                     className="comic-card__image"
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+                    priority={priority}
                 />
                 <div className="comic-card__overlay" />
                 {comic.status === 'completed' && (

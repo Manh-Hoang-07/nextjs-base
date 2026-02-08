@@ -14,7 +14,7 @@ export function NavigationProgress() {
             crawlSpeed={200}
             height={3}
             crawl={true}
-            showSpinner={true} // Shows the loading spinner icon as requested
+            showSpinner={false} // Hide spinner, just show the bar
             easing="ease"
             speed={200}
             shadow="0 0 10px #DC2626,0 0 5px #DC2626"

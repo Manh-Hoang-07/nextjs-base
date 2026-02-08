@@ -5,7 +5,7 @@ import "@/styles/globals.css";
 import { ToastProvider } from "@/contexts/ToastContext";
 import ToastContainer from "@/components/UI/Feedback/ToastContainer";
 import { AuthInitializer } from "@/components/Providers/AuthInitializer";
-import { NavigationProgress } from "@/components/UI/Navigation/NavigationProgress";
+import { GlobalLoadingOverlay } from "@/components/UI/Loading/GlobalLoadingOverlay";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -58,9 +58,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        <Suspense fallback={null}>
-          <NavigationProgress />
-        </Suspense>
+        <GlobalLoadingOverlay />
         <ToastProvider>
           <AuthInitializer />
           <ToastContainer />

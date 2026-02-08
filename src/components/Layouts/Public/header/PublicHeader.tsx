@@ -9,9 +9,12 @@ import {
   PhoneIcon,
   ChevronDownIcon,
   UserCircleIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useSystemConfig } from "@/hooks/useSystemConfig";
+import { Suspense } from "react";
+import SearchInput from "@/components/Features/Comics/Search/Public/SearchInput";
 
 import { SystemConfig } from "@/types/api";
 
@@ -33,6 +36,7 @@ export function PublicHeader({
   const [expandedMobileMenus, setExpandedMobileMenus] = useState<string[]>([]);
   const [scrolled, setScrolled] = useState(false);
   const [internalMobileMenuOpen, setInternalMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // Mobile search state
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
@@ -55,6 +59,7 @@ export function PublicHeader({
   // Handle pathname changes (auto-close menu)
   useEffect(() => {
     setInternalMobileMenuOpen(false);
+    setIsSearchOpen(false); // Close search on navigation
   }, [pathname]);
 
   const siteName = systemConfig?.site_name || "Comic Haven";
@@ -152,64 +157,33 @@ export function PublicHeader({
               </Link>
             </div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1">
-              {navigationItems.map((item) => (
-                <div key={item.name} className="relative group px-1">
-                  {item.children ? (
-                    <button className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${isActive(item.path)
-                      ? "bg-primary/10 text-primary"
-                      : "text-gray-700 hover:text-primary hover:bg-gray-50"
-                      }`}>
-                      {item.name}
-                      <ChevronDownIcon className="w-4 h-4 opacity-50 group-hover:rotate-180 transition-transform duration-200" />
-                    </button>
-                  ) : (
-                    <Link
-                      href={item.path}
-                      className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${isActive(item.path)
-                        ? "bg-primary/10 text-primary"
-                        : "text-gray-700 hover:text-primary hover:bg-gray-50"
-                        }`}
-                    >
-                      {item.name}
-                    </Link>
-                  )}
+            {/* Desktop Navigation - REMOVED strictly as requested */}
 
-                  {/* Dropdown */}
-                  {item.children && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-2 min-w-[240px] overflow-hidden">
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.path}
-                            href={child.path}
-                            className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 text-sm font-medium text-gray-700 hover:text-primary transition-colors whitespace-nowrap"
-                          >
-                            <span className="text-xl opacity-80">{child.icon}</span>
-                            {child.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </nav>
-
-
+            {/* Desktop Search Input (Hidden on mobile) */}
+            <div className="hidden lg:block flex-1 max-w-2xl px-8">
+              <Suspense fallback={<div className="w-full h-11 bg-gray-100 rounded-full animate-pulse"></div>}>
+                <SearchInput className="shadow-none border-gray-100 bg-gray-50 focus-within:bg-white focus-within:shadow-md transition-all" />
+              </Suspense>
+            </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-4 shrink-0">
-              <Link href="/contact" className="hidden lg:flex">
-                <button className="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-full font-medium shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all whitespace-nowrap">
-                  <PhoneIcon className="w-4 h-4" />
-                  <span>Tài khoản</span>
-                </button>
-              </Link>
+            <div className="flex items-center gap-2 shrink-0">
+              {/* Mobile Search Icon */}
+              <button
+                className="lg:hidden p-3 rounded-full text-gray-500 hover:bg-gray-100 transition-all active:scale-95"
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+              >
+                {isSearchOpen ? (
+                  <XMarkIcon className="w-6 h-6" />
+                ) : (
+                  <MagnifyingGlassIcon className="w-6 h-6" />
+                )}
+              </button>
+
+              {/* Account button moved to menu as requested */}
 
               <button
-                className="lg:hidden p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition-all active:scale-95 z-[70]"
+                className="p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition-all active:scale-95 z-[70]"
                 onClick={handleToggle}
                 aria-label="Toggle menu"
               >
@@ -217,19 +191,26 @@ export function PublicHeader({
               </button>
             </div>
           </div>
+
+          {/* Mobile Search Overlay */}
+          <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isSearchOpen ? "max-h-20 opacity-100 pb-4" : "max-h-0 opacity-0"}`}>
+            <Suspense>
+              <SearchInput />
+            </Suspense>
+          </div>
         </div>
       </header>
 
       {/* Mobile Menu Overlay */}
       {internalMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-[80] backdrop-blur-sm lg:hidden transition-all duration-300"
+          className="fixed inset-0 bg-black/60 z-[80] backdrop-blur-sm transition-all duration-300"
           onClick={handleClose}
         />
       )}
 
       {/* Mobile Menu Sidebar */}
-      <div className={`fixed inset-y-0 right-0 w-[300px] bg-white z-[90] shadow-2xl transform transition-transform duration-300 ease-in-out lg:hidden ${internalMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+      <div className={`fixed inset-y-0 right-0 w-[300px] bg-white z-[90] shadow-2xl transform transition-transform duration-300 ease-in-out ${internalMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}>
         <div className="flex flex-col h-full">
           <div className="p-5 border-b border-gray-100 flex items-center justify-between">
@@ -303,7 +284,7 @@ export function PublicHeader({
             <Link href="/contact" onClick={handleClose}>
               <button className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium shadow-lg shadow-primary/25 active:scale-95 transition-all">
                 <PhoneIcon className="w-5 h-5" />
-                <span>Liên hệ ngay</span>
+                <span>Tài khoản</span>
               </button>
             </Link>
           </div>

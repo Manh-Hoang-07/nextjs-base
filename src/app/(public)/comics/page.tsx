@@ -2,10 +2,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { getComics, getComicCategories } from "@/lib/api/public/comic";
 import { ComicCard } from "@/components/Features/Comics/ComicList/Public/ComicCard";
-import { Pagination } from "@/components/Features/Comics/Chapters/Public/Pagination";
+import { Pagination } from "@/components/UI/Navigation/Pagination";
 import { CategorySelect } from "@/components/Features/Comics/Categories/Public/CategorySelect";
+import { ContentWrapper } from "@/components/UI/Loading/ContentWrapper";
 import "@/styles/comic.css";
-import SearchInput from "@/components/Features/Comics/Search/Public/SearchInput";
+
 
 interface Props {
     searchParams: Promise<{
@@ -25,14 +26,17 @@ export const metadata: Metadata = {
 export default async function ComicListPage({ searchParams }: Props) {
     const sp = await searchParams;
     const page = parseInt(sp.page || "1");
-    const comicsData = await getComics({
-        page,
-        sort: sp.sort || "last_chapter_updated_at:desc",
-        comic_category_id: sp.comic_category_id,
-        is_featured: sp.is_featured === 'true' ? true : (sp.is_featured === 'false' ? false : undefined),
-        search: sp.search
-    });
-    const categories = await getComicCategories();
+
+    const [comicsData, categories] = await Promise.all([
+        getComics({
+            page,
+            sort: sp.sort || "last_chapter_updated_at:desc",
+            comic_category_id: sp.comic_category_id,
+            is_featured: sp.is_featured === 'true' ? true : (sp.is_featured === 'false' ? false : undefined),
+            search: sp.search
+        }),
+        getComicCategories()
+    ]);
 
     return (
         <main className="bg-[#f8f9fa] min-h-screen py-8">
@@ -45,8 +49,6 @@ export default async function ComicListPage({ searchParams }: Props) {
                         </h1>
 
                         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                            <SearchInput />
-
                             {/* Category Select Dropdown */}
                             <CategorySelect categories={categories} />
 
@@ -68,32 +70,34 @@ export default async function ComicListPage({ searchParams }: Props) {
                         </div>
                     </div>
 
-                    {/* Main Grid - Now Full Width */}
-                    <div className="flex-1">
-                        {comicsData && comicsData.data && comicsData.data.length > 0 ? (
-                            <>
-                                <div className="comic-grid mb-12">
-                                    {comicsData.data.map(comic => (
-                                        <ComicCard key={comic.id} comic={comic} />
-                                    ))}
-                                </div>
+                    {/* Main Grid - Wrapped with loading overlay */}
+                    <ContentWrapper>
+                        <div className="flex-1">
+                            {comicsData && comicsData.data && comicsData.data.length > 0 ? (
+                                <>
+                                    <div className="comic-grid mb-12">
+                                        {comicsData.data.map((comic, index) => (
+                                            <ComicCard key={comic.id} comic={comic} priority={index < 8} />
+                                        ))}
+                                    </div>
 
-                                <Pagination
-                                    currentPage={comicsData.meta.page}
-                                    totalPages={comicsData.meta.totalPages}
-                                    hasNextPage={comicsData.meta.hasNextPage}
-                                    hasPreviousPage={comicsData.meta.hasPreviousPage}
-                                />
-                            </>
-                        ) : (
-                            <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-dashed border-gray-300">
-                                <p className="text-xl text-gray-500 font-bold mb-4">
-                                    {sp.search ? `Không tìm thấy truyện nào với từ khóa "${sp.search}"` : 'Không tìm thấy bộ truyện nào phù hợp!'}
-                                </p>
-                                <Link href="/comics" className="text-red-500 font-bold hover:underline">Xem tất cả truyện</Link>
-                            </div>
-                        )}
-                    </div>
+                                    <Pagination
+                                        currentPage={comicsData.meta.page}
+                                        totalPages={comicsData.meta.totalPages}
+                                        hasNextPage={comicsData.meta.hasNextPage}
+                                        hasPreviousPage={comicsData.meta.hasPreviousPage}
+                                    />
+                                </>
+                            ) : (
+                                <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-dashed border-gray-300">
+                                    <p className="text-xl text-gray-500 font-bold mb-4">
+                                        {sp.search ? `Không tìm thấy truyện nào với từ khóa "${sp.search}"` : 'Không tìm thấy bộ truyện nào phù hợp!'}
+                                    </p>
+                                    <Link href="/comics" className="text-red-500 font-bold hover:underline">Xem tất cả truyện</Link>
+                                </div>
+                            )}
+                        </div>
+                    </ContentWrapper>
                 </div>
             </div>
         </main>
