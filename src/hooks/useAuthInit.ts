@@ -26,6 +26,17 @@ export function useAuthInit(): AuthInitResult {
   useEffect(() => {
     // Đánh dấu client đã sẵn sàng
     setIsClientReady(true);
+
+    // Kiểm tra session thực tế với server khi khởi chạy app
+    const initializeAuth = async () => {
+      try {
+        await authStore.checkAuth();
+      } catch (error) {
+        console.warn("Auth initialization failed silently:", error);
+      }
+    };
+
+    initializeAuth();
   }, []);
 
   // Computed để kiểm tra xem có nên render auth-dependent content không

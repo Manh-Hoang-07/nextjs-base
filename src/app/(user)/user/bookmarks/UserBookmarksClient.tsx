@@ -7,15 +7,22 @@ import { userComicService } from "@/lib/api/user/comic";
 import { Bookmark } from "@/types/comic";
 import { useToastContext } from "@/contexts/ToastContext";
 import { TrashIcon, BookOpenIcon } from "@heroicons/react/24/outline";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export default function UserBookmarksClient() {
     const [loading, setLoading] = useState(true);
     const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+    const { isAuthenticated } = useAuthStore();
     const { showError, showSuccess } = useToastContext();
 
     useEffect(() => {
-        fetchBookmarks();
-    }, []);
+        const hasToken = typeof window !== 'undefined' && document.cookie.includes('auth_token');
+        if (isAuthenticated && hasToken) {
+            fetchBookmarks();
+        } else {
+            setLoading(false);
+        }
+    }, [isAuthenticated]);
 
     const fetchBookmarks = async () => {
         setLoading(true);

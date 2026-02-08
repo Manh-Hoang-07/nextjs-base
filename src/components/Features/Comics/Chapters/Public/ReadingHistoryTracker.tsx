@@ -13,9 +13,15 @@ export function ReadingHistoryTracker({ comicId, chapterId }: ReadingHistoryTrac
     const { isAuthenticated } = useAuthStore();
 
     useEffect(() => {
-        if (isAuthenticated && comicId && chapterId) {
+        const hasToken = typeof window !== 'undefined' && document.cookie.includes('auth_token');
+        if (isAuthenticated && hasToken && comicId && chapterId) {
             userComicService.updateReadingHistory({ comic_id: comicId, chapter_id: chapterId })
-                .catch(err => console.error("Failed to update reading history:", err));
+                .catch(err => {
+                    // Avoid logging if it's an auth error, status check shouldn't spam console
+                    if (err.response?.status !== 401 && err.response?.status !== 403) {
+                        console.error("Failed to update reading history:", err);
+                    }
+                });
         }
     }, [isAuthenticated, comicId, chapterId]);
 

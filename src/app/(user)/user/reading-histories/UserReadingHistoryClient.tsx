@@ -6,16 +6,23 @@ import Image from "next/image";
 import { userComicService } from "@/lib/api/user/comic";
 import { ReadingHistory } from "@/types/comic";
 import { useToastContext } from "@/contexts/ToastContext";
+import { useAuthStore } from "@/lib/store/authStore";
 import { ClockIcon, TrashIcon, BookOpenIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 export default function UserReadingHistoryClient() {
     const [loading, setLoading] = useState(true);
     const [history, setHistory] = useState<ReadingHistory[]>([]);
+    const { isAuthenticated } = useAuthStore();
     const { showError, showSuccess } = useToastContext();
 
     useEffect(() => {
-        fetchHistory();
-    }, []);
+        const hasToken = typeof window !== 'undefined' && document.cookie.includes('auth_token');
+        if (isAuthenticated && hasToken) {
+            fetchHistory();
+        } else {
+            setLoading(false);
+        }
+    }, [isAuthenticated]);
 
     const fetchHistory = async () => {
         setLoading(true);

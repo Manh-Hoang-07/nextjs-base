@@ -20,7 +20,8 @@ export function BookmarkButton({ chapterId, pageNumber = 1, className = "" }: Bo
     const { showError, showSuccess } = useToastContext();
 
     useEffect(() => {
-        if (isAuthenticated) {
+        const hasToken = typeof window !== 'undefined' && document.cookie.includes('auth_token');
+        if (isAuthenticated && hasToken) {
             checkStatus();
         } else {
             setIsLoading(false);
@@ -34,8 +35,10 @@ export function BookmarkButton({ chapterId, pageNumber = 1, className = "" }: Bo
             if (existing) {
                 setBookmarkId(existing.id);
             }
-        } catch (error) {
-            console.error("Failed to check bookmark status", error);
+        } catch (error: any) {
+            if (error.response?.status !== 401 && error.response?.status !== 403) {
+                console.error("Failed to check bookmark status", error);
+            }
         } finally {
             setIsLoading(false);
         }

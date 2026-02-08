@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import { ToastProvider } from "@/contexts/ToastContext";
 import ToastContainer from "@/components/UI/Feedback/ToastContainer";
+import { AuthInitializer } from "@/components/Providers/AuthInitializer";
 import { NavigationProgress } from "@/components/UI/Navigation/NavigationProgress";
 
 const geistSans = Geist({
@@ -61,6 +62,7 @@ export default function RootLayout({
           <NavigationProgress />
         </Suspense>
         <ToastProvider>
+          <AuthInitializer />
           <ToastContainer />
           {children}
         </ToastProvider>

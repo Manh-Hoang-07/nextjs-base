@@ -6,16 +6,23 @@ import Image from "next/image";
 import { userComicService } from "@/lib/api/user/comic";
 import { Follow } from "@/types/comic";
 import { useToastContext } from "@/contexts/ToastContext";
+import { useAuthStore } from "@/lib/store/authStore";
 import { BookmarkIcon, XMarkIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 export default function UserFollowsClient() {
     const [loading, setLoading] = useState(true);
     const [follows, setFollows] = useState<Follow[]>([]);
+    const { isAuthenticated } = useAuthStore();
     const { showError, showSuccess } = useToastContext();
 
     useEffect(() => {
-        fetchFollows();
-    }, []);
+        const hasToken = typeof window !== 'undefined' && document.cookie.includes('auth_token');
+        if (isAuthenticated && hasToken) {
+            fetchFollows();
+        } else {
+            setLoading(false);
+        }
+    }, [isAuthenticated]);
 
     const fetchFollows = async () => {
         setLoading(true);

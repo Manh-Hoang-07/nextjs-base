@@ -109,7 +109,8 @@ apiClient.interceptors.response.use(
 
       // Handle 403 Forbidden: Không có quyền
       if (status === 403) {
-        console.error("Access denied:", error.response.data);
+        // Silent failing for forbidden requests, components should handle their own errors
+        // Optionally redirect to login if we suspect session expiry
       }
 
       // Handle 500 Server Error

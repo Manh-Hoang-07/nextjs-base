@@ -21,7 +21,7 @@ export function FollowButton({ comicId, initialFollowCount = 0, className = "" }
     const { showError, showSuccess } = useToastContext();
 
     useEffect(() => {
-        if (isAuthenticated) {
+        if (isAuthenticated && typeof window !== 'undefined' && document.cookie.includes('auth_token')) {
             checkStatus();
         }
     }, [isAuthenticated, comicId]);
@@ -30,8 +30,10 @@ export function FollowButton({ comicId, initialFollowCount = 0, className = "" }
         try {
             const res = await userComicService.checkFollowStatus(comicId);
             setIsFollowing(res.is_following);
-        } catch (error) {
-            console.error("Failed to check follow status", error);
+        } catch (error: any) {
+            if (error.response?.status !== 401 && error.response?.status !== 403) {
+                console.error("Failed to check follow status", error);
+            }
         }
     };
 
@@ -66,8 +68,8 @@ export function FollowButton({ comicId, initialFollowCount = 0, className = "" }
             onClick={handleToggleFollow}
             disabled={isLoading}
             className={`flex items-center gap-2 px-8 py-3 rounded-full font-bold transition ${isFollowing
-                    ? "bg-red-50 border-2 border-red-600 text-red-600 hover:bg-red-100"
-                    : "bg-white border-2 border-red-600 text-red-600 hover:bg-red-50"
+                ? "bg-red-50 border-2 border-red-600 text-red-600 hover:bg-red-100"
+                : "bg-white border-2 border-red-600 text-red-600 hover:bg-red-50"
                 } ${className} ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
         >
             {isFollowing ? (
