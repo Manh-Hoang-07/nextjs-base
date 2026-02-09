@@ -11,17 +11,20 @@ export default function SearchInput({ className = "" }: { className?: string }) 
     const [term, setTerm] = useState(searchParams.get('search')?.toString() || '');
 
     useEffect(() => {
+        // Skip if search term in URL matches current state
+        const currentSearch = searchParams.get('search') || '';
+        if (term === currentSearch) return;
+
         // Debounce logic
         const handler = setTimeout(() => {
-            const params = new URLSearchParams(searchParams);
+            const params = new URLSearchParams(searchParams.toString());
 
             // If term is cleared, just remove it from params
             if (!term) {
                 params.delete('search');
                 // Only replace if we are already on the comics page to clear the filter
-                // If we are elsewhere, clearing search shouldn't necessarily navigate us
-                if (pathname === '/comics') {
-                    router.replace(`${pathname}?${params.toString()}`);
+                if (pathname.startsWith('/comics')) {
+                    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
                 }
                 return;
             }
@@ -30,22 +33,17 @@ export default function SearchInput({ className = "" }: { className?: string }) 
             params.set('search', term);
             params.set('page', '1'); // Reset to page 1
 
-            // Determine target path: always /comics for search results unless we implement other search pages
-            // If we are on /comics or /comics/categories/..., we might want to stay there? 
-            // Actually, searching usually resets category filters or applies search on top globally. 
-            // Design decision: Search usually leads to the main comics list.
-
             const targetPath = '/comics';
 
             // Navigate
-            router.replace(`${targetPath}?${params.toString()}`);
+            router.replace(`${targetPath}?${params.toString()}`, { scroll: false });
 
         }, 500);
 
         return () => {
             clearTimeout(handler);
         };
-    }, [term, router, searchParams]); // pathname removed from deps to avoid loop if we change path logic
+    }, [term, router, searchParams, pathname]); // pathname removed from deps to avoid loop if we change path logic
 
     // Update term if URL changes externally (e.g. back button)
     useEffect(() => {
