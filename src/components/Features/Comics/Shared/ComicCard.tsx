@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { formatNumber } from "@/utils/formatters";
+import { useEffect, useState } from "react";
 
 interface ComicCardProps {
   comic: {
@@ -19,16 +21,11 @@ interface ComicCardProps {
 
 export default function ComicCard({ comic }: ComicCardProps) {
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
 
-  const formatNumber = (num: number): string => {
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + "M";
-    }
-    if (num >= 1000) {
-      return (num / 1000).toFixed(1) + "K";
-    }
-    return num.toString();
-  };
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
     <div
@@ -77,7 +74,7 @@ export default function ComicCard({ comic }: ComicCardProps) {
           ))}
         </div>
         <div className="flex items-center justify-between text-xs text-gray-500">
-          <span>{formatNumber(comic.stats?.view_count || 0)} lượt xem</span>
+          <span>{isMounted ? formatNumber(comic.stats?.view_count || 0) : (comic.stats?.view_count || 0)} lượt xem</span>
           <span>{comic.stats?.chapter_count || 0} chương</span>
         </div>
       </div>

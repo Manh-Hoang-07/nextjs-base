@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { formatDate } from '@/utils/formatters';
+import { formatDate, formatNumber } from '@/utils/formatters';
 import { Comic } from '@/types/comic';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules';
@@ -20,6 +20,12 @@ interface TrendingHeroProps {
 }
 
 export const TrendingHero: React.FC<TrendingHeroProps> = ({ comics }) => {
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     // If no comics, don't render
     if (!comics || comics.length === 0) return null;
 
@@ -110,7 +116,17 @@ export const TrendingHero: React.FC<TrendingHeroProps> = ({ comics }) => {
                                         <div className="w-1 h-1 rounded-full bg-gray-300" />
                                         <span className="flex items-center gap-1 text-yellow-500 font-bold">
                                             <Star className="w-3 h-3 fill-current" />
-                                            <span className="text-gray-700">{comic.stats?.rating_sum || '4.9'}</span>
+                                            <span className="text-gray-700">{comic.stats?.rating_sum ? (Number(comic.stats.rating_sum) / Math.max(1, Number(comic.stats.rating_count))).toFixed(1) : '4.9'}</span>
+                                        </span>
+                                        <div className="w-1 h-1 rounded-full bg-gray-300" />
+                                        <span className="flex items-center gap-1">
+                                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
+                                            <span>{formatNumber(comic.stats?.view_count)}</span>
+                                        </span>
+                                        <div className="w-1 h-1 rounded-full bg-gray-300" />
+                                        <span className="flex items-center gap-1">
+                                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg>
+                                            <span>{formatNumber(comic.stats?.follow_count)}</span>
                                         </span>
                                         <div className="w-1 h-1 rounded-full bg-gray-300" />
                                         <span className="flex items-center gap-1">
@@ -177,5 +193,3 @@ export const TrendingHero: React.FC<TrendingHeroProps> = ({ comics }) => {
         </section>
     );
 };
-
-

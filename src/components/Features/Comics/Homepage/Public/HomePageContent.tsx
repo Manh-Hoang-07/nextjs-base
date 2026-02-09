@@ -8,6 +8,7 @@ import api from "@/lib/api/client";
 import { publicEndpoints } from "@/lib/api/endpoints";
 import { ComicCard } from "@/components/Features/Comics/ComicList/Public/ComicCard";
 import { Comic, ComicCategory as Category } from "@/types/comic";
+import { formatNumber, formatDate } from "@/utils/formatters";
 
 
 
@@ -21,8 +22,10 @@ export default function HomePageContent() {
   const [recentUpdateComics, setRecentUpdateComics] = useState<Comic[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     loadHomepageData();
   }, []);
 
@@ -68,17 +71,7 @@ export default function HomePageContent() {
     router.push(`/comics/${slug}`);
   }
 
-  function formatNumber(num: number): string {
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + "M";
-    }
-    if (num >= 1000) {
-      return (num / 1000).toFixed(1) + "K";
-    }
-    return num.toString();
-  }
-
-  function formatDate(dateString: string): string {
+  function localFormatDate(dateString: string): string {
     if (!dateString) return "";
     const date = new Date(dateString);
     const now = new Date();
@@ -91,7 +84,7 @@ export default function HomePageContent() {
     if (minutes < 60) return `${minutes} phút trước`;
     if (hours < 24) return `${hours} giờ trước`;
     if (days < 7) return `${days} ngày trước`;
-    return date.toLocaleDateString("vi-VN");
+    return formatDate(dateString);
   }
 
 
@@ -208,7 +201,7 @@ export default function HomePageContent() {
                       </div>
                     )}
                     <div className="flex items-center space-x-4 text-sm text-gray-500">
-                      <span>{formatNumber(parseInt(comic.stats?.view_count || "0"))} lượt xem</span>
+                      <span>{isMounted ? formatNumber(parseInt(comic.stats?.view_count || "0")) : (comic.stats?.view_count || "0")} lượt xem</span>
                       <span>{comic.stats?.chapter_count || 0} chương</span>
                     </div>
                   </div>
@@ -365,7 +358,7 @@ export default function HomePageContent() {
                     )}
                     <div className="flex items-center space-x-3 text-xs text-gray-500">
                       {comic.last_chapter?.created_at && (
-                        <span>{formatDate(comic.last_chapter.created_at)}</span>
+                        <span>{isMounted ? localFormatDate(comic.last_chapter.created_at) : ""}</span>
                       )}
                     </div>
                   </div>
@@ -375,7 +368,7 @@ export default function HomePageContent() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                       </svg>
-                      {formatNumber(parseInt(comic.stats?.view_count || "0"))}
+                      {isMounted ? formatNumber(parseInt(comic.stats?.view_count || "0")) : (comic.stats?.view_count || "0")}
                     </span>
                     <span className="flex items-center">
                       <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

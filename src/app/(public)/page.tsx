@@ -5,6 +5,7 @@ import { TrendingHero } from "@/components/Features/Comics/ComicList/Public/Tren
 import { ComicSection } from "@/components/Features/Comics/ComicList/Public/ComicSection";
 import { CategorySidebar } from "@/components/Features/Comics/Categories/Public/CategorySidebar";
 import Link from "next/link";
+import { formatNumber } from "@/utils/formatters";
 import "@/styles/comic.css";
 
 
@@ -95,8 +96,9 @@ export default async function ComicHomePage() {
                         <h4 className="font-bold text-sm text-gray-800 line-clamp-2 group-hover:text-red-500 transition-colors">
                           {comic.title}
                         </h4>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {parseInt(comic.stats.view_count).toLocaleString()} lượt xem
+                        <p className="text-xs text-gray-500 mt-1 flex items-center gap-1.5">
+                          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
+                          {formatNumber(comic.stats?.view_count)} lượt xem
                         </p>
                       </div>
                     </div>

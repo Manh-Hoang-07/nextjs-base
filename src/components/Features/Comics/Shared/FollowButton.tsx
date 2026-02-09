@@ -6,6 +6,7 @@ import { useAuthStore } from "@/lib/store/authStore";
 import { useToastContext } from "@/contexts/ToastContext";
 import { BookmarkIcon } from "@heroicons/react/24/outline";
 import { BookmarkIcon as BookmarkSolidIcon } from "@heroicons/react/24/solid";
+import { formatNumber } from "@/utils/formatters";
 
 interface FollowButtonProps {
     comicId: string | number;
@@ -17,6 +18,7 @@ export function FollowButton({ comicId, initialFollowCount = 0, className = "" }
     const [isFollowing, setIsFollowing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [followCount, setFollowCount] = useState(initialFollowCount);
+    const [isMounted, setIsMounted] = useState(false);
     const { isAuthenticated } = useAuthStore();
     const { showError, showSuccess } = useToastContext();
 
@@ -32,6 +34,7 @@ export function FollowButton({ comicId, initialFollowCount = 0, className = "" }
     }, [comicId]);
 
     useEffect(() => {
+        setIsMounted(true);
         if (isAuthenticated && typeof window !== 'undefined' && document.cookie.includes('auth_token')) {
             checkStatus();
         }
@@ -48,12 +51,12 @@ export function FollowButton({ comicId, initialFollowCount = 0, className = "" }
             if (isFollowing) {
                 await userComicService.unfollowComic(comicId);
                 setIsFollowing(false);
-                setFollowCount(prev => Math.max(0, prev - 1));
+                setFollowCount((prev: number) => Math.max(0, prev - 1));
                 showSuccess("Đã bỏ theo dõi truyện");
             } else {
                 await userComicService.followComic(comicId);
                 setIsFollowing(true);
-                setFollowCount(prev => prev + 1);
+                setFollowCount((prev: number) => prev + 1);
                 showSuccess("Đã theo dõi truyện thành công");
             }
         } catch (error) {
@@ -83,8 +86,9 @@ export function FollowButton({ comicId, initialFollowCount = 0, className = "" }
                     Theo dõi
                 </>
             )}
-            {/* Optional: Show follow count if needed */}
-            {/* <span className="ml-1 text-xs opacity-70">({followCount.toLocaleString()})</span> */}
+            <span className="ml-1 text-xs opacity-70">
+                ({formatNumber(followCount)})
+            </span>
         </button>
     );
 }

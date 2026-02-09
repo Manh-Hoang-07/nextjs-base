@@ -7,6 +7,8 @@ import { getComicComments } from "@/lib/api/public/comment";
 import { ChapterList } from "@/components/Features/Comics/Chapters/Public/ChapterList";
 import { CommentSection } from "@/components/Features/Comics/Comments/Public/CommentSection";
 import { FollowButton } from "@/components/Features/Comics/Shared/FollowButton";
+import { Star, Clock, User, Info } from "lucide-react";
+import { formatNumber } from "@/utils/formatters";
 import "@/styles/comic.css";
 
 interface Props {
@@ -79,24 +81,50 @@ export default async function ComicDetailPage({ params }: Props) {
                             ))}
                         </div>
 
-                        <div className="space-y-5 mb-8 text-left">
-                            <div>
-                                <p className="text-xs text-gray-400 uppercase font-bold tracking-widest mb-1">Tác giả</p>
-                                <p className="text-gray-900 font-bold">{comic.author || 'Đang cập nhật'}</p>
+                        <div className="flex flex-wrap gap-x-8 gap-y-4 mb-6 text-sm">
+                            <div className="flex items-center gap-2">
+                                <User className="w-4 h-4 text-red-500" />
+                                <span className="text-gray-500 font-medium">Tác giả:</span>
+                                <span className="text-gray-900 font-bold">{comic.author || 'Đang cập nhật'}</span>
                             </div>
-                            <div>
-                                <p className="text-xs text-gray-400 uppercase font-bold tracking-widest mb-1">Trạng thái</p>
-                                <p className="text-gray-900 font-bold">
-                                    {comic.status === 'completed' ? 'Hoàn thành' : 'Đang tiến hành'}
-                                </p>
+                            <div className="flex items-center gap-2">
+                                <Info className="w-4 h-4 text-red-500" />
+                                <span className="text-gray-500 font-medium">Trạng thái:</span>
+                                <span className="text-gray-900 font-bold">{comic.status === 'completed' ? 'Hoàn thành' : 'Đang tiến hành'}</span>
                             </div>
-                            <div>
-                                <p className="text-xs text-gray-400 uppercase font-bold tracking-widest mb-1">Lượt xem</p>
-                                <p className="text-gray-900 font-bold">{parseInt(comic.stats.view_count).toLocaleString()}</p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-6 mb-8 text-left bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
+                                </div>
+                                <div>
+                                    <p className="text-[10px] text-gray-400 uppercase font-black tracking-widest">Lượt xem</p>
+                                    <p className="text-gray-900 font-black">{formatNumber(comic.stats?.view_count)}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="text-xs text-gray-400 uppercase font-bold tracking-widest mb-1">Theo dõi</p>
-                                <p className="text-gray-900 font-bold">{parseInt(comic.stats.follow_count).toLocaleString()}</p>
+                            <div className="w-px h-10 bg-gray-100 hidden sm:block" />
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-lg bg-pink-50 flex items-center justify-center text-pink-600">
+                                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg>
+                                </div>
+                                <div>
+                                    <p className="text-[10px] text-gray-400 uppercase font-black tracking-widest">Theo dõi</p>
+                                    <p className="text-gray-900 font-black">{formatNumber(comic.stats?.follow_count)}</p>
+                                </div>
+                            </div>
+                            <div className="w-px h-10 bg-gray-100 hidden sm:block" />
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-lg bg-yellow-50 flex items-center justify-center text-yellow-600">
+                                    <Star className="w-5 h-5 fill-current" />
+                                </div>
+                                <div>
+                                    <p className="text-[10px] text-gray-400 uppercase font-black tracking-widest">Đánh giá</p>
+                                    <p className="text-gray-900 font-black">
+                                        {comic.stats?.rating_sum ? (Number(comic.stats.rating_sum) / Math.max(1, Number(comic.stats.rating_count))).toFixed(1) : '4.9'}
+                                    </p>
+                                </div>
                             </div>
                         </div>
 

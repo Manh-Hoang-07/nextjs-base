@@ -5,6 +5,7 @@ import { useParams, useSearchParams, useRouter, usePathname } from "next/navigat
 import { useProductCategories, ProductCategory } from "@/hooks/useProductCategories";
 import CategoryMenu from "@/components/Features/Ecommerce/Products/Categories/Public/CategoryMenu";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/formatters";
 
 interface Product {
   id: number;
@@ -42,6 +43,11 @@ export default function PublicCategoryPage() {
     return l ? Number(l) || 12 : 12;
   });
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const p = searchParams.get("page");
@@ -158,13 +164,8 @@ export default function PublicCategoryPage() {
                         {product.name}
                       </h3>
                       <div className="mt-2 text-sm font-semibold text-primary">
-                        {product.sale_price ?? product.price
-                          ? new Intl.NumberFormat("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
-                          }).format(
-                            Number((product.sale_price ?? product.price) || 0)
-                          )
+                        {isMounted && (product.sale_price ?? product.price)
+                          ? formatCurrency(product.sale_price ?? product.price)
                           : null}
                       </div>
                     </div>

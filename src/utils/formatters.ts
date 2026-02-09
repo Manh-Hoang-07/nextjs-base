@@ -66,5 +66,15 @@ export function formatDateTime(date: string | Date | null | undefined, locale: s
   });
 }
 
+export function formatNumber(num: number | string | undefined | null): string {
+  const value = typeof num === 'string' ? parseInt(num, 10) : (num ?? 0);
+  if (isNaN(value)) return '0';
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
 
-
+export function formatCurrency(num: number | string | undefined | null): string {
+  const value = typeof num === 'string' ? parseInt(num, 10) : (num ?? 0);
+  if (isNaN(value)) return '0 ₫';
+  // Standard VND format: 100.000 ₫
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
+}
