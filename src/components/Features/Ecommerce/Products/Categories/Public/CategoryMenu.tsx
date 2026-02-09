@@ -14,7 +14,7 @@ function renderTree(categories: ProductCategory[], level = 0) {
       {categories.map((cat) => (
         <li key={cat.id}>
           <Link
-            href={`/category/${cat.slug}`}
+            href={`/comics/categories/${cat.slug}`}
             className="flex items-center justify-between rounded-md px-2 py-1 text-sm hover:bg-primary/5"
           >
             <span className="truncate">{cat.name}</span>

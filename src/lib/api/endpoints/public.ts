@@ -116,6 +116,9 @@ export const publicEndpoints = {
         list: "/api/public/comic-categories",
         show: (id: Id) => `/api/public/comic-categories/${id}`,
     },
+    menus: {
+        list: "/api/public/menus",
+    },
 } as const;
 
 

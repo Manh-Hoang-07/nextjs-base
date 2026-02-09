@@ -23,6 +23,7 @@ interface Menu {
   show_in_menu?: boolean;
   deleted_at?: string;
   parent?: { id: number; name: string };
+  group?: string;
 }
 
 interface AdminMenusProps {
@@ -168,7 +169,7 @@ export default function AdminMenus({ title = "Quản lý menu", createButtonText
 
       <MenusFilter initialFilters={filters} statusEnums={statusEnums} parentMenus={parentMenus} onUpdateFilters={updateFilters} />
 
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="bg-white shadow-md rounded-lg overflow-x-auto">
         {loading ? (
           <SkeletonLoader type="table" rows={5} columns={6} />
         ) : (
@@ -179,6 +180,7 @@ export default function AdminMenus({ title = "Quản lý menu", createButtonText
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Menu</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Path</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Loại</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nhóm</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
               </tr>
@@ -208,6 +210,11 @@ export default function AdminMenus({ title = "Quản lý menu", createButtonText
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">{getTypeLabel(menu.type)}</span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${menu.group === 'client' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800'}`}>
+                      {menu.group === 'client' ? 'Client' : 'Admin'}
+                    </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex flex-col space-y-1">

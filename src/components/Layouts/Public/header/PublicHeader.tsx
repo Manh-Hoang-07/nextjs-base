@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Bars3Icon,
@@ -17,8 +17,10 @@ import Image from "next/image";
 import { useSystemConfig } from "@/hooks/useSystemConfig";
 import { Suspense } from "react";
 import SearchInput from "@/components/Features/Comics/Search/Public/SearchInput";
+import apiClient from "@/lib/api/client";
+import { publicEndpoints } from "@/lib/api/endpoints";
 
-import { SystemConfig } from "@/types/api";
+import { SystemConfig, Menu } from "@/types/api";
 
 interface PublicHeaderProps {
   mobileMenuOpen?: boolean;
@@ -35,11 +37,13 @@ export function PublicHeader({
   currentPath = "",
   systemConfig,
 }: PublicHeaderProps) {
+  const [navigationItems, setNavigationItems] = useState<Menu[]>([]);
   const [expandedMobileMenus, setExpandedMobileMenus] = useState<string[]>([]);
   const [scrolled, setScrolled] = useState(false);
   const [internalMobileMenuOpen, setInternalMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false); // Mobile search state
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
   const { isAuthenticated, user, logout } = useAuthStore();
 
@@ -50,6 +54,17 @@ export function PublicHeader({
 
   useEffect(() => {
     setMounted(true);
+    const fetchMenus = async () => {
+      try {
+        const response = await apiClient.get<any>(publicEndpoints.menus.list);
+        const data = response.data;
+        const items = Array.isArray(data) ? data : (Array.isArray(data.data) ? data.data : []);
+        setNavigationItems(items);
+      } catch (error) {
+        console.error("Failed to fetch menus", error);
+      }
+    };
+    fetchMenus();
   }, []);
 
   // Sync scroll lock with menu state
@@ -94,31 +109,23 @@ export function PublicHeader({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Navigation items
-  const navigationItems = [
-    { name: "Trang chủ", path: "/", icon: "" },
-    {
-      name: "Thể loại",
-      path: "/comics/categories",
-      icon: "",
-      children: [
-        { name: "Hành động", path: "/comics/categories/hanh-dong", icon: "" },
-        { name: "Phiêu lưu", path: "/comics/categories/phieu-luu", icon: "" },
-        { name: "Học đường", path: "/comics/categories/hoc-duong", icon: "" },
-        { name: "Chuyển sinh", path: "/comics/categories/chuyen-sinh", icon: "" },
-      ],
-    },
-    { name: "Mới cập nhật", path: "/comics?sort=last_chapter_updated_at:desc", icon: "" },
-    { name: "Truyện HOT", path: "/comics?sort=view_count:desc", icon: "" },
-    { name: "Hoàn thành", path: "/comics?status=completed", icon: "" },
-    { name: "Tin tức", path: "/posts", icon: "" },
-  ];
 
-  const isActive = (path: string) => pathname === path || pathname?.startsWith(path + "/");
+  const isActive = (path: string) => {
+    if (!path) return false;
+    const [baseUrl, query] = path.split('?');
+    if (query) {
+      const params = new URLSearchParams(query);
+      const allParamsMatch = Array.from(params.entries()).every(([key, val]) => {
+        return searchParams.get(key) === val;
+      });
+      return pathname === baseUrl && allParamsMatch;
+    }
+    return pathname === baseUrl || (baseUrl !== '/' && pathname?.startsWith(baseUrl + "/"));
+  };
 
-  const toggleMobileSubmenu = (name: string) => {
+  const toggleMobileSubmenu = (id: string | number) => {
     setExpandedMobileMenus((prev) =>
-      prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name]
+      prev.includes(String(id)) ? prev.filter((n) => n !== String(id)) : [...prev, String(id)]
     );
   };
 
@@ -235,11 +242,11 @@ export function PublicHeader({
           <div className="flex-1 overflow-y-auto p-4">
             <nav className="space-y-1">
               {navigationItems.map((item) => (
-                <div key={item.name} className="overflow-hidden">
-                  {item.children ? (
+                <div key={item.id || item.name} className="overflow-hidden">
+                  {item.children && item.children.length > 0 ? (
                     <div>
                       <button
-                        onClick={() => toggleMobileSubmenu(item.name)}
+                        onClick={() => toggleMobileSubmenu(item.id)}
                         className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-left font-medium transition-colors ${isActive(item.path) ? "bg-primary/5 text-primary" : "text-gray-700 hover:bg-gray-50"
                           }`}
                       >
@@ -248,26 +255,27 @@ export function PublicHeader({
                           {item.name}
                         </div>
                         <ChevronDownIcon
-                          className={`w-5 h-5 text-gray-400 transition-transform ${expandedMobileMenus.includes(item.name) ? "rotate-180" : ""
+                          className={`w-5 h-5 text-gray-400 transition-transform ${expandedMobileMenus.includes(String(item.id)) ? "rotate-180" : ""
                             }`}
                         />
                       </button>
                       <div
-                        className={`space-y-1 pl-12 pr-2 transition-all duration-300 ${expandedMobileMenus.includes(item.name)
+                        className={`space-y-1 pl-12 pr-2 transition-all duration-300 ${expandedMobileMenus.includes(String(item.id))
                           ? "max-h-[500px] opacity-100 py-2"
                           : "max-h-0 opacity-0 overflow-hidden"
                           }`}
                       >
                         {item.children.map((child) => (
                           <Link
-                            key={child.path}
+                            key={child.id || child.path}
                             href={child.path}
                             onClick={handleClose}
-                            className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${pathname === child.path
+                            className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive(child.path)
                               ? "text-primary bg-primary/5"
                               : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                               }`}
                           >
+                            <span className="text-xl">{child.icon}</span>
                             {child.name}
                           </Link>
                         ))}

@@ -113,6 +113,21 @@ export default function MenusFilter({
               }}
             />
           </div>
+          <div>
+            <SelectFilter
+              value={filters["group"] || ""}
+              options={[
+                { value: "", label: "Tất cả nhóm" },
+                { value: "admin", label: "Nhóm Admin" },
+                { value: "client", label: "Nhóm Client" },
+              ]}
+              placeholder="Chọn nhóm menu"
+              onChange={(value) => {
+                filters["group"] = value;
+                onChange();
+              }}
+            />
+          </div>
           <div className="flex gap-4">
             <div className="min-w-[150px]">
               <SelectFilter

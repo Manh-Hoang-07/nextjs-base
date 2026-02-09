@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams, useRouter } from "next/navigation";
+import { useParams, useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useProductCategories, ProductCategory } from "@/hooks/useProductCategories";
 import CategoryMenu from "@/components/Features/Ecommerce/Products/Categories/Public/CategoryMenu";
 import Image from "next/image";
@@ -20,6 +20,7 @@ export default function PublicCategoryPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
   const slug = params.slug as string;
 
   const {
@@ -65,11 +66,14 @@ export default function PublicCategoryPage() {
 
       if (cat) {
         setCategory(cat);
-        if ((cat as any).products?.items) {
-          setProducts((cat as any).products.items);
-          setTotalPages((cat as any).products.meta?.totalPages || 1);
-        } else if ((cat as any).products && Array.isArray((cat as any).products)) {
-          setProducts((cat as any).products);
+        const productsData = (cat as any).products;
+        if (productsData?.items) {
+          setProducts(productsData.items || []);
+          setTotalPages(productsData.meta?.totalPages || 1);
+        } else if (Array.isArray(productsData)) {
+          setProducts(productsData);
+        } else {
+          setProducts([]);
         }
       }
     }
@@ -86,8 +90,8 @@ export default function PublicCategoryPage() {
         limit,
       });
       if (res) {
-        setProducts(res.items);
-        setTotalPages(res.meta.totalPages);
+        setProducts(res.items || []);
+        setTotalPages(res.meta?.totalPages || 1);
       }
     }
 
@@ -99,7 +103,7 @@ export default function PublicCategoryPage() {
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", String(newPage));
-    router.push(`/category/${slug}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
@@ -124,9 +128,9 @@ export default function PublicCategoryPage() {
             )}
           </header>
 
-          {isLoading && products.length === 0 ? (
+          {isLoading && (!products || products.length === 0) ? (
             <div className="py-12 text-center text-gray-500">Đang tải...</div>
-          ) : products.length === 0 ? (
+          ) : (!products || products.length === 0) ? (
             <div className="py-12 text-center text-gray-500">
               Chưa có sản phẩm trong danh mục này.
             </div>

@@ -212,5 +212,15 @@ export interface ContentTemplate {
   updated_at?: string;
 }
 
+export interface Menu {
+  id: number;
+  code: string;
+  name: string;
+  path: string;
+  icon: string;
+  type: 'route' | 'group';
+  children: Menu[];
+}
+
 
 

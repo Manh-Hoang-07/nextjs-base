@@ -24,6 +24,7 @@ const menuSchema = z.object({
   is_public: z.boolean().default(false),
   show_in_menu: z.boolean().default(true),
   required_permission_id: z.coerce.number().optional().nullable(),
+  group: z.string().min(1, "Group là bắt buộc").default("admin"),
 });
 
 type MenuFormValues = z.infer<typeof menuSchema>;
@@ -42,6 +43,7 @@ interface Menu {
   is_public?: boolean;
   show_in_menu?: boolean;
   required_permission_id?: number | string | null;
+  group?: string;
 }
 
 interface MenuFormProps {
@@ -86,6 +88,7 @@ export default function MenuForm({
       is_public: false,
       show_in_menu: true,
       required_permission_id: null,
+      group: "admin",
     },
   });
 
@@ -161,6 +164,7 @@ export default function MenuForm({
           is_public: !!menu.is_public,
           show_in_menu: menu.show_in_menu !== false,
           required_permission_id: menu.required_permission_id ? Number(menu.required_permission_id) : null,
+          group: menu.group || "admin",
         });
       } else {
         reset({
@@ -176,6 +180,7 @@ export default function MenuForm({
           is_public: false,
           show_in_menu: true,
           required_permission_id: null,
+          group: "admin",
         });
       }
     }
@@ -260,6 +265,25 @@ export default function MenuForm({
                       { value: "route", label: "Route (Nội bộ)" },
                       { value: "group", label: "Group (Nhóm)" },
                       { value: "link", label: "Link (Bên ngoài)" },
+                    ]}
+                    onChange={onChange}
+                  />
+                </div>
+              )}
+            />
+            <Controller
+              name="group"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <div className="space-y-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    Nhóm (Context) <span className="text-red-500">*</span>
+                  </label>
+                  <SingleSelectEnhanced
+                    value={value}
+                    options={[
+                      { value: "admin", label: "Admin - Quản trị" },
+                      { value: "client", label: "Client - Website" },
                     ]}
                     onChange={onChange}
                   />
