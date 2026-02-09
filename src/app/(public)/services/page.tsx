@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { Button } from "@/components/UI/Navigation/Button";
 import { ServiceFilter } from "@/components/Features/Introduction/Services/Public/ServiceFilter";
 import { Metadata } from "next";
@@ -105,7 +106,9 @@ export default async function ServicesPage() {
       <HeroBanner locationCode="service" imageOnly={true} />
 
       <div className="container mx-auto px-4 mt-8 relative z-10">
-        <ServiceFilter initialServices={services} />
+        <Suspense fallback={<div className="text-center py-10 text-gray-500">Đang tải dịch vụ...</div>}>
+          <ServiceFilter initialServices={services} />
+        </Suspense>
 
         {/* CTA Section */}
         <div className="mt-16 bg-gray-100 rounded-lg p-8 text-center">

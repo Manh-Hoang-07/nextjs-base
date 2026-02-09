@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Metadata } from "next";
 import FAQsClient from "./FAQsClient";
 
@@ -7,6 +8,10 @@ export const metadata: Metadata = {
 };
 
 export default function FAQsPage() {
-  return <FAQsClient />;
+  return (
+    <Suspense fallback={<div className="text-center py-10 text-gray-500">Đang tải câu hỏi...</div>}>
+      <FAQsClient />
+    </Suspense>
+  );
 }
 

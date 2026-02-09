@@ -30,14 +30,17 @@ export function useAuthInit(): AuthInitResult {
     // Kiểm tra session thực tế với server khi khởi chạy app
     const initializeAuth = async () => {
       try {
-        await authStore.checkAuth();
+        // Chỉ chạy checkAuth nếu chưa được khởi tạo
+        if (!authStore.isInitialized) {
+          await authStore.checkAuth();
+        }
       } catch (error) {
         console.warn("Auth initialization failed silently:", error);
       }
     };
 
     initializeAuth();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Computed để kiểm tra xem có nên render auth-dependent content không
   const shouldRenderAuthContent = useMemo(() => {

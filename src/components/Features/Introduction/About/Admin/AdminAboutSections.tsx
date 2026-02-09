@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useAdminListPage } from "@/hooks/useAdminListPage";
 import { adminEndpoints } from "@/lib/api/endpoints";
 import SkeletonLoader from "@/components/UI/Feedback/SkeletonLoader";
@@ -70,13 +71,13 @@ export default function AdminAboutSections({
     handleDelete,
     getSerialNumber,
     hasData,
-  } = useAdminListPage({
+  } = useAdminListPage(useMemo(() => ({
     endpoints: {
       list: adminEndpoints.aboutSections.list,
       create: adminEndpoints.aboutSections.create,
-      update: (id) => adminEndpoints.aboutSections.update(id),
-      delete: (id) => adminEndpoints.aboutSections.delete(id),
-      show: (id) => adminEndpoints.aboutSections.show(id),
+      update: (id: string | number) => adminEndpoints.aboutSections.update(id),
+      delete: (id: string | number) => adminEndpoints.aboutSections.delete(id),
+      show: (id: string | number) => adminEndpoints.aboutSections.show(id),
     },
     messages: {
       createSuccess: "Đã tạo thành công",
@@ -84,7 +85,7 @@ export default function AdminAboutSections({
       deleteSuccess: "Đã xóa thành công",
     },
     fetchDetailBeforeEdit: true,
-  });
+  }), []));
 
   return (
     <div className="admin-Abouts">

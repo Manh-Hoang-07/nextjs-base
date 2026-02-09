@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useEffect, useState } from "react";
-import AdminFilter from "@/components/Shared/Admin/AdminFilter";
+import AdminFilter from "@/components/shared/admin/AdminFilter";
 import SelectFilter from "@/components/UI/Filters/SelectFilter";
 import apiClient from "@/lib/api/client";
 import { adminEndpoints } from "@/lib/api/endpoints";

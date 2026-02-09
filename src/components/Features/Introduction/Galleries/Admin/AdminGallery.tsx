@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import Image from "next/image";
 import { useAdminListPage } from "@/hooks/useAdminListPage";
 import { adminEndpoints } from "@/lib/api/endpoints";
@@ -60,13 +61,13 @@ export default function AdminGallery({
     handleDelete,
     getSerialNumber,
     hasData,
-  } = useAdminListPage({
+  } = useAdminListPage(useMemo(() => ({
     endpoints: {
       list: adminEndpoints.gallery.list,
       create: adminEndpoints.gallery.create,
-      update: (id) => adminEndpoints.gallery.update(id),
-      delete: (id) => adminEndpoints.gallery.delete(id),
-      show: (id) => adminEndpoints.gallery.show(id),
+      update: (id: string | number) => adminEndpoints.gallery.update(id),
+      delete: (id: string | number) => adminEndpoints.gallery.delete(id),
+      show: (id: string | number) => adminEndpoints.gallery.show(id),
     },
     messages: {
       createSuccess: "Đã tạo thành công",
@@ -74,7 +75,7 @@ export default function AdminGallery({
       deleteSuccess: "Đã xóa thành công",
     },
     fetchDetailBeforeEdit: true,
-  });
+  }), []));
 
   return (
     <div className="admin-gallery">

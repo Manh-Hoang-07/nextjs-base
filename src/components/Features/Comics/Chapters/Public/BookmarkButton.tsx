@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { userComicService } from "@/lib/api/user/comic";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useToastContext } from "@/contexts/ToastContext";
@@ -19,16 +19,7 @@ export function BookmarkButton({ chapterId, pageNumber = 1, className = "" }: Bo
     const { isAuthenticated } = useAuthStore();
     const { showError, showSuccess } = useToastContext();
 
-    useEffect(() => {
-        const hasToken = typeof window !== 'undefined' && document.cookie.includes('auth_token');
-        if (isAuthenticated && hasToken) {
-            checkStatus();
-        } else {
-            setIsLoading(false);
-        }
-    }, [isAuthenticated, chapterId]);
-
-    const checkStatus = async () => {
+    const checkStatus = useCallback(async () => {
         try {
             const bookmarks = await userComicService.getBookmarks();
             const existing = bookmarks.find(b => b.chapter_id == chapterId);
@@ -42,7 +33,16 @@ export function BookmarkButton({ chapterId, pageNumber = 1, className = "" }: Bo
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [chapterId]);
+
+    useEffect(() => {
+        const hasToken = typeof window !== 'undefined' && document.cookie.includes('auth_token');
+        if (isAuthenticated && hasToken) {
+            checkStatus();
+        } else {
+            setIsLoading(false);
+        }
+    }, [isAuthenticated, chapterId, checkStatus]);
 
     const handleToggleBookmark = async () => {
         if (!isAuthenticated) {

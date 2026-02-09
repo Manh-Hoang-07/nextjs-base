@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { userComicService } from "@/lib/api/user/comic";
@@ -15,16 +15,7 @@ export default function UserBookmarksClient() {
     const { isAuthenticated } = useAuthStore();
     const { showError, showSuccess } = useToastContext();
 
-    useEffect(() => {
-        const hasToken = typeof window !== 'undefined' && document.cookie.includes('auth_token');
-        if (isAuthenticated && hasToken) {
-            fetchBookmarks();
-        } else {
-            setLoading(false);
-        }
-    }, [isAuthenticated]);
-
-    const fetchBookmarks = async () => {
+    const fetchBookmarks = useCallback(async () => {
         setLoading(true);
         try {
             const data = await userComicService.getBookmarks();
@@ -34,7 +25,16 @@ export default function UserBookmarksClient() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [showError]);
+
+    useEffect(() => {
+        const hasToken = typeof window !== 'undefined' && document.cookie.includes('auth_token');
+        if (isAuthenticated && hasToken) {
+            fetchBookmarks();
+        } else {
+            setLoading(false);
+        }
+    }, [isAuthenticated, fetchBookmarks]);
 
     const handleDelete = async (id: string | number) => {
         if (!confirm("Bạn có chắc muốn xóa bookmark này?")) return;

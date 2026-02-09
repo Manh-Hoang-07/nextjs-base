@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import AdminFilter from "@/components/Shared/Admin/AdminFilter";
+import AdminFilter from "@/components/shared/admin/AdminFilter";
 import SelectFilter from "@/components/UI/Filters/SelectFilter";
 
 const getBasicStatusArray = () => [

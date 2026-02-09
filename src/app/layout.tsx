@@ -58,7 +58,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        <GlobalLoadingOverlay />
+        <Suspense fallback={null}>
+          <GlobalLoadingOverlay />
+        </Suspense>
         <ToastProvider>
           <AuthInitializer />
           <ToastContainer />

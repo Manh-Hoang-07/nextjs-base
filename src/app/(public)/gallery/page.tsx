@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Metadata } from "next";
 import GalleryClient from "./GalleryClient";
 
@@ -7,6 +8,10 @@ export const metadata: Metadata = {
 };
 
 export default function GalleryPage() {
-  return <GalleryClient />;
+  return (
+    <Suspense fallback={<div className="text-center py-10 text-gray-500">Đang tải thư viện...</div>}>
+      <GalleryClient />
+    </Suspense>
+  );
 }
 

@@ -114,8 +114,10 @@ export function PublicHeader({
     );
   };
 
-  /* Always use white background */
-  const headerClass = "bg-white shadow-sm border-b border-gray-100";
+  /* Modern header with translucency */
+  const headerClass = scrolled
+    ? "bg-white/80 backdrop-blur-xl shadow-[0_2px_20px_-5px_rgba(0,0,0,0.05)] border-b border-gray-200/50"
+    : "bg-white border-b border-gray-100";
 
   const handleToggle = () => {
     setInternalMobileMenuOpen(!internalMobileMenuOpen);
@@ -159,10 +161,9 @@ export function PublicHeader({
 
             {/* Desktop Navigation - REMOVED strictly as requested */}
 
-            {/* Desktop Search Input (Hidden on mobile) */}
             <div className="hidden lg:block flex-1 max-w-2xl px-8">
-              <Suspense fallback={<div className="w-full h-11 bg-gray-100 rounded-full animate-pulse"></div>}>
-                <SearchInput className="shadow-none border-gray-100 bg-gray-50 focus-within:bg-white focus-within:shadow-md transition-all" />
+              <Suspense fallback={<div className="w-full h-12 bg-gray-100/50 rounded-2xl animate-pulse"></div>}>
+                <SearchInput />
               </Suspense>
             </div>
 

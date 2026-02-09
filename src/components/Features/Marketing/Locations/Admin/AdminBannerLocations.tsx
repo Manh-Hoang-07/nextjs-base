@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useAdminListPage } from "@/hooks/useAdminListPage";
 import { adminEndpoints } from "@/lib/api/endpoints";
 import SkeletonLoader from "@/components/UI/Feedback/SkeletonLoader";
@@ -65,19 +65,19 @@ export default function AdminBannerLocations({
     handleDelete,
     getSerialNumber,
     hasData,
-  } = useAdminListPage({
+  } = useAdminListPage(useMemo(() => ({
     endpoints: {
       list: adminEndpoints.bannerLocations.list,
       create: adminEndpoints.bannerLocations.create,
-      update: (id) => adminEndpoints.bannerLocations.update(id),
-      delete: (id) => adminEndpoints.bannerLocations.delete(id),
+      update: (id: string | number) => adminEndpoints.bannerLocations.update(id),
+      delete: (id: string | number) => adminEndpoints.bannerLocations.delete(id),
     },
     messages: {
       createSuccess: "Đã tạo thành công",
       updateSuccess: "Đã cập nhật thành công",
       deleteSuccess: "Đã xóa thành công",
     },
-  });
+  }), []));
 
   const [statusEnums, setStatusEnums] = useState<Array<{ value: string; label?: string; name?: string }>>([]);
 

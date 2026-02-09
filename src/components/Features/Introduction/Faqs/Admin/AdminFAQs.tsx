@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useAdminListPage } from "@/hooks/useAdminListPage";
 import { adminEndpoints } from "@/lib/api/endpoints";
 import SkeletonLoader from "@/components/UI/Feedback/SkeletonLoader";
@@ -55,13 +56,13 @@ export default function AdminFAQs({
     handleDelete,
     getSerialNumber,
     hasData,
-  } = useAdminListPage({
+  } = useAdminListPage(useMemo(() => ({
     endpoints: {
       list: adminEndpoints.faqs.list,
       create: adminEndpoints.faqs.create,
-      update: (id) => adminEndpoints.faqs.update(id),
-      delete: (id) => adminEndpoints.faqs.delete(id),
-      show: (id) => adminEndpoints.faqs.show(id),
+      update: (id: string | number) => adminEndpoints.faqs.update(id),
+      delete: (id: string | number) => adminEndpoints.faqs.delete(id),
+      show: (id: string | number) => adminEndpoints.faqs.show(id),
     },
     messages: {
       createSuccess: "Đã tạo thành công",
@@ -69,7 +70,7 @@ export default function AdminFAQs({
       deleteSuccess: "Đã xóa thành công",
     },
     fetchDetailBeforeEdit: true,
-  });
+  }), []));
 
   return (
     <div className="admin-faqs">

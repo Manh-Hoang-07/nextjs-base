@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { constructMetadata } from "@/lib/metadata";
 import { AdminLayoutClient } from "@/components/Layouts/Admin/AdminLayoutClient";
 
@@ -12,7 +13,11 @@ export default function AdminLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return <AdminLayoutClient>{children}</AdminLayoutClient>;
+    return (
+        <Suspense fallback={null}>
+            <AdminLayoutClient>{children}</AdminLayoutClient>
+        </Suspense>
+    );
 }
 
 

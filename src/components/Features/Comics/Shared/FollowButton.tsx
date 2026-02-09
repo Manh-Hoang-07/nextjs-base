@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { userComicService } from "@/lib/api/user/comic";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useToastContext } from "@/contexts/ToastContext";
@@ -20,13 +20,7 @@ export function FollowButton({ comicId, initialFollowCount = 0, className = "" }
     const { isAuthenticated } = useAuthStore();
     const { showError, showSuccess } = useToastContext();
 
-    useEffect(() => {
-        if (isAuthenticated && typeof window !== 'undefined' && document.cookie.includes('auth_token')) {
-            checkStatus();
-        }
-    }, [isAuthenticated, comicId]);
-
-    const checkStatus = async () => {
+    const checkStatus = useCallback(async () => {
         try {
             const res = await userComicService.checkFollowStatus(comicId);
             setIsFollowing(res.is_following);
@@ -35,7 +29,13 @@ export function FollowButton({ comicId, initialFollowCount = 0, className = "" }
                 console.error("Failed to check follow status", error);
             }
         }
-    };
+    }, [comicId]);
+
+    useEffect(() => {
+        if (isAuthenticated && typeof window !== 'undefined' && document.cookie.includes('auth_token')) {
+            checkStatus();
+        }
+    }, [isAuthenticated, comicId, checkStatus]);
 
     const handleToggleFollow = async () => {
         if (!isAuthenticated) {

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import BirthdayContent from "@/components/Shared/Birthday/BirthdayContent";
+import BirthdayContent from "@/components/shared/Birthday/BirthdayContent";
 
 export const metadata: Metadata = {
     title: "Chúc Mừng Sinh Nhật 1 Tuổi - Vũ Gia Huy",
