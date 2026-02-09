@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./scrollbar.css";
 
 @theme {
   --color-border: hsl(var(--border));
