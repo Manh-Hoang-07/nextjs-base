@@ -62,17 +62,23 @@ export const TrendingHero: React.FC<TrendingHeroProps> = ({ comics }) => {
                             {/* 1. Dynamic Background Layer */}
                             <div className="absolute inset-0 w-full h-full overflow-hidden">
                                 {/* Blurry Bg - Lighter for light mode */}
-                                <div
-                                    className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-[60px] opacity-20 scale-110"
-                                    style={{ backgroundImage: `url(${comic.cover_image})` }}
-                                />
+                                <div className="absolute inset-0 w-full h-full">
+                                    <Image
+                                        src={comic.cover_image}
+                                        alt="Background"
+                                        fill
+                                        priority={true}
+                                        quality={10}
+                                        className="object-cover blur-[60px] opacity-20 scale-110"
+                                    />
+                                </div>
                                 {/* Gradient Overlay for Readability - White based */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent/50 lg:w-4/5" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent/50 lg:w-4/5 z-10" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10" />
                             </div>
 
                             {/* 2. Main Content Container */}
-                            <div className="relative z-10 w-full h-full container mx-auto px-4 md:px-8 lg:px-12 flex items-center gap-6 lg:gap-10">
+                            <div className="relative z-20 w-full h-full container mx-auto px-4 md:px-8 lg:px-12 flex items-center gap-6 lg:gap-10">
 
                                 {/* Poster Image (Vertical Rectangle) */}
                                 <div className="hidden md:block flex-shrink-0 relative z-20">
@@ -80,10 +86,11 @@ export const TrendingHero: React.FC<TrendingHeroProps> = ({ comics }) => {
                                         <Image
                                             src={comic.cover_image}
                                             alt={comic.title}
-                                            width={160}
-                                            height={240}
-                                            unoptimized
+                                            width={200}
+                                            height={300}
+                                            priority={true}
                                             className="w-full h-full object-cover"
+                                            sizes="(max-width: 1024px) 160px, 200px"
                                         />
                                     </div>
                                 </div>

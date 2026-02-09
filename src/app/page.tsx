@@ -101,8 +101,8 @@ export default async function ComicHomePage() {
                                                         alt={comic.title}
                                                         width={64}
                                                         height={80}
-                                                        unoptimized
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                                        sizes="64px"
                                                     />
                                                     <div className="absolute top-0 left-0 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-br-lg">
                                                         #{idx + 1}

@@ -1,6 +1,6 @@
 "use client";
 
-import AdminFilter from "@/components/shared/admin/AdminFilter";
+import AdminFilter from "@/components/Shared/Admin/AdminFilter";
 import FormField from "@/components/UI/Forms/FormField";
 
 interface ProductVariantsFilterProps {

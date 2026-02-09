@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import AdminFilter from "@/components/shared/admin/AdminFilter";
+import AdminFilter from "@/components/Shared/Admin/AdminFilter";
 import SelectFilter from "@/components/UI/Filters/SelectFilter";
 
 interface PostCommentsFilterProps {

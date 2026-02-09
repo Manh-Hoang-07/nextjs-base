@@ -1,6 +1,6 @@
 "use client";
 
-import AdminFilter from "@/components/shared/admin/AdminFilter";
+import AdminFilter from "@/components/Shared/Admin/AdminFilter";
 
 interface ComicCategoryFilterProps {
     initialFilters?: Record<string, any>;
