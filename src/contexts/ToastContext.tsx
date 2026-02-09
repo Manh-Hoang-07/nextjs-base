@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useCallback, ReactNode } from "react";
 
-export type ToastType = "succes" | "error" | "warning" | "info";
+export type ToastType = "success" | "succes" | "error" | "warning" | "info";
 
 export interface Toast {
   id: number;
@@ -75,7 +75,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   const showSuccess = useCallback(
     (message: string, options?: ToastOptions): number => {
-      return showToast(message, "succes", options);
+      return showToast(message, "success", options);
     },
     [showToast]
   );

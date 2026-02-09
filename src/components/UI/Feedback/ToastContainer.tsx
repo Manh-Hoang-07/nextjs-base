@@ -6,19 +6,18 @@ export default function ToastContainer() {
   const { toasts, removeToast } = useToastContext();
 
   return (
-    <div className="fixed top-2 right-4 z-[1100] space-y-2">
+    <div className="fixed top-2 right-4 z-[100000] space-y-2">
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden transform transition-all duration-300 ease-in-out ${
-            toast.visible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-          }`}
+          className={`max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden transform transition-all duration-300 ease-in-out ${toast.visible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+            }`}
         >
           <div className="p-4">
             <div className="flex items-start">
               <div className="flex-shrink-0">
                 {/* Success Icon */}
-                {toast.type === "succes" && (
+                {(toast.type === "success" || toast.type === "succes") && (
                   <svg
                     className="h-6 w-6 text-green-400"
                     fill="none"

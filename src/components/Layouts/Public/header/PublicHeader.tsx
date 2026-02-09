@@ -10,7 +10,9 @@ import {
   ChevronDownIcon,
   UserCircleIcon,
   MagnifyingGlassIcon,
+  ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
+import { useAuthStore } from "@/lib/store/authStore";
 import Image from "next/image";
 import { useSystemConfig } from "@/hooks/useSystemConfig";
 import { Suspense } from "react";
@@ -39,6 +41,12 @@ export function PublicHeader({
   const [isSearchOpen, setIsSearchOpen] = useState(false); // Mobile search state
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
+  const { isAuthenticated, user, logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    await logout();
+    handleClose();
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -281,13 +289,34 @@ export function PublicHeader({
             </nav>
           </div>
 
-          <div className="p-5 border-t border-gray-100">
-            <Link href="/contact" onClick={handleClose}>
-              <button className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium shadow-lg shadow-primary/25 active:scale-95 transition-all">
-                <PhoneIcon className="w-5 h-5" />
-                <span>Tài khoản</span>
-              </button>
-            </Link>
+          <div className="p-5 border-t border-gray-100 space-y-3">
+            {isAuthenticated ? (
+              <>
+                <Link href="/user/profile" onClick={handleClose}>
+                  <button className="w-full flex items-center justify-start gap-3 px-4 py-3 bg-gray-50 text-gray-900 rounded-xl font-medium transition-all hover:bg-gray-100">
+                    <UserCircleIcon className="w-6 h-6 text-primary" />
+                    <div className="flex flex-col items-start overflow-hidden">
+                      <span className="text-sm font-bold truncate w-full">{user?.name || user?.username || "Thành viên"}</span>
+                      <span className="text-xs text-gray-500 truncate w-full">Xem trang cá nhân</span>
+                    </div>
+                  </button>
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 border border-red-100 text-red-600 rounded-xl font-medium hover:bg-red-50 active:scale-95 transition-all"
+                >
+                  <ArrowRightOnRectangleIcon className="w-5 h-5" />
+                  <span>Đăng xuất</span>
+                </button>
+              </>
+            ) : (
+              <Link href="/login" onClick={handleClose}>
+                <button className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium shadow-lg shadow-primary/25 active:scale-95 transition-all">
+                  <UserCircleIcon className="w-5 h-5" />
+                  <span>Đăng nhập / Đăng ký</span>
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
