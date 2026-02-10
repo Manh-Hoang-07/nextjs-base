@@ -15,6 +15,7 @@ interface Props {
         comic_category_id?: string;
         is_featured?: string;
         search?: string;
+        [key: string]: string | undefined;
     }>;
 }
 
@@ -29,11 +30,10 @@ export default async function ComicListPage({ searchParams }: Props) {
 
     const [comicsData, categories] = await Promise.all([
         getComics({
+            ...sp,
             page,
             sort: sp.sort || "last_chapter_updated_at:desc",
-            comic_category_id: sp.comic_category_id,
             is_featured: sp.is_featured === 'true' ? true : (sp.is_featured === 'false' ? false : undefined),
-            search: sp.search
         }),
         getComicCategories()
     ]);
@@ -55,13 +55,19 @@ export default async function ComicListPage({ searchParams }: Props) {
                             {/* Sort Buttons */}
                             <div className="flex bg-white rounded-xl p-1 border border-gray-100 shadow-sm">
                                 <Link
-                                    href={`/comics?sort=last_chapter_updated_at:desc${sp.comic_category_id ? `&comic_category_id=${sp.comic_category_id}` : ''}${sp.search ? `&search=${sp.search}` : ''}`}
+                                    href={{
+                                        pathname: '/comics',
+                                        query: { ...sp, sort: 'last_chapter_updated_at:desc', page: 1 }
+                                    }}
                                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${!sp.sort || sp.sort === 'last_chapter_updated_at:desc' ? 'bg-red-600 text-white shadow-md' : 'text-gray-600 hover:text-red-500'}`}
                                 >
                                     Mới cập nhật
                                 </Link>
                                 <Link
-                                    href={`/comics?sort=view_count:desc${sp.comic_category_id ? `&comic_category_id=${sp.comic_category_id}` : ''}${sp.search ? `&search=${sp.search}` : ''}`}
+                                    href={{
+                                        pathname: '/comics',
+                                        query: { ...sp, sort: 'view_count:desc', page: 1 }
+                                    }}
                                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${sp.sort === 'view_count:desc' ? 'bg-red-600 text-white shadow-md' : 'text-gray-600 hover:text-red-500'}`}
                                 >
                                     Xem nhiều

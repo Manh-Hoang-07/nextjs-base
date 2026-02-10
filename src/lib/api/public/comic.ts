@@ -21,14 +21,16 @@ export async function getComics(params: {
     search?: string;
     comic_category_id?: string;
     is_featured?: boolean;
+    [key: string]: any;
 }): Promise<PaginatedResponse<Comic> | null> {
     const query = new URLSearchParams();
-    if (params.page) query.append("page", params.page.toString());
-    if (params.limit) query.append("limit", params.limit.toString());
-    if (params.sort) query.append("sort", params.sort);
-    if (params.search) query.append("search", params.search);
-    if (params.comic_category_id) query.append("comic_category_id", params.comic_category_id);
-    if (params.is_featured !== undefined) query.append("is_featured", params.is_featured.toString());
+
+    // Thêm tất cả các params vào query string
+    Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+            query.append(key, value.toString());
+        }
+    });
 
     const { data, meta: responseMeta, error } = await serverFetch<any>(`${publicEndpoints.comics.list}?${query.toString()}`, {
         skipCookies: true,

@@ -9,6 +9,7 @@ import { formatNumber } from "@/utils/formatters";
 import "@/styles/comic.css";
 import { PublicHeader, PublicFooter, PublicLayoutWrapper } from "@/components/Layouts/Public";
 import { getSystemConfig } from "@/lib/api/public/general";
+import { getPublicMenus } from "@/lib/api/public/menu";
 
 
 export const metadata: Metadata = {
@@ -17,16 +18,17 @@ export const metadata: Metadata = {
 };
 
 export default async function ComicHomePage() {
-    const [data, systemConfig] = await Promise.all([
+    const [data, systemConfig, menus] = await Promise.all([
         getComicHomepageData(),
         getSystemConfig("general"),
+        getPublicMenus(),
     ]);
 
     if (!data) {
         return (
             <PublicLayoutWrapper
                 contactChannels={systemConfig?.contact_channels}
-                header={<PublicHeader key="header" systemConfig={systemConfig} />}
+                header={<PublicHeader key="header" systemConfig={systemConfig} initialMenus={menus} />}
                 footer={<PublicFooter key="footer" systemConfig={systemConfig} />}
             >
                 <div className="flex justify-center items-center min-h-screen bg-gray-50">
@@ -48,7 +50,7 @@ export default async function ComicHomePage() {
     return (
         <PublicLayoutWrapper
             contactChannels={systemConfig?.contact_channels}
-            header={<PublicHeader key="header" systemConfig={systemConfig} />}
+            header={<PublicHeader key="header" systemConfig={systemConfig} initialMenus={menus} />}
             footer={<PublicFooter key="footer" systemConfig={systemConfig} />}
         >
             <main className="bg-[#f8f9fa] min-h-screen">

@@ -139,7 +139,6 @@ export default async function ComicDetailPage({ params }: Props) {
                             )}
                             <FollowButton
                                 comicId={comic.id}
-                                initialFollowCount={parseInt(comic.stats.follow_count)}
                             />
                         </div>
 

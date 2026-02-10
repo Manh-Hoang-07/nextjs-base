@@ -28,6 +28,7 @@ interface PublicHeaderProps {
   onCloseMobileMenu?: () => void;
   currentPath?: string;
   systemConfig: SystemConfig | null;
+  initialMenus?: Menu[];
 }
 
 export function PublicHeader({
@@ -36,8 +37,9 @@ export function PublicHeader({
   onCloseMobileMenu = () => { },
   currentPath = "",
   systemConfig,
+  initialMenus = [],
 }: PublicHeaderProps) {
-  const [navigationItems, setNavigationItems] = useState<Menu[]>([]);
+  const [navigationItems, setNavigationItems] = useState<Menu[]>(initialMenus);
   const [expandedMobileMenus, setExpandedMobileMenus] = useState<string[]>([]);
   const [scrolled, setScrolled] = useState(false);
   const [internalMobileMenuOpen, setInternalMobileMenuOpen] = useState(false);
@@ -54,18 +56,22 @@ export function PublicHeader({
 
   useEffect(() => {
     setMounted(true);
-    const fetchMenus = async () => {
-      try {
-        const response = await apiClient.get<any>(publicEndpoints.menus.list);
-        const data = response.data;
-        const items = Array.isArray(data) ? data : (Array.isArray(data.data) ? data.data : []);
-        setNavigationItems(items);
-      } catch (error) {
-        console.error("Failed to fetch menus", error);
-      }
-    };
-    fetchMenus();
-  }, []);
+
+    // Chỉ fetch nếu chưa có dữ liệu ban đầu hoặc muốn cập nhật fresh
+    if (initialMenus.length === 0) {
+      const fetchMenus = async () => {
+        try {
+          const response = await apiClient.get<any>(publicEndpoints.menus.list);
+          const data = response.data;
+          const items = Array.isArray(data) ? data : (Array.isArray(data.data) ? data.data : []);
+          setNavigationItems(items);
+        } catch (error) {
+          console.error("Failed to fetch menus", error);
+        }
+      };
+      fetchMenus();
+    }
+  }, [initialMenus]);
 
   // Sync scroll lock with menu state
   useEffect(() => {
