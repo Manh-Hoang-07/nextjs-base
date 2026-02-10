@@ -181,26 +181,29 @@ export function PublicHeader({
             </div>
 
             {/* Desktop Navigation - REMOVED strictly as requested */}
-
-            <div className="hidden lg:block flex-1 max-w-2xl px-8">
-              <Suspense fallback={<div className="w-full h-12 bg-gray-100/50 rounded-2xl animate-pulse"></div>}>
-                <SearchInput />
-              </Suspense>
-            </div>
+            {!pathname.startsWith("/posts") && !pathname.startsWith("/comics") && (
+              <div className="hidden lg:block flex-1 max-w-2xl px-8">
+                <Suspense fallback={<div className="w-full h-12 bg-gray-100/50 rounded-2xl animate-pulse"></div>}>
+                  <SearchInput />
+                </Suspense>
+              </div>
+            )}
 
             {/* Action Buttons */}
             <div className="flex items-center gap-2 shrink-0">
               {/* Mobile Search Icon */}
-              <button
-                className="lg:hidden p-3 rounded-full text-gray-500 hover:bg-gray-100 transition-all active:scale-95"
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-              >
-                {isSearchOpen ? (
-                  <XMarkIcon className="w-6 h-6" />
-                ) : (
-                  <MagnifyingGlassIcon className="w-6 h-6" />
-                )}
-              </button>
+              {!pathname.startsWith("/posts") && !pathname.startsWith("/comics") && (
+                <button
+                  className="lg:hidden p-3 rounded-full text-gray-500 hover:bg-gray-100 transition-all active:scale-95"
+                  onClick={() => setIsSearchOpen(!isSearchOpen)}
+                >
+                  {isSearchOpen ? (
+                    <XMarkIcon className="w-6 h-6" />
+                  ) : (
+                    <MagnifyingGlassIcon className="w-6 h-6" />
+                  )}
+                </button>
+              )}
 
               {/* Account button moved to menu as requested */}
 
@@ -215,11 +218,13 @@ export function PublicHeader({
           </div>
 
           {/* Mobile Search Overlay */}
-          <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isSearchOpen ? "max-h-20 opacity-100 pb-4" : "max-h-0 opacity-0"}`}>
-            <Suspense>
-              <SearchInput />
-            </Suspense>
-          </div>
+          {!pathname.startsWith("/posts") && !pathname.startsWith("/comics") && (
+            <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isSearchOpen ? "max-h-20 opacity-100 pb-4" : "max-h-0 opacity-0"}`}>
+              <Suspense>
+                <SearchInput />
+              </Suspense>
+            </div>
+          )}
         </div>
       </header>
 
