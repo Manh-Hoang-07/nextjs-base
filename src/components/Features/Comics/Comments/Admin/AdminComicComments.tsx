@@ -120,18 +120,35 @@ export default function AdminComicComments() {
                         <div className="text-sm text-gray-900 break-words max-w-md">
                             {comment.content}
                         </div>
-                        <div className="mt-2 flex flex-wrap gap-2">
+                        <div className="mt-1.5 flex flex-col gap-1 text-xs text-gray-400">
                             {comment.comic && (
-                                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-blue-50 text-blue-700 rounded-md text-[10px] font-medium border border-blue-100">
-                                    <BookOpen className="w-3 h-3" />
-                                    <span className="font-semibold">{comment.comic.title}</span>
+                                <div className="flex items-center gap-1.5">
+                                    <BookOpen className="w-3 h-3 flex-shrink-0" />
+                                    <span className="flex-shrink-0">Truyện:</span>
+                                    <a
+                                        href={`/comics/${comment.comic.slug}`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="font-medium text-blue-600 hover:text-blue-800 hover:underline truncate max-w-[180px]"
+                                        title={comment.comic.title}
+                                    >
+                                        {comment.comic.title}
+                                    </a>
                                 </div>
                             )}
                             {comment.chapter && (
-                                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-purple-50 text-purple-700 rounded-md text-[10px] font-medium border border-purple-100">
-                                    <Layers className="w-3 h-3" />
-                                    <span className="opacity-70">Chương:</span>
-                                    <span className="font-semibold">{comment.chapter.title}</span>
+                                <div className="flex items-center gap-1.5 ml-2">
+                                    <Layers className="w-3 h-3 flex-shrink-0 text-gray-400" />
+                                    <span className="flex-shrink-0">Chương:</span>
+                                    <a
+                                        href={comment.chapter.slug ? `/comics/${comment.comic?.slug}/chapters/${comment.chapter.slug}` : '#'}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="font-medium text-gray-600 hover:text-gray-900 hover:underline truncate max-w-[150px]"
+                                        title={comment.chapter.title}
+                                    >
+                                        {comment.chapter.title}
+                                    </a>
                                 </div>
                             )}
                         </div>
@@ -140,8 +157,8 @@ export default function AdminComicComments() {
                         <span
                             onClick={() => handleToggleStatus(comment)}
                             className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold leading-5 cursor-pointer transition-colors ${comment.status === 'visible'
-                                    ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                                    : 'bg-red-100 text-red-800 hover:bg-red-200'
+                                ? 'bg-green-100 text-green-800 hover:bg-green-200'
+                                : 'bg-red-100 text-red-800 hover:bg-red-200'
                                 }`}
                         >
                             {togglingId === comment.id ? '...' : (comment.status === 'visible' ? 'Công khai' : 'Đang ẩn')}

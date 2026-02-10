@@ -224,9 +224,9 @@ export const adminEndpoints = {
         update: (group: string) => `/api/admin/system-configs/${group}`,
     },
     postComments: {
-        list: "/api/admin/posts-comments",
-        updateStatus: (id: Id) => `/api/admin/posts-comments/${id}/status`,
-        delete: (id: Id) => `/api/admin/posts-comments/${id}`,
+        list: "/api/admin/post-comments",
+        updateStatus: (id: Id) => `/api/admin/post-comments/${id}/status`,
+        delete: (id: Id) => `/api/admin/post-comments/${id}`,
     },
     comicComments: {
         list: "/api/admin/comic-comments",

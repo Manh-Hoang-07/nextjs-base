@@ -75,6 +75,7 @@ export interface ComicComment {
     chapter?: {
         id: number | string;
         title: string;
+        slug?: string;
     } | null;
     replies: ComicComment[];
 }

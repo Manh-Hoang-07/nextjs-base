@@ -5,92 +5,154 @@ import Image from 'next/image';
 import { PostComment } from '@/types/api';
 import { publicEndpoints } from '@/lib/api/endpoints';
 import { api } from '@/lib/api/client';
-import { MessageSquare, Send, CornerDownRight, User, Loader2, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { useAuthStore } from "@/lib/store/authStore";
+import { useToastContext } from "@/contexts/ToastContext";
+import { ChatBubbleLeftRightIcon, EllipsisHorizontalIcon, PaperAirplaneIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { formatDate } from "@/utils/formatters";
 
 interface PostCommentsProps {
     postId: string;
 }
 
-interface CommentFormProps {
+interface CommentItemProps {
+    comment: PostComment;
+    currentUserId?: string;
+    onReply: (parentId: string, content: string) => Promise<void>;
     postId: string;
-    parentId?: string;
-    onSuccess: () => void;
-    onCancel?: () => void;
-    placeholder?: string;
-    autoFocus?: boolean;
 }
 
-function CommentForm({ postId, parentId, onSuccess, onCancel, placeholder, autoFocus }: CommentFormProps) {
-    const [content, setContent] = useState('');
-    const [submitting, setSubmitting] = useState(false);
+const CommentItem = ({ comment, currentUserId, onReply, postId }: CommentItemProps) => {
+    const [isReplying, setIsReplying] = useState(false);
+    const [replyContent, setReplyContent] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    // Edit/Delete features are currently disabled as endpoints are not confirmed
+    const [showActions, setShowActions] = useState(false);
+    const isOwner = currentUserId && comment.user?.id && currentUserId === comment.user.id.toString();
+
+    const handleReplySubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!content.trim()) return;
+        if (!replyContent.trim()) return;
 
+        setIsSubmitting(true);
         try {
-            setSubmitting(true);
-            const payload: any = { content };
-            if (parentId) {
-                payload.parent_id = parentId;
-            }
-
-            await api.post(publicEndpoints.posts.comments(postId), payload);
-            setContent('');
-            onSuccess();
-        } catch (error) {
-            console.error('Failed to post comment:', error);
-            alert('Không thể gửi bình luận. Vui lòng thử lại sau.');
+            await onReply(comment.id, replyContent);
+            setIsReplying(false);
+            setReplyContent("");
         } finally {
-            setSubmitting(false);
+            setIsSubmitting(false);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="w-full">
-            <div className="border border-gray-200 rounded-lg overflow-hidden focus-within:border-primary transition-colors">
-                <textarea
-                    autoFocus={autoFocus}
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    placeholder={placeholder || "Viết bình luận..."}
-                    className="w-full bg-white px-4 py-3 text-sm text-gray-700 placeholder:text-gray-400 focus:ring-0 border-none min-h-[100px] resize-none"
-                />
-                <div className="flex items-center justify-between px-4 py-2 bg-gray-50 border-t border-gray-100">
-                    <div className="flex gap-2">
-                        {onCancel && (
-                            <button
-                                type="button"
-                                onClick={onCancel}
-                                className="px-3 py-1.5 text-xs text-gray-500 hover:text-gray-700"
-                            >
-                                Hủy
-                            </button>
-                        )}
-                    </div>
-                    <button
-                        type="submit"
-                        disabled={submitting || !content.trim()}
-                        className="flex items-center gap-2 px-4 py-1.5 bg-primary text-white text-sm font-medium rounded hover:bg-primary-dark disabled:opacity-50 transition-colors"
-                    >
-                        {submitting ? <Loader2 size={16} className="animate-spin" /> : <><Send size={14} /> <span>Gửi</span></>}
-                    </button>
+        <div className="flex gap-4 group">
+            <div className="flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden border border-gray-200">
+                    {comment.user?.image ? (
+                        <Image
+                            src={comment.user.image}
+                            alt={comment.user.name || "User"}
+                            width={40}
+                            height={40}
+                            className="object-cover w-full h-full"
+                        />
+                    ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400 font-bold bg-gray-50 uppercase">
+                            {comment.user?.name?.charAt(0) || comment.guest_name?.charAt(0) || "?"}
+                        </div>
+                    )}
                 </div>
             </div>
-        </form>
+
+            <div className="flex-1 min-w-0">
+                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm relative hover:border-blue-100 transition-colors">
+                    <div className="flex justify-between items-start mb-1">
+                        <div className="flex flex-col">
+                            <span className="font-bold text-gray-900 text-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">
+                                {comment.user?.name || comment.guest_name || "Khách"}
+                            </span>
+                            <span className="text-[10px] text-gray-400 uppercase font-medium">{formatDate(comment.created_at)}</span>
+                        </div>
+
+                        {/* Actions menu placeholder - enable if edit/delete APIs exist */}
+                        {/* {isOwner && (
+                            <div className="relative">
+                                <button
+                                    onClick={() => setShowActions(!showActions)}
+                                    className="p-1 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-50 opacity-0 group-hover:opacity-100 transition-all"
+                                >
+                                    <EllipsisHorizontalIcon className="w-5 h-5" />
+                                </button>
+                            </div>
+                        )} */}
+                    </div>
+
+                    <div className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{comment.content}</div>
+                </div>
+
+                <div className="flex items-center gap-4 mt-2 px-2">
+                    <button
+                        onClick={() => setIsReplying(!isReplying)}
+                        className="text-xs font-bold text-gray-400 hover:text-blue-600 transition flex items-center gap-1"
+                    >
+                        Trả lời
+                    </button>
+                </div>
+
+                {isReplying && (
+                    <form onSubmit={handleReplySubmit} className="mt-3 ml-2">
+                        <div className="flex gap-3">
+                            <div className="flex-1">
+                                <textarea
+                                    value={replyContent}
+                                    onChange={(e) => setReplyContent(e.target.value)}
+                                    placeholder={`Trả lời ${comment.user?.name || comment.guest_name || "người dùng"}...`}
+                                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm resize-none h-20"
+                                />
+                            </div>
+                            <button
+                                disabled={isSubmitting || !replyContent.trim()}
+                                className="self-end p-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition disabled:opacity-50 shadow-lg shadow-blue-200"
+                            >
+                                <PaperAirplaneIcon className="w-5 h-5 -rotate-45 translate-x-0.5 -translate-y-0.5" />
+                            </button>
+                        </div>
+                    </form>
+                )}
+
+                {comment.replies && comment.replies.length > 0 && (
+                    <div className="mt-4 space-y-4 pl-4 border-l-2 border-gray-100">
+                        {comment.replies.map(reply => (
+                            <CommentItem
+                                key={reply.id}
+                                comment={reply}
+                                currentUserId={currentUserId}
+                                onReply={onReply}
+                                postId={postId}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
     );
-}
+};
 
 export function PostComments({ postId }: PostCommentsProps) {
     const [comments, setComments] = useState<PostComment[]>([]);
     const [loading, setLoading] = useState(true);
-    const [replyingTo, setReplyingTo] = useState<string | null>(null);
-    const [expandedComments, setExpandedComments] = useState<Record<string, boolean>>({});
+    const [content, setContent] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const { user, isAuthenticated } = useAuthStore();
+    const { showSuccess, showError } = useToastContext();
 
     const fetchComments = useCallback(async () => {
         try {
             const response = await api.get(publicEndpoints.posts.comments(postId));
-            setComments(response.data.data);
+            // Ensure we handle both direct array or paginated response structure
+            const data = response.data.data || response.data;
+            setComments(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error('Failed to fetch comments:', error);
         } finally {
@@ -104,138 +166,103 @@ export function PostComments({ postId }: PostCommentsProps) {
         }
     }, [postId, fetchComments]);
 
-    const toggleExpand = (id: string) => {
-        setExpandedComments(prev => ({ ...prev, [id]: !prev[id] }));
-    };
+    const handlePostComment = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!content.trim()) return;
 
-    const formatDate = (dateString: string) => {
+        if (!isAuthenticated) {
+            showError("Bạn cần đăng nhập để bình luận");
+            return;
+        }
+
+        setIsSubmitting(true);
         try {
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) return 'Vừa xong';
-            const now = new Date();
-            const diff = Math.floor((now.getTime() - date.getTime()) / 1000);
-            if (diff < 60) return 'Vừa xong';
-            if (diff < 3600) return `${Math.floor(diff / 60)} phút trước`;
-            if (diff < 86400) return `${Math.floor(diff / 3600)} giờ trước`;
-            return date.toLocaleDateString('vi-VN');
-        } catch (e) {
-            return 'Vừa xong';
+            await api.post(publicEndpoints.posts.comments(postId), { content });
+            setContent("");
+            showSuccess("Đã đăng bình luận!");
+            fetchComments();
+        } catch (error) {
+            console.error('Failed to post comment:', error);
+            showError("Có lỗi xảy ra khi đăng bình luận");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
-    const renderComment = (comment: PostComment, isReply = false) => {
-        const isExpanded = !!expandedComments[comment.id];
-        const hasReplies = comment.replies && comment.replies.length > 0;
+    const handleReply = async (parentId: string, replyContent: string) => {
+        if (!isAuthenticated) {
+            showError("Bạn cần đăng nhập để trả lời");
+            throw new Error("Unauthorized");
+        }
 
-        return (
-            <div key={comment.id} className={`${isReply ? 'ml-10 mt-4' : 'mb-6 border-b border-gray-100 pb-6 last:border-0'}`}>
-                <div className="flex gap-3">
-                    <div className="flex-shrink-0">
-                        <div className="w-9 h-9 rounded-full bg-gray-100 overflow-hidden flex items-center justify-center border border-gray-200">
-                            {comment.user?.image ? (
-                                <Image src={comment.user.image} alt="" className="w-full h-full object-cover" width={36} height={36} />
-                            ) : (
-                                <User size={18} className="text-gray-400" />
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="flex-grow min-w-0">
-                        <div className="flex items-baseline gap-2 mb-1">
-                            <span className="font-semibold text-gray-900 text-sm">
-                                {comment.user?.name || 'Thành viên'}
-                            </span>
-                            <span className="text-xs text-gray-400">
-                                {formatDate(comment.created_at)}
-                            </span>
-                        </div>
-
-                        <div className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
-                            {comment.content}
-                        </div>
-
-                        <div className="mt-2 flex items-center gap-4">
-                            <button
-                                onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-                                className={`text-xs font-medium flex items-center gap-1 hover:text-primary transition-colors ${replyingTo === comment.id ? 'text-primary' : 'text-gray-500'}`}
-                            >
-                                <CornerDownRight size={12} />
-                                Trả lời
-                            </button>
-
-                            {hasReplies && (
-                                <button
-                                    onClick={() => toggleExpand(comment.id)}
-                                    className="text-xs font-medium text-gray-500 hover:text-gray-700 flex items-center gap-1"
-                                >
-                                    {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                                    {isExpanded ? 'Thu gọn' : `${comment.replies?.length} phản hồi`}
-                                </button>
-                            )}
-                        </div>
-
-                        {replyingTo === comment.id && (
-                            <div className="mt-3">
-                                <CommentForm
-                                    postId={postId}
-                                    parentId={comment.id}
-                                    autoFocus
-                                    placeholder={`Trả lời ${comment.user?.name}...`}
-                                    onSuccess={() => { setReplyingTo(null); fetchComments(); }}
-                                    onCancel={() => setReplyingTo(null)}
-                                />
-                            </div>
-                        )}
-
-                        {hasReplies && isExpanded && (
-                            <div className="mt-4 space-y-4 border-l-2 border-gray-50 pl-2">
-                                {comment.replies?.map(reply => renderComment(reply, true))}
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
+        try {
+            await api.post(publicEndpoints.posts.comments(postId), {
+                content: replyContent,
+                parent_id: parentId
+            });
+            showSuccess("Đã trả lời bình luận!");
+            fetchComments();
+        } catch (error) {
+            console.error('Failed to reply:', error);
+            showError("Có lỗi xảy ra khi trả lời");
+            throw error;
+        }
     };
 
-    const getTotalComments = (commentsList: PostComment[]): number => {
-        let count = commentsList.length;
-        commentsList.forEach(c => {
-            if (c.replies && c.replies.length > 0) {
-                count += getTotalComments(c.replies);
-            }
-        });
-        return count;
-    };
-
-    const totalComments = getTotalComments(comments);
+    const totalComments = comments.reduce((acc, curr) => {
+        const countReplies = (c: PostComment): number => 1 + (c.replies?.reduce((subAcc, subCurr) => subAcc + countReplies(subCurr), 0) || 0);
+        return acc + countReplies(curr);
+    }, 0);
 
     return (
-        <div className="mt-12 py-8">
-            <div className="flex items-center gap-2 mb-8 border-b border-gray-100 pb-4">
-                <MessageSquare size={20} className="text-gray-400" />
-                <h3 className="text-lg font-bold text-gray-900">Thảo luận ({totalComments})</h3>
-            </div>
+        <div className="mt-12 space-y-8">
+            <h3 className="text-xl font-black uppercase tracking-tight text-gray-900 flex items-center gap-2">
+                <ChatBubbleLeftRightIcon className="w-6 h-6 text-blue-500" />
+                Bình luận ({totalComments})
+            </h3>
 
-            <div className="mb-10">
-                <CommentForm postId={postId} onSuccess={fetchComments} />
-            </div>
+            <form onSubmit={handlePostComment} className="relative group">
+                <textarea
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    placeholder="Viết bình luận của bạn..."
+                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all resize-none h-28 text-sm shadow-sm"
+                />
+                <div className="absolute bottom-3 right-3">
+                    <button
+                        disabled={isSubmitting || !content.trim()}
+                        className="px-6 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-blue-200"
+                    >
+                        {isSubmitting ? "Đang gửi..." : (
+                            <>
+                                <PaperAirplaneIcon className="w-4 h-4 -rotate-45 -translate-y-0.5" />
+                                Gửi
+                            </>
+                        )}
+                    </button>
+                </div>
+            </form>
 
-            {loading ? (
-                <div className="flex justify-center py-10 text-gray-400">
-                    <Loader2 size={24} className="animate-spin" />
-                </div>
-            ) : comments.length > 0 ? (
-                <div className="space-y-4">
-                    {comments.map(comment => renderComment(comment))}
-                </div>
-            ) : (
-                <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg">
-                    Chưa có bình luận nào.
-                </div>
-            )}
+            <div className="space-y-6">
+                {comments.length === 0 ? (
+                    <div className="text-center py-10 text-gray-400 text-sm">
+                        Chưa có bình luận nào. Hãy là người đầu tiên bình luận!
+                    </div>
+                ) : (
+                    comments.map((comment) => (
+                        <CommentItem
+                            key={comment.id}
+                            comment={comment}
+                            currentUserId={user?.id.toString()}
+                            onReply={handleReply}
+                            postId={postId}
+                        />
+                    ))
+                )}
+            </div>
         </div>
     );
 }
+
 
 
