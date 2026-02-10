@@ -182,15 +182,13 @@ export interface ContactPayload {
   name: string;
   email: string;
   message: string;
-  phone?: string;
-  subject?: string;
+  phone: string;
 }
 
 export interface ContactResponse {
   id: string;
   name: string;
   email: string;
-  subject: string;
   message: string;
   phone: string;
   status: string;

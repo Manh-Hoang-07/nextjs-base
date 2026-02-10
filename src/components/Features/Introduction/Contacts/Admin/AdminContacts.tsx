@@ -83,7 +83,7 @@ export default function AdminContacts({ title = "Quản lý Liên hệ" }: Admin
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">STT</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Họ tên</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email/SĐT</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiêu đề</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nội dung</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày tạo</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
@@ -98,8 +98,8 @@ export default function AdminContacts({ title = "Quản lý Liên hệ" }: Admin
                                             <div>{contact.email}</div>
                                             <div className="text-xs text-gray-400">{contact.phone}</div>
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate" title={contact.subject}>
-                                            {contact.subject || "Không chủ đề"}
+                                        <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate" title={contact.message}>
+                                            {contact.message}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(contact.status)}`}>

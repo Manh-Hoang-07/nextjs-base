@@ -11,8 +11,7 @@ import { useToastContext } from "@/contexts/ToastContext";
 const contactSchema = z.object({
     name: z.string().min(1, "Họ và tên là bắt buộc").max(255, "Họ và tên tối đa 255 ký tự"),
     email: z.string().min(1, "Email là bắt buộc").email("Email không hợp lệ").max(255, "Email tối đa 255 ký tự"),
-    phone: z.string().max(20, "Số điện thoại tối đa 20 ký tự").optional().or(z.literal("")),
-    subject: z.string().min(1, "Chủ đề là bắt buộc").max(255, "Chủ đề tối đa 255 ký tự"),
+    phone: z.string().min(1, "Số điện thoại là bắt buộc").max(20, "Số điện thoại tối đa 20 ký tự"),
     message: z.string().min(1, "Nội dung là bắt buộc"),
 });
 
@@ -33,7 +32,6 @@ export function ContactForm() {
             name: "",
             email: "",
             phone: "",
-            subject: "",
             message: "",
         },
     });
@@ -57,7 +55,6 @@ export function ContactForm() {
                         if (lowerErr.includes("email")) setError("email", { message: err });
                         else if (lowerErr.includes("name")) setError("name", { message: err });
                         else if (lowerErr.includes("phone")) setError("phone", { message: err });
-                        else if (lowerErr.includes("subject")) setError("subject", { message: err });
                         else if (lowerErr.includes("message")) setError("message", { message: err });
                         else otherErrors.push(err);
                     });
@@ -100,25 +97,15 @@ export function ContactForm() {
                     />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField
-                        id="phone"
-                        type="tel"
-                        label="Số điện thoại"
-                        placeholder="090 123 4567"
-                        {...register("phone")}
-                        error={errors.phone?.message}
-                    />
-
-                    <FormField
-                        id="subject"
-                        label="Chủ đề"
-                        placeholder="Bạn quan tâm đến dịch vụ nào?"
-                        {...register("subject")}
-                        required
-                        error={errors.subject?.message}
-                    />
-                </div>
+                <FormField
+                    id="phone"
+                    type="tel"
+                    label="Số điện thoại"
+                    placeholder="090 123 4567"
+                    {...register("phone")}
+                    required
+                    error={errors.phone?.message}
+                />
 
                 <FormField
                     id="message"
