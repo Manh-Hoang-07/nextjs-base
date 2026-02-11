@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useAdminListPage } from "@/hooks/useAdminListPage";
 import { adminEndpoints } from "@/lib/api/endpoints";
 import SkeletonLoader from "@/components/UI/Feedback/SkeletonLoader";
@@ -49,6 +50,7 @@ interface Product {
   status?: string;
   is_featured?: boolean;
   is_variable?: boolean;
+  is_digital?: boolean;
   image?: string;
   categories?: Array<{ id: string | number; name: string }>;
   variants?: Array<{
@@ -68,6 +70,7 @@ export default function AdminProducts({
   title = "Quản lý sản phẩm",
   createButtonText = "Thêm sản phẩm mới",
 }: AdminProductsProps) {
+  const router = useRouter();
   const {
     items,
     loading,
@@ -256,6 +259,21 @@ export default function AdminProducts({
                         item={product}
                         onEdit={() => openEditModal(product)}
                         onDelete={() => openDeleteModal(product)}
+                        additionalActions={
+                          product.is_digital
+                            ? [
+                              {
+                                icon: "key",
+                                label: "Quản lý tài sản số",
+                                action: () =>
+                                  router.push(
+                                    `/admin/ecommerce/products/digital-assets?product_id=${product.id}`
+                                  ),
+                                className: "text-blue-600",
+                              },
+                            ]
+                            : []
+                        }
                       />
                     </td>
                   </tr>

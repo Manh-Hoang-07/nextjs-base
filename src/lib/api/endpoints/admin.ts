@@ -284,6 +284,12 @@ export const adminEndpoints = {
         update: (id: Id) => `/api/admin/products/${id}`,
         delete: (id: Id) => `/api/admin/products/${id}`,
     },
+    productDigitalAssets: {
+        list: "/api/admin/ecommerce/product-digital-assets",
+        bulkImport: "/api/admin/ecommerce/product-digital-assets/bulk-import",
+        delete: (id: Id) => `/api/admin/ecommerce/product-digital-assets/${id}`,
+        update: (id: Id) => `/api/admin/ecommerce/product-digital-assets/${id}`,
+    },
     orders: {
         list: "/api/admin/orders",
         show: (id: Id) => `/api/admin/orders/${id}`,
