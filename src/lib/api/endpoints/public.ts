@@ -100,6 +100,11 @@ export const publicEndpoints = {
         products: (id: Id) => `/api/public/product-categories/${id}/products`,
         showBySlug: (slug: string) => `/api/public/product-categories/${slug}`,
     },
+    products: {
+        list: "/api/public/products",
+        detail: (slug: string) => `/api/public/products/${slug}`,
+        related: (slug: string) => `/api/public/products/${slug}/related`,
+    },
     reviews: {
         comic: (comicId: Id) => `/api/public/reviews/comics/${comicId}`,
     },
