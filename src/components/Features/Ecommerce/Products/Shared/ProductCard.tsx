@@ -98,30 +98,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
                         const finalPrice = rootPrice || variantPrice;
                         const finalSalePrice = rootSalePrice || variantSalePrice;
-                        const finalMaxPrice = Number(product.max_price) || 0;
+
 
                         if (finalSalePrice > 0) {
                             return (
-                                <>
+                                <div className="flex flex-col">
                                     <span className="font-bold text-red-600 text-lg">
                                         {finalSalePrice.toLocaleString('vi-VN')}đ
                                     </span>
                                     <span className="text-sm text-gray-400 line-through">
-                                        {finalMaxPrice > finalPrice
-                                            ? `${finalPrice.toLocaleString('vi-VN')} - ${finalMaxPrice.toLocaleString('vi-VN')}`
-                                            : finalPrice.toLocaleString('vi-VN')
-                                        }đ
+                                        {finalPrice.toLocaleString('vi-VN')}đ
                                     </span>
-                                </>
+                                </div>
                             );
                         }
 
                         return (
                             <span className="font-bold text-gray-900 text-lg">
-                                {finalMaxPrice > finalPrice
-                                    ? `${finalPrice.toLocaleString('vi-VN')} - ${finalMaxPrice.toLocaleString('vi-VN')}đ`
-                                    : `${(finalPrice || 0).toLocaleString('vi-VN')}đ`
-                                }
+                                {(finalPrice || 0).toLocaleString('vi-VN')}đ
                             </span>
                         );
                     })()}

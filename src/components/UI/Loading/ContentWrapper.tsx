@@ -29,17 +29,31 @@ export function ContentWrapper({ children }: ContentWrapperProps) {
 
     // Listen for navigation start
     useEffect(() => {
-        const handleClick = (e: MouseEvent) => {
+        const handleNavigation = (e: Event) => {
             const target = e.target as HTMLElement;
-            // Check if clicked element is a pagination button or filter link
-            if (target.closest('[data-pagination]') || target.closest('a[href*="page="]')) {
+
+            // Check if clicked/changed element is a pagination trigger
+            const isTrigger = target.closest('[data-pagination]') || target.closest('a[href*="page="]');
+
+            if (isTrigger) {
+                // If it's a click on select or option, don't show loading yet 
+                // (wait for the 'change' event or actual navigation)
+                if (e.type === 'click' && (target.tagName === 'SELECT' || target.tagName === 'OPTION')) {
+                    return;
+                }
                 setIsLoading(true);
             }
         };
 
-        document.addEventListener('click', handleClick);
-        return () => document.removeEventListener('click', handleClick);
+        document.addEventListener('click', handleNavigation);
+        document.addEventListener('change', handleNavigation);
+
+        return () => {
+            document.removeEventListener('click', handleNavigation);
+            document.removeEventListener('change', handleNavigation);
+        };
     }, []);
+
 
     return (
         <div className="relative">

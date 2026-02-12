@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Product, ProductVariant, ProductAttribute } from '@/types/product';
-import { Star, Heart, Share2, Minus, Plus, ShoppingCart, Check } from 'lucide-react';
+import { Star, Heart, Share2, Minus, Plus, ShoppingCart, Check, Package } from 'lucide-react';
 
 interface ProductInfoProps {
     product: Product;
@@ -11,43 +11,50 @@ interface ProductInfoProps {
 
 export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     const [quantity, setQuantity] = useState(1);
-    const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
+    const [selectedVariantId, setSelectedVariantId] = useState<number | string | null>(null);
     const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
 
-    // Initialize attributes if only one option exists
+    // Initialize with first variant if product is variable
     useEffect(() => {
-        if (product.attributes) {
-            const initialAttrs: Record<string, string> = {};
-            product.attributes.forEach(attr => {
-                if (attr.options.length === 1) {
-                    initialAttrs[attr.slug] = attr.options[0].value;
-                }
-            });
-            setSelectedAttributes(prev => ({ ...prev, ...initialAttrs }));
+        if (product.variants && product.variants.length > 0) {
+            const firstVariant = product.variants[0];
+            setSelectedVariantId(firstVariant.id);
+            setSelectedVariant(firstVariant);
         }
-    }, [product.attributes]);
+    }, [product.variants]);
 
-    // Find matching variant
-    useEffect(() => {
-        if (!product.variants || product.variants.length === 0) return;
-
-        // Logic to find variant based on selected attributes
-        // This depends on how backend returns variants. 
-        // Assuming variant has a combination of attribute_id and option_id or similar.
-        // For now, simple mock logic or placeholder:
-        // const match = product.variants.find(v => ...);
-        // setSelectedVariant(match || null);
-    }, [selectedAttributes, product.variants]);
-
-    const handleAttributeSelect = (slug: string, value: string) => {
-        setSelectedAttributes(prev => ({ ...prev, [slug]: value }));
+    const handleVariantSelect = (variantId: number | string) => {
+        const variant = product.variants?.find(v => v.id === variantId);
+        if (variant) {
+            setSelectedVariantId(variantId);
+            setSelectedVariant(variant);
+        }
     };
 
     const handleQuantityChange = (delta: number) => {
         setQuantity(prev => Math.max(1, prev + delta));
     };
 
-    const isOutOfStock = product.stock_status === 'out_of_stock';
+    // Calculate current price based on selected variant or product
+    const getCurrentPrice = () => {
+        if (selectedVariant) {
+            return {
+                price: Number(selectedVariant.price) || 0,
+                salePrice: selectedVariant.sale_price ? Number(selectedVariant.sale_price) : 0,
+            };
+        }
+        return {
+            price: Number(product.price) || 0,
+            salePrice: product.sale_price ? Number(product.sale_price) : 0,
+        };
+    };
+
+    const { price, salePrice } = getCurrentPrice();
+    const displayPrice = salePrice > 0 ? salePrice : price;
+    const hasDiscount = salePrice > 0 && salePrice < price;
+
+    const stockQuantity = selectedVariant?.stock_quantity ?? 0;
+    const isOutOfStock = stockQuantity === 0 || product.stock_status === 'out_of_stock';
 
     return (
         <div className="space-y-8">
@@ -57,7 +64,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
                     <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full">
                         {product.is_new ? 'Hàng mới về' : 'Bán chạy nhất'}
                     </span>
-                    {product.stock_status === 'in_stock' ? (
+                    {!isOutOfStock ? (
                         <span className="text-sm font-medium text-green-600 flex items-center gap-1 bg-green-50 px-2.5 py-0.5 rounded-full">
                             <Check size={14} /> Còn hàng
                         </span>
@@ -88,49 +95,26 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
                             {product.review_count || 0} đánh giá
                         </span>
                     </div>
-                    <div className="w-px h-4 bg-gray-300" />
-                    <span className="text-sm text-gray-500">SKU: {selectedVariant?.sku || product.id}</span>
                 </div>
 
                 <div className="flex items-end gap-3 mb-6">
-                    {(() => {
-                        const rootPrice = Number(product.price) || 0;
-                        const rootSalePrice = Number(product.sale_price) || 0;
-                        const variantPrice = (product.variants && product.variants.length > 0) ? Number(product.variants[0].price) : 0;
-                        const variantSalePrice = (product.variants && product.variants.length > 0) ? Number(product.variants[0].sale_price) : 0;
-
-                        const finalPrice = rootPrice || variantPrice;
-                        const finalSalePrice = rootSalePrice || variantSalePrice;
-                        const finalMaxPrice = Number(product.max_price) || 0;
-
-                        if (finalSalePrice > 0) {
-                            return (
-                                <>
-                                    <span className="text-4xl font-bold text-red-600">
-                                        {finalSalePrice.toLocaleString('vi-VN')}đ
-                                    </span>
-                                    <span className="text-xl text-gray-400 line-through mb-1">
-                                        {finalMaxPrice > finalPrice
-                                            ? `${finalPrice.toLocaleString('vi-VN')} - ${finalMaxPrice.toLocaleString('vi-VN')}`
-                                            : finalPrice.toLocaleString('vi-VN')
-                                        }đ
-                                    </span>
-                                    <span className="mb-2 bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-lg">
-                                        Tiết kiệm {finalPrice ? Math.round(((finalPrice - finalSalePrice) / finalPrice) * 100) : 0}%
-                                    </span>
-                                </>
-                            );
-                        }
-
-                        return (
-                            <span className="text-4xl font-bold text-gray-900">
-                                {finalMaxPrice > finalPrice
-                                    ? `${finalPrice.toLocaleString('vi-VN')} - ${finalMaxPrice.toLocaleString('vi-VN')}đ`
-                                    : `${(finalPrice || 0).toLocaleString('vi-VN')}đ`
-                                }
+                    {hasDiscount ? (
+                        <>
+                            <span className="text-4xl font-bold text-red-600">
+                                {displayPrice.toLocaleString('vi-VN')}đ
                             </span>
-                        );
-                    })()}
+                            <span className="text-xl text-gray-400 line-through mb-1">
+                                {price.toLocaleString('vi-VN')}đ
+                            </span>
+                            <span className="mb-2 bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-lg">
+                                Tiết kiệm {Math.round(((price - salePrice) / price) * 100)}%
+                            </span>
+                        </>
+                    ) : (
+                        <span className="text-4xl font-bold text-gray-900">
+                            {displayPrice.toLocaleString('vi-VN')}đ
+                        </span>
+                    )}
                 </div>
 
                 <p className="text-gray-600 leading-relaxed">
@@ -140,28 +124,89 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
             <div className="h-px bg-gray-100" />
 
-            {/* Variants */}
+            {/* Variants Selection */}
+            {product.variants && product.variants.length > 0 && (
+                <div>
+                    <div className="flex justify-between items-center mb-3">
+                        <span className="font-bold text-gray-900">Chọn phiên bản</span>
+                        {selectedVariant && (
+                            <span className="text-sm text-gray-500 flex items-center gap-1">
+                                <Package size={14} />
+                                Còn lại: <span className="text-black font-medium">{stockQuantity}</span>
+                            </span>
+                        )}
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-3">
+                        {product.variants.map((variant) => {
+                            const isSelected = selectedVariantId === variant.id;
+                            const variantPrice = Number(variant.price) || 0;
+                            const variantSalePrice = variant.sale_price ? Number(variant.sale_price) : 0;
+                            const variantDisplayPrice = variantSalePrice > 0 ? variantSalePrice : variantPrice;
+                            const variantStock = variant.stock_quantity ?? 0;
+                            const isVariantOutOfStock = variantStock === 0;
+
+                            return (
+                                <button
+                                    key={variant.id}
+                                    onClick={() => !isVariantOutOfStock && handleVariantSelect(variant.id)}
+                                    disabled={isVariantOutOfStock}
+                                    className={`p-4 rounded-xl border-2 text-left transition-all ${isSelected
+                                        ? 'border-black bg-black text-white shadow-lg'
+                                        : isVariantOutOfStock
+                                            ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed opacity-60'
+                                            : 'border-gray-200 bg-white text-gray-900 hover:border-black hover:shadow-md'
+                                        }`}
+                                >
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div className="flex-1">
+                                            <div className="font-bold text-sm">{variant.name}</div>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="font-bold text-lg">
+                                                {variantDisplayPrice.toLocaleString('vi-VN')}đ
+                                            </div>
+                                            {variantSalePrice > 0 && variantSalePrice < variantPrice && (
+                                                <div className={`text-xs line-through ${isSelected ? 'text-gray-400' : 'text-gray-500'}`}>
+                                                    {variantPrice.toLocaleString('vi-VN')}đ
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        {isVariantOutOfStock ? (
+                                            <span className="text-xs font-medium text-red-500">Hết hàng</span>
+                                        ) : (
+                                            <span className={`text-xs ${isSelected ? 'text-gray-300' : 'text-gray-500'}`}>
+                                                Còn {variantStock} sản phẩm
+                                            </span>
+                                        )}
+                                        {isSelected && (
+                                            <Check size={16} className="text-white" />
+                                        )}
+                                    </div>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
+            {/* Attributes (if available) */}
             {product.attributes?.map((attr) => (
                 <div key={attr.id}>
                     <div className="flex justify-between items-center mb-3">
                         <span className="font-bold text-gray-900">{attr.name}</span>
-                        <span className="text-sm text-gray-500">
-                            Đã chọn: <span className="text-black font-medium">{selectedAttributes[attr.slug]}</span>
-                        </span>
                     </div>
 
                     <div className="flex flex-wrap gap-3">
                         {attr.options.map((opt) => {
-                            const isSelected = selectedAttributes[attr.slug] === opt.value;
-
                             if (attr.slug === 'color') {
                                 return (
                                     <button
                                         key={opt.id}
-                                        onClick={() => handleAttributeSelect(attr.slug, opt.value)}
-                                        className={`w-10 h-10 rounded-full border-2 transition-all shadow-sm ${isSelected ? 'border-black ring-2 ring-offset-2 ring-black scale-110' : 'border-gray-200 hover:scale-110'
-                                            }`}
-                                        style={{ backgroundColor: opt.value }} // Assuming value is hex
+                                        className="w-10 h-10 rounded-full border-2 border-gray-200 hover:scale-110 transition-all shadow-sm"
+                                        style={{ backgroundColor: opt.value }}
                                         title={opt.name}
                                     />
                                 );
@@ -170,11 +215,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
                             return (
                                 <button
                                     key={opt.id}
-                                    onClick={() => handleAttributeSelect(attr.slug, opt.value)}
-                                    className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all ${isSelected
-                                        ? 'border-black bg-black text-white shadow-lg'
-                                        : 'border-gray-200 bg-white text-gray-900 hover:border-black'
-                                        }`}
+                                    className="px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-900 hover:border-black text-sm font-medium transition-all"
                                 >
                                     {opt.name}
                                 </button>
@@ -208,7 +249,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
                     className={`flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-xl font-bold text-lg transition-transform hover:-translate-y-1 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none px-8 py-3`}
                 >
                     <ShoppingCart size={20} />
-                    Thêm vào giỏ hàng
+                    {isOutOfStock ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
                 </button>
 
                 <button className="w-12 h-12 flex items-center justify-center border border-gray-200 rounded-xl hover:border-red-500 hover:text-red-500 hover:bg-red-50 transition-colors">

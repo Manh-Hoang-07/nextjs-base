@@ -47,10 +47,11 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({ categories = [] })
 
     return (
         <div className="space-y-8">
+
             {/* Categories - Using existing SelectFilter component */}
             <div className="border-b border-gray-100 pb-6">
                 <h3 className="font-bold text-gray-900 mb-4 text-lg">Danh mục</h3>
-                <div className="product-category-select">
+                <div className="product-category-select" data-pagination>
                     <SelectFilter
                         value={searchParams.get('category') || ''}
                         options={categoryOptions}
@@ -88,11 +89,13 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({ categories = [] })
                 </div>
                 <button
                     onClick={applyPriceFilter}
+                    data-pagination
                     className="w-full py-3 bg-black text-white rounded-xl text-sm font-bold hover:bg-gray-800 active:scale-[0.98] transition-all shadow-sm shadow-black/10"
                 >
                     Áp dụng
                 </button>
             </div>
         </div>
+
     );
 };

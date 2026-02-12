@@ -6,6 +6,8 @@ import { useProductCategories, ProductCategory } from "@/hooks/useProductCategor
 import CategoryMenu from "@/components/Features/Ecommerce/Products/Categories/Public/CategoryMenu";
 import Image from "next/image";
 import { formatCurrency } from "@/utils/formatters";
+import { Pagination } from "@/components/UI/Navigation/Pagination";
+import { ContentWrapper } from "@/components/UI/Loading/ContentWrapper";
 
 interface Product {
   id: number;
@@ -134,72 +136,62 @@ export default function PublicCategoryPage() {
             )}
           </header>
 
-          {isLoading && (!products || products.length === 0) ? (
-            <div className="py-12 text-center text-gray-500">Đang tải...</div>
-          ) : (!products || products.length === 0) ? (
-            <div className="py-12 text-center text-gray-500">
-              Chưa có sản phẩm trong danh mục này.
-            </div>
-          ) : (
-            <>
-              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {products.map((product) => (
-                  <article
-                    key={product.id}
-                    className="flex flex-col overflow-hidden rounded-lg bg-white shadow-sm"
-                  >
-                    {product.thumbnail && (
-                      <div className="relative h-40 w-full">
-                        <Image
-                          src={product.thumbnail}
-                          alt={product.name}
-                          fill
-                          className="object-cover"
-                          unoptimized
-                        />
-                      </div>
-                    )}
-                    <div className="flex flex-1 flex-col p-3">
-                      <h3 className="line-clamp-2 text-sm font-semibold text-gray-900">
-                        {product.name}
-                      </h3>
-                      <div className="mt-2 text-sm font-semibold text-primary">
-                        {isMounted && (product.sale_price ?? product.price)
-                          ? formatCurrency(product.sale_price ?? product.price)
-                          : null}
-                      </div>
-                    </div>
-                  </article>
-                ))}
+          <ContentWrapper>
+            {isLoading && (!products || products.length === 0) ? (
+              <div className="py-12 text-center text-gray-500">Đang tải...</div>
+            ) : (!products || products.length === 0) ? (
+              <div className="py-12 text-center text-gray-500">
+                Chưa có sản phẩm trong danh mục này.
               </div>
-
-              {totalPages > 1 && (
-                <div className="mt-8 flex items-center justify-center gap-2">
-                  <button
-                    disabled={page <= 1}
-                    onClick={() => handlePageChange(page - 1)}
-                    className="rounded-md border px-3 py-1 text-sm disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    Trước
-                  </button>
-                  <span className="text-sm text-gray-600">
-                    Trang {page} / {totalPages}
-                  </span>
-                  <button
-                    disabled={page >= totalPages}
-                    onClick={() => handlePageChange(page + 1)}
-                    className="rounded-md border px-3 py-1 text-sm disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    Sau
-                  </button>
+            ) : (
+              <>
+                <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                  {products.map((product) => (
+                    <article
+                      key={product.id}
+                      className="flex flex-col overflow-hidden rounded-lg bg-white shadow-sm"
+                    >
+                      {product.thumbnail && (
+                        <div className="relative h-40 w-full">
+                          <Image
+                            src={product.thumbnail}
+                            alt={product.name}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                      )}
+                      <div className="flex flex-1 flex-col p-3">
+                        <h3 className="line-clamp-2 text-sm font-semibold text-gray-900">
+                          {product.name}
+                        </h3>
+                        <div className="mt-2 text-sm font-semibold text-primary">
+                          {isMounted && (product.sale_price ?? product.price)
+                            ? formatCurrency(product.sale_price ?? product.price)
+                            : null}
+                        </div>
+                      </div>
+                    </article>
+                  ))}
                 </div>
-              )}
-            </>
-          )}
+
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    hasNextPage={page < totalPages}
+                    hasPreviousPage={page > 1}
+                  />
+                )}
+              </>
+            )}
+          </ContentWrapper>
         </main>
       </div>
     </div>
   );
 }
+
 
 

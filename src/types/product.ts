@@ -13,18 +13,20 @@ export interface ProductAttributeOption {
 }
 
 export interface ProductVariant {
-    id: number;
-    product_id: number;
+    id: number | string;
+    product_id?: number;
+    name: string;
     sku: string;
-    price: number;
-    sale_price?: number;
-    stock_status: 'in_stock' | 'out_of_stock';
-    inventory_quantity: number;
-    attributes: {
+    price: number | string;
+    sale_price?: number | string | null;
+    stock_quantity?: number;
+    stock_status?: 'in_stock' | 'out_of_stock';
+    inventory_quantity?: number;
+    attributes?: {
         attribute_id: number;
         option_id: number;
     }[];
-    image?: string;
+    image?: string | null;
 }
 
 export interface Product {
