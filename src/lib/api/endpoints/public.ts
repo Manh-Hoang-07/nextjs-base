@@ -124,6 +124,13 @@ export const publicEndpoints = {
     menus: {
         list: "/api/public/menus",
     },
+    cart: {
+        get: "/api/public/cart",
+        add: "/api/public/cart/add",
+        update: (id: Id) => `/api/public/cart/items/${id}`,
+        remove: (id: Id) => `/api/public/cart/item/${id}`,
+        clear: "/api/public/cart/clear",
+    },
 } as const;
 
 

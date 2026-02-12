@@ -5,6 +5,9 @@ import React, { useState, useEffect } from 'react';
 import { Product, ProductVariant, ProductAttribute } from '@/types/product';
 import { Star, Heart, Share2, Minus, Plus, ShoppingCart, Check, Package } from 'lucide-react';
 
+import { cartApi, setCartUuid } from '@/lib/api/public/cart';
+import { useToastContext } from '@/contexts/ToastContext';
+
 interface ProductInfoProps {
     product: Product;
 }
@@ -13,6 +16,8 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     const [quantity, setQuantity] = useState(1);
     const [selectedVariantId, setSelectedVariantId] = useState<number | string | null>(null);
     const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
+    const [isAddingToCart, setIsAddingToCart] = useState(false);
+    const toast = useToastContext();
 
     // Initialize with first variant if product is variable
     useEffect(() => {
@@ -33,6 +38,37 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
     const handleQuantityChange = (delta: number) => {
         setQuantity(prev => Math.max(1, prev + delta));
+    };
+
+    const handleAddToCart = async () => {
+        if (!product.id) return;
+
+        // Validation for variants
+        if (product.variants && product.variants.length > 0 && !selectedVariantId) {
+            toast.showWarning("Vui lòng chọn phiên bản sản phẩm");
+            return;
+        }
+
+        setIsAddingToCart(true);
+        try {
+            const response = await cartApi.addToCart({
+                product_id: product.id,
+                product_variant_id: selectedVariantId ? Number(selectedVariantId) : undefined,
+                quantity: quantity
+            });
+
+            if (response.data.data.cart_uuid) {
+                setCartUuid(response.data.data.cart_uuid);
+            }
+
+            toast.showSuccess("Đã thêm vào giỏ hàng!");
+        } catch (error: any) {
+            console.error("Add to cart error:", error);
+            const msg = error.response?.data?.message || "Không thể thêm vào giỏ hàng. Vui lòng thử lại.";
+            toast.showError(msg);
+        } finally {
+            setIsAddingToCart(false);
+        }
     };
 
     // Calculate current price based on selected variant or product
@@ -245,11 +281,16 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
                 </div>
 
                 <button
-                    disabled={isOutOfStock}
-                    className={`flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-xl font-bold text-lg transition-transform hover:-translate-y-1 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none px-8 py-3`}
+                    onClick={handleAddToCart}
+                    disabled={isOutOfStock || isAddingToCart}
+                    className={`w-full md:flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-xl font-bold text-lg transition-transform hover:-translate-y-1 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none px-8 py-3`}
                 >
-                    <ShoppingCart size={20} />
-                    {isOutOfStock ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
+                    {isAddingToCart ? (
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                        <ShoppingCart size={20} />
+                    )}
+                    {isOutOfStock ? 'Hết hàng' : (isAddingToCart ? 'Đang thêm...' : 'Thêm vào giỏ hàng')}
                 </button>
 
                 <button className="w-12 h-12 flex items-center justify-center border border-gray-200 rounded-xl hover:border-red-500 hover:text-red-500 hover:bg-red-50 transition-colors">
