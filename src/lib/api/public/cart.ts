@@ -16,7 +16,8 @@ export interface CartProduct {
     name: string;
     image?: string | null;
     sku?: string;
-    slug?: string; // Assuming API returns this or we need to derive/fetch it. If missing, links might break.
+    slug?: string;
+    is_digital?: boolean;
 }
 
 export interface CartVariant {
@@ -47,6 +48,8 @@ export interface CartData {
     cart_uuid: string;
     subtotal: string | number;
     total_amount: string | number;
+    discount_amount?: string | number;
+    applied_coupon?: any;
     items: CartItem[];
 }
 

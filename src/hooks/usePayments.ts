@@ -103,8 +103,12 @@ export function usePayments() {
       try {
         setIsLoading(true);
         const params = new URLSearchParams(queryParams);
+        const endpoint = gateway === 'vnpay' && (publicEndpoints.payments as any).vnpayReturn
+          ? (publicEndpoints.payments as any).vnpayReturn
+          : publicEndpoints.payments.verify(gateway);
+
         const response = await apiClient.get<VerifyPaymentResponse>(
-          `${publicEndpoints.payments.verify(gateway)}?${params.toString()}`
+          `${endpoint}?${params.toString()}`
         );
 
         if (response.data.success) {
@@ -202,6 +206,35 @@ export function usePayments() {
     []
   );
 
+  /**
+   * Lấy danh sách payment methods
+   * API: GET /api/public/payment-methods
+   */
+  const fetchPaymentMethods = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await apiClient.get<{
+        success: boolean;
+        data: any[];
+      }>("/api/public/payment-methods");
+
+      if (response.data.success) {
+        return response.data.data;
+      }
+
+      return [];
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Không thể lấy danh sách phương thức thanh toán";
+      setErrorMessage(errorMessage);
+      return [];
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   return {
     isLoading,
     errorMessage,
@@ -209,8 +242,9 @@ export function usePayments() {
     verifyPayment,
     fetchPayments,
     fetchPayment,
+    fetchPaymentMethods,
   };
-}
+};
 
 
 

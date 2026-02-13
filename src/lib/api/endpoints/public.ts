@@ -78,13 +78,14 @@ export const publicEndpoints = {
         checkout: "/api/public/orders",
         myOrders: "/api/public/orders",
         detail: (id: Id) => `/api/public/orders/${id}`,
-        access: "/api/public/orders/acces",
+        access: "/api/public/orders/access",
         cancel: (id: Id) => `/api/public/orders/${id}/cancel`,
     },
     payments: {
         list: "/api/public/payments",
         createUrl: "/api/public/payments/create-url",
         verify: (gateway: string) => `/api/public/payments/verify/${gateway}`,
+        vnpayReturn: "/api/public/payment/vnpay/return",
         show: (id: string | number) => `/api/public/payments/${id}`,
     },
     shippingMethods: {
