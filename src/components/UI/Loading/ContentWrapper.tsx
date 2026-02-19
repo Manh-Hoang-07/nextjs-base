@@ -6,13 +6,14 @@ import { LoadingSpinner } from '@/components/UI/Loading/LoadingSpinner';
 
 interface ContentWrapperProps {
     children: React.ReactNode;
+    className?: string;
 }
 
 /**
  * Wrapper component that shows loading overlay when pagination or filtering happens
  * Detects clicks on pagination buttons or filter links
  */
-export function ContentWrapper({ children }: ContentWrapperProps) {
+export function ContentWrapper({ children, className = '' }: ContentWrapperProps) {
     const searchParams = useSearchParams();
     const [isLoading, setIsLoading] = useState(false);
     const [previousParams, setPreviousParams] = useState(searchParams.toString());
@@ -56,7 +57,7 @@ export function ContentWrapper({ children }: ContentWrapperProps) {
 
 
     return (
-        <div className="relative">
+        <div className={`relative ${className}`}>
             {isLoading && <LoadingSpinner variant="local" />}
             {children}
         </div>

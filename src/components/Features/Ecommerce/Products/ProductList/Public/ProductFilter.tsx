@@ -13,9 +13,9 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({ categories = [] })
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    // States for inputs
-    const [minPrice, setMinPrice] = useState(searchParams.get('min_price') || '');
-    const [maxPrice, setMaxPrice] = useState(searchParams.get('max_price') || '');
+    // State for price range slider (dual handles)
+    const [minPrice, setMinPrice] = useState(Number(searchParams.get('min_price')) || 0);
+    const [maxPrice, setMaxPrice] = useState(Number(searchParams.get('max_price')) || 10000000);
 
     const handleFilterChange = (key: string, value: string | number | null) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -30,12 +30,8 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({ categories = [] })
 
     const applyPriceFilter = () => {
         const params = new URLSearchParams(searchParams.toString());
-        if (minPrice) params.set('min_price', minPrice);
-        else params.delete('min_price');
-
-        if (maxPrice) params.set('max_price', maxPrice);
-        else params.delete('max_price');
-
+        params.set('min_price', minPrice.toString());
+        params.set('max_price', maxPrice.toString());
         params.set('page', '1');
         router.push(`?${params.toString()}`);
     };
@@ -63,28 +59,59 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({ categories = [] })
 
             {/* Price Range */}
             <div className="pb-2">
-                <h3 className="font-bold text-gray-900 mb-4 text-lg">Khoảng giá</h3>
-                <div className="flex items-center gap-2 mb-4">
-                    <div className="relative flex-1">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">₫</span>
+                <h3 className="font-bold text-gray-900 mb-2 text-lg">Khoảng giá</h3>
+                <div className="mb-6">
+                    <div className="flex justify-between items-center mb-6">
+                        <div className="flex flex-col">
+                            <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Từ</span>
+                            <span className="text-sm font-bold text-black">{minPrice.toLocaleString('vi-VN')}đ</span>
+                        </div>
+                        <div className="flex flex-col text-right">
+                            <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Đến</span>
+                            <span className="text-sm font-bold text-black">{maxPrice.toLocaleString('vi-VN')}đ</span>
+                        </div>
+                    </div>
+
+                    <div className="relative h-2 flex items-center mb-4">
+                        <div className="absolute w-full h-1.5 bg-gray-100 rounded-full" />
+                        <div
+                            className="absolute h-1.5 bg-black rounded-full z-10"
+                            style={{
+                                left: `${(minPrice / 10000000) * 100}%`,
+                                right: `${100 - (maxPrice / 10000000) * 100}%`
+                            }}
+                        />
+
                         <input
-                            type="number"
-                            placeholder="Min"
+                            type="range"
+                            min="0"
+                            max="10000000"
+                            step="100000"
                             value={minPrice}
-                            onChange={(e) => setMinPrice(e.target.value)}
-                            className="w-full pl-7 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-black focus:ring-2 focus:ring-black/5 transition-all"
+                            onChange={(e) => {
+                                const val = Math.min(Number(e.target.value), maxPrice - 100000);
+                                setMinPrice(val);
+                            }}
+                            className="absolute w-full appearance-none bg-transparent pointer-events-none z-20 h-1.5 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-black [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow-md"
+                        />
+
+                        <input
+                            type="range"
+                            min="0"
+                            max="10000000"
+                            step="100000"
+                            value={maxPrice}
+                            onChange={(e) => {
+                                const val = Math.max(Number(e.target.value), minPrice + 100000);
+                                setMaxPrice(val);
+                            }}
+                            className="absolute w-full appearance-none bg-transparent pointer-events-none z-20 h-1.5 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-black [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow-md"
                         />
                     </div>
-                    <span className="text-gray-400 text-lg">−</span>
-                    <div className="relative flex-1">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">₫</span>
-                        <input
-                            type="number"
-                            placeholder="Max"
-                            value={maxPrice}
-                            onChange={(e) => setMaxPrice(e.target.value)}
-                            className="w-full pl-7 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-black focus:ring-2 focus:ring-black/5 transition-all"
-                        />
+
+                    <div className="flex justify-between mt-2">
+                        <span className="text-[10px] text-gray-400">0đ</span>
+                        <span className="text-[10px] text-gray-400">10trđ</span>
                     </div>
                 </div>
                 <button

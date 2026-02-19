@@ -46,15 +46,24 @@ export default function ShippingSelector({
       const method = methods.find((m) => m.id === selectedId);
       if (!method) return;
 
-      // Notify parent immediately of selection (even if cost is pending)
+      const basePrice = Number(method.price || method.base_price || 0);
+
+      // If we have a calculation but it's for another method, clear it
+      const isCorrectCalc = calculation && calculation.shipping_method_id === selectedId;
+      const currentCost = isCorrectCalc ? shippingCost : basePrice;
+
+      // Notify parent immediately of selection with current best guess cost
       onShippingChange?.({
         method,
-        cost: shippingCost || 0,
-        detail: calculation,
+        cost: currentCost,
+        detail: isCorrectCalc ? calculation : null,
       });
 
-      // Don't calculate if destination is empty or just generic comma
-      if (!destination || destination.trim() === "," || destination.trim().length < 5) return;
+      // Don't calculate if destination is empty
+      if (!destination) return;
+
+      // If destination is string, check if it's too short
+      if (typeof destination === 'string' && (destination.trim() === "," || destination.trim().length < 5)) return;
 
       const payload: CalculateShippingRequest = {
         shipping_method_id: selectedId,
@@ -66,10 +75,12 @@ export default function ShippingSelector({
       const res = await calculateShipping(payload);
       if (res) {
         setCalculation(res);
-        setShippingCost(res.cost);
+        // Fallback to res.shipping_fee if res.cost is not what we want (per doc)
+        const finalCost = typeof res.shipping_fee === 'number' ? res.shipping_fee : res.cost;
+        setShippingCost(finalCost);
         onShippingChange?.({
           method,
-          cost: res.cost,
+          cost: finalCost,
           detail: res,
         });
       }
@@ -79,15 +90,21 @@ export default function ShippingSelector({
   }, [selectedId, cartValue, weight, destination, calculateShipping, methods, onShippingChange]);
 
   const renderCost = (method: ShippingMethod) => {
-    if (selectedId !== method.id) return null;
-    if (isLoading) return <span className="animate-pulse">Đang tính...</span>;
-    if (calculation && selectedId === method.id) {
-      return new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-      }).format(shippingCost);
-    }
-    return "--";
+    const isSelected = selectedId === method.id;
+    const basePrice = Number(method.price || method.base_price || 0);
+
+    if (isSelected && isLoading) return <span className="animate-pulse">Đang tính...</span>;
+
+    const displayCost = (isSelected && calculation && calculation.shipping_method_id === method.id)
+      ? shippingCost
+      : basePrice;
+
+    if (displayCost === 0 && !isSelected) return "Miễn phí";
+
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(displayCost);
   };
 
   if (methods.length === 0) {
@@ -111,8 +128,8 @@ export default function ShippingSelector({
           <label
             key={method.id}
             className={`flex cursor-pointer items-center justify-between rounded-md border px-3 py-3 text-sm transition-all ${selectedId === method.id
-                ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                : 'hover:border-gray-300'
+              ? 'border-primary bg-primary/5 ring-1 ring-primary'
+              : 'hover:border-gray-300'
               }`}
           >
             <div className="flex items-center gap-3">
@@ -140,12 +157,12 @@ export default function ShippingSelector({
         ))}
       </div>
 
-      {calculation?.estimated_delivery_time && (
+      {(calculation?.estimated_delivery_time || calculation?.estimated_delivery) && (
         <p className="text-xs text-gray-500 flex items-center gap-1 mt-2">
           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          Dự kiến giao: {calculation.estimated_delivery_time}
+          Dự kiến giao: {calculation.estimated_delivery_time || calculation.estimated_delivery}
         </p>
       )}
     </section>

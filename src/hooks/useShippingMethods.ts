@@ -11,6 +11,7 @@ export interface ShippingMethod {
   code: string;
   status: "active" | "inactive" | string;
   description?: string | null;
+  price?: string | number;
   base_price?: number;
   price_rules?: any;
   metadata?: Record<string, any>;
@@ -30,13 +31,19 @@ export interface CalculateShippingRequest {
   shipping_method_id: number;
   cart_value: number;
   weight?: number;
-  destination?: string;
+  destination?: string | {
+    province_id?: number | string;
+    district_id?: number | string;
+    ward_id?: number | string;
+  };
 }
 
 export interface CalculateShippingResponse {
   shipping_method_id: number;
   cost: number;
+  shipping_fee?: number; // Added to match documentation
   estimated_delivery_time?: string;
+  estimated_delivery?: string; // Added to match documentation
   notes?: string;
   [key: string]: any;
 }
@@ -64,9 +71,8 @@ export function useShippingMethods() {
         if (params?.status) searchParams.set("status", params.status);
         if (params?.sort) searchParams.set("sort", params.sort);
 
-        const url = `${publicEndpoints.shippingMethods.list}${
-          searchParams.toString() ? `?${searchParams.toString()}` : ""
-        }`;
+        const url = `${publicEndpoints.shippingMethods.list}${searchParams.toString() ? `?${searchParams.toString()}` : ""
+          }`;
 
         const response = await apiClient.get<{
           success?: boolean;
@@ -145,7 +151,15 @@ export function useShippingMethods() {
         }>(publicEndpoints.shippingMethods.calculate, payload);
 
         if (response.data?.data) {
-          return response.data.data;
+          const data = response.data.data;
+          // Normalize: if data is a number, wrap it in an object
+          if (typeof data === 'number') {
+            return {
+              cost: data,
+              shipping_method_id: payload.shipping_method_id
+            };
+          }
+          return data;
         }
 
         // Trường hợp API trả trực tiếp object

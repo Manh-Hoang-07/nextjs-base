@@ -22,27 +22,26 @@ export const ProductListWrapper: React.FC<ProductListWrapperProps> = ({ initialD
 
     // Sort implementation would require URL manipulation similar to filters
 
-    if (!initialData) return <div className="text-center py-20">No products found.</div>;
-
-    const { data: products, meta } = initialData;
+    const products = initialData?.data || [];
+    const meta = initialData?.meta;
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col lg:flex-row gap-8">
+        <div className="w-full px-4 md:px-10 py-8">
+            <div className="flex flex-col lg:flex-row gap-8 items-start">
                 {/* Sidebar */}
-                <aside className="w-full lg:w-1/4 shrink-0">
+                <aside className="w-full lg:w-[320px] shrink-0">
                     <div className="bg-white p-6 rounded-2xl border border-gray-100 sticky top-24">
                         <ProductFilter categories={categories} />
                     </div>
                 </aside>
 
                 {/* Main Content */}
-                <ContentWrapper>
-                    <main className="flex-1">
+                <ContentWrapper className="flex-1 w-full">
+                    <main>
                         {/* Toolbar */}
                         <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
                             <div className="text-gray-600 font-medium">
-                                Hiển thị <span className="text-black font-bold">{products.length}</span> trên tổng số <span className="text-black font-bold">{meta.totalItems}</span> kết quả
+                                Hiển thị <span className="text-black font-bold">{products.length}</span> {meta ? <>trên tổng số <span className="text-black font-bold">{meta.totalItems}</span></> : ''} kết quả
                             </div>
 
                             <div className="flex items-center gap-4">
@@ -86,27 +85,44 @@ export const ProductListWrapper: React.FC<ProductListWrapperProps> = ({ initialD
                             </div>
                         </div>
 
-                        {/* Grid */}
-                        <div className={`grid gap-6 ${viewMode === 'grid'
-                            ? 'grid-cols-2 md:grid-cols-3 xl:grid-cols-4'
-                            : 'grid-cols-1'
-                            }`}>
-                            {products.map(product => (
-                                <ProductCard key={product.id} product={product} />
-                            ))}
-                        </div>
+                        {products.length > 0 ? (
+                            <>
+                                {/* Grid */}
+                                <div className={`grid gap-6 ${viewMode === 'grid'
+                                    ? 'grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6'
+                                    : 'grid-cols-1'
+                                    }`}>
+                                    {products.map(product => (
+                                        <ProductCard key={product.id} product={product} isList={viewMode === 'list'} />
+                                    ))}
+                                </div>
 
-                        {/* Pagination */}
-                        <Pagination
-                            currentPage={meta.page}
-                            totalPages={meta.totalPages}
-                            hasNextPage={meta.hasNextPage}
-                            hasPreviousPage={meta.hasPreviousPage}
-                        />
+                                {/* Pagination */}
+                                {meta && (
+                                    <div className="mt-10">
+                                        <Pagination
+                                            currentPage={meta.page}
+                                            totalPages={meta.totalPages}
+                                            hasNextPage={meta.hasNextPage}
+                                            hasPreviousPage={meta.hasPreviousPage}
+                                        />
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <div className="bg-white rounded-2xl border border-gray-100 py-20 px-4 text-center">
+                                <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-50 rounded-full mb-4 text-gray-400">
+                                    <Grid size={32} />
+                                </div>
+                                <h3 className="text-lg font-bold text-gray-900 mb-2">Không tìm thấy sản phẩm</h3>
+                                <p className="text-gray-500 max-w-xs mx-auto">
+                                    Rất tiếc, chúng tôi không tìm thấy sản phẩm nào khớp với bộ lọc của bạn. Thử thay đổi điều kiện lọc nhé!
+                                </p>
+                            </div>
+                        )}
                     </main>
                 </ContentWrapper>
             </div>
         </div>
     );
 };
-

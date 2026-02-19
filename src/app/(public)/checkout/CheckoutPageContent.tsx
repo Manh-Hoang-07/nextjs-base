@@ -28,6 +28,9 @@ export default function CheckoutPageContent() {
         city: "",
         district: "",
         ward: "",
+        province_id: null as number | null,
+        district_id: null as number | null,
+        ward_id: null as number | null,
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -50,15 +53,26 @@ export default function CheckoutPageContent() {
     // Debounce shipping calculation destination
     useEffect(() => {
         const timer = setTimeout(() => {
+            // Priority 1: Use IDs if available (per documentation)
+            if (shippingAddress.province_id && shippingAddress.district_id) {
+                setDebouncedDestination({
+                    province_id: shippingAddress.province_id,
+                    district_id: shippingAddress.district_id,
+                    ward_id: shippingAddress.ward_id
+                } as any);
+                return;
+            }
+
+            // Priority 2: Fallback to strings
             const dest = `${shippingAddress.district}, ${shippingAddress.city}`;
             // Only update if destination has significant info
             if (shippingAddress.district || shippingAddress.city) {
                 setDebouncedDestination(dest);
             }
-        }, 800); // Wait 800ms after last typing
+        }, 800);
 
         return () => clearTimeout(timer);
-    }, [shippingAddress.city, shippingAddress.district]);
+    }, [shippingAddress.city, shippingAddress.district, shippingAddress.province_id, shippingAddress.district_id, shippingAddress.ward_id]);
 
     const fetchCart = async () => {
         try {
@@ -91,17 +105,22 @@ export default function CheckoutPageContent() {
 
     const calculateTotal = () => {
         if (!cart) return 0;
-        // Strip any non-numeric characters just in case the API returns formatted strings
+
         const parseAmount = (val: any) => {
             if (typeof val === 'number') return val;
             if (!val) return 0;
-            const cleaned = val.toString().replace(/[^\d.-]/g, '');
-            return parseFloat(cleaned) || 0;
+            const cleaned = val.toString().replace(/[^\d-]/g, '');
+            return parseInt(cleaned, 10) || 0;
         };
 
         const subtotal = parseAmount(cart.subtotal);
         const discount = parseAmount(cart.discount_amount);
-        return Math.max(0, subtotal - discount + shippingFee);
+
+        // Per documentation: Total = Subtotal - Discount + Shipping Fee
+        // The API's total_amount usually already reflects Subtotal - Discount
+        const netAmount = cart.total_amount ? parseAmount(cart.total_amount) : (subtotal - discount);
+
+        return Math.max(0, netAmount + shippingFee);
     };
 
     const validateForm = () => {
@@ -132,6 +151,7 @@ export default function CheckoutPageContent() {
             setProcessing(true);
             const payload = {
                 cart_uuid: uuid,
+                cart_id: cart.cart_id, // Added cart_id as per doc suggestion
                 customer_name: shippingAddress.name,
                 customer_phone: shippingAddress.phone,
                 customer_email: shippingAddress.email,
@@ -142,9 +162,11 @@ export default function CheckoutPageContent() {
                     city: shippingAddress.city,
                     district: shippingAddress.district,
                     ward: shippingAddress.ward,
+                    // If we had IDs, they'd go here too
                 },
                 shipping_method_id: selectedShippingMethod.id,
                 payment_method_id: selectedPaymentMethodId,
+                shipping_fee: shippingFee, // Send current calculated fee
                 notes: notes,
             };
 
@@ -155,10 +177,8 @@ export default function CheckoutPageContent() {
                 const { is_online, payment_url, order_number } = resp.data.data;
 
                 if (is_online && payment_url) {
-                    // TRƯỜNG HỢP ONLINE (VNPAY, MoMo...)
                     window.location.href = payment_url;
                 } else {
-                    // TRƯỜNG HỢP OFFLINE (COD, Chuyển khoản)
                     router.push(`/checkout/success?orderCode=${order_number}`);
                 }
             }
@@ -291,7 +311,11 @@ export default function CheckoutPageContent() {
                         Phương thức vận chuyển
                     </h2>
                     <ShippingSelector
-                        cartValue={Number(cart.subtotal)}
+                        cartValue={(() => {
+                            if (typeof cart.subtotal === 'number') return cart.subtotal;
+                            const cleaned = String(cart.subtotal || 0).replace(/[^\d-]/g, '');
+                            return parseInt(cleaned, 10) || 0;
+                        })()}
                         destination={debouncedDestination}
                         onShippingChange={handleShippingChange}
                     />
