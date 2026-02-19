@@ -174,12 +174,28 @@ export default function CheckoutPageContent() {
 
             if (resp.data.success) {
                 showSuccess("Đặt hàng thành công!");
-                const { is_online, payment_url, order_number } = resp.data.data;
+                const { is_online, payment_url, order_number, access_url } = resp.data.data;
 
                 if (is_online && payment_url) {
                     window.location.href = payment_url;
                 } else {
-                    router.push(`/checkout/success?orderCode=${order_number}`);
+                    // Extract hashKey from access_url if available
+                    let hashKey = "";
+                    if (access_url) {
+                        try {
+                            const url = new URL(access_url);
+                            hashKey = url.searchParams.get("hashKey") || "";
+                        } catch (e) {
+                            console.error("Failed to parse access_url", e);
+                        }
+                    }
+
+                    const queryParams = new URLSearchParams({
+                        orderCode: order_number,
+                    });
+                    if (hashKey) queryParams.set("hashKey", hashKey);
+
+                    router.push(`/checkout/success?${queryParams.toString()}`);
                 }
             }
         } catch (error: any) {
