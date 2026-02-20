@@ -55,6 +55,9 @@ export default async function ComicHomePage() {
         >
             <main className="bg-[#f8f9fa] min-h-screen">
                 <div className="container mx-auto px-4 py-8">
+                    {/* SEO H1 */}
+                    <h1 className="sr-only">{systemConfig?.site_name || "Comic Haven"} - Thế giới truyện tranh trực tuyến</h1>
+
                     {/* Hero Section - Trending */}
                     <TrendingHero comics={data.trending_comics || []} />
 

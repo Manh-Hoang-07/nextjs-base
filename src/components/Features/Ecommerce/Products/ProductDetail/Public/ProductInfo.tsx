@@ -97,7 +97,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
             {/* Header */}
             <div>
                 <div className="flex items-center gap-2 mb-4">
-                    <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full">
+                    <span className="text-sm font-medium text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">
                         {product.is_new ? 'Hàng mới về' : 'Bán chạy nhất'}
                     </span>
                     {!isOutOfStock ? (
@@ -188,10 +188,10 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
                                     onClick={() => !isVariantOutOfStock && handleVariantSelect(variant.id)}
                                     disabled={isVariantOutOfStock}
                                     className={`p-4 rounded-xl border-2 text-left transition-all ${isSelected
-                                        ? 'border-black bg-black text-white shadow-lg'
+                                        ? 'border-primary bg-primary text-white shadow-lg'
                                         : isVariantOutOfStock
                                             ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed opacity-60'
-                                            : 'border-gray-200 bg-white text-gray-900 hover:border-black hover:shadow-md'
+                                            : 'border-gray-200 bg-white text-gray-900 hover:border-primary hover:shadow-md'
                                         }`}
                                 >
                                     <div className="flex justify-between items-start mb-2">
@@ -251,7 +251,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
                             return (
                                 <button
                                     key={opt.id}
-                                    className="px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-900 hover:border-black text-sm font-medium transition-all"
+                                    className="px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-900 hover:border-primary text-sm font-medium transition-all"
                                 >
                                     {opt.name}
                                 </button>
@@ -283,7 +283,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
                 <button
                     onClick={handleAddToCart}
                     disabled={isOutOfStock || isAddingToCart}
-                    className={`w-full md:flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-xl font-bold text-lg transition-transform hover:-translate-y-1 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none px-8 py-3`}
+                    className={`w-full md:flex-1 flex items-center justify-center gap-2 bg-primary text-white rounded-xl font-bold text-lg transition-transform hover:-translate-y-1 shadow-xl hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none px-8 py-3`}
                 >
                     {isAddingToCart ? (
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

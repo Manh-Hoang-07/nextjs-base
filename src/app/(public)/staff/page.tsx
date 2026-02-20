@@ -3,6 +3,8 @@ import { StaffList } from "@/components/Features/Introduction/Staff/Public/Staff
 import { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/UI/Navigation/Button";
+import HeroBanner from "@/components/Features/Marketing/Banners/Public/HeroBanner";
+import { Breadcrumbs } from "@/components/UI/Navigation/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Đội ngũ nhân sự",
@@ -13,35 +15,28 @@ export default async function StaffPage() {
   const staffMembers = await getStaffList();
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Đội ngũ của chúng tôi</h1>
+    <div className="min-h-screen bg-[#f8f9fa] pb-20 transition-colors duration-300">
+      <HeroBanner locationCode="staff" imageOnly={true} />
 
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg p-8 mb-12 text-white">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-4">Gặp gỡ đội ngũ chuyên gia</h2>
-          <p className="text-lg">
-            Chúng tôi tự hào về đội ngũ đa dạng và tài năng của mình, mỗi người đều đóng góp vào thành công chung.
+      <div className="container mx-auto px-4 mt-8 relative z-10">
+        <Breadcrumbs items={[{ label: "Đội ngũ nhân sự" }]} />
+        <h1 className="text-4xl font-extrabold text-gray-900 mb-10 border-l-8 border-primary pl-6">Đội ngũ nhân sự</h1>
+        <StaffList initialStaff={staffMembers} />
+
+        {/* CTA Section */}
+        <div className="mt-16 bg-white rounded-2xl p-10 text-center border border-gray-100 shadow-sm">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Gia nhập đội ngũ của chúng tôi</h2>
+          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+            Chúng tôi luôn tìm kiếm những tài năng đam mê và sáng tạo.
+            Xem các vị trí đang tuyển dụng và ứng tuyển ngay hôm nay.
           </p>
+          <Link href="/contact">
+            <Button size="lg">
+              Liên hệ ứng tuyển
+            </Button>
+          </Link>
         </div>
-      </div>
-
-      <StaffList initialStaff={staffMembers} />
-
-      {/* CTA Section */}
-      <div className="mt-16 bg-gray-100 rounded-lg p-8 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Gia nhập đội ngũ của chúng tôi</h2>
-        <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-          Chúng tôi luôn tìm kiếm những tài năng đam mê và sáng tạo.
-          Xem các vị trí đang tuyển dụng và ứng tuyển ngay hôm nay.
-        </p>
-        <Link href="/contact">
-          <Button size="lg">
-            Liên hệ ứng tuyển
-          </Button>
-        </Link>
       </div>
     </div>
   );
 }
-

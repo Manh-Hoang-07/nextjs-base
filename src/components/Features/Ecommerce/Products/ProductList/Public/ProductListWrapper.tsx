@@ -47,7 +47,7 @@ export const ProductListWrapper: React.FC<ProductListWrapperProps> = ({ initialD
                             <div className="flex items-center gap-4">
                                 <div className="relative group" data-pagination>
                                     <select
-                                        className="appearance-none flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg hover:border-black transition-colors bg-white text-sm font-medium pr-8 cursor-pointer focus:outline-none focus:ring-1 focus:ring-black"
+                                        className="appearance-none flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg hover:border-primary transition-colors bg-white text-sm font-medium pr-8 cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary"
                                         value={searchParams.get('sort') || ''}
                                         onChange={(e) => {
                                             const params = new URLSearchParams(searchParams.toString());
@@ -71,13 +71,13 @@ export const ProductListWrapper: React.FC<ProductListWrapperProps> = ({ initialD
                                 <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden p-1 gap-1">
                                     <button
                                         onClick={() => setViewMode('grid')}
-                                        className={`p-2 rounded md:bg-transparent ${viewMode === 'grid' ? 'bg-gray-100 text-black' : 'text-gray-400 hover:text-black'}`}
+                                        className={`p-2 rounded md:bg-transparent ${viewMode === 'grid' ? 'bg-gray-100 text-primary' : 'text-gray-400 hover:text-primary'}`}
                                     >
                                         <Grid size={20} />
                                     </button>
                                     <button
                                         onClick={() => setViewMode('list')}
-                                        className={`p-2 rounded ${viewMode === 'list' ? 'bg-gray-100 text-black' : 'text-gray-400 hover:text-black'}`}
+                                        className={`p-2 rounded ${viewMode === 'list' ? 'bg-gray-100 text-primary' : 'text-gray-400 hover:text-primary'}`}
                                     >
                                         <List size={20} />
                                     </button>

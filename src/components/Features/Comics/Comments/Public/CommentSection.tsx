@@ -139,7 +139,7 @@ const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicI
                             <textarea
                                 value={editContent}
                                 onChange={(e) => setEditContent(e.target.value)}
-                                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm resize-none"
+                                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm resize-none"
                                 rows={3}
                                 autoFocus
                             />
@@ -155,7 +155,7 @@ const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicI
                                     type="button" // Should be submit but prevent default for now if needed, actually submit is handled by form
                                     onClick={handleEditSubmit}
                                     disabled={isSubmitting || !editContent.trim()}
-                                    className="px-3 py-1.5 text-xs font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                                    className="px-3 py-1.5 text-xs font-medium bg-primary text-white rounded-lg hover:bg-primary/90 transition disabled:opacity-50"
                                 >
                                     Lưu
                                 </button>
@@ -188,7 +188,7 @@ const CommentItem = ({ comment, currentUserId, onReply, onEdit, onDelete, comicI
                             </div>
                             <button
                                 disabled={isSubmitting || !replyContent.trim()}
-                                className="self-end p-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition disabled:opacity-50 shadow-lg shadow-blue-200"
+                                className="self-end p-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition disabled:opacity-50 shadow-lg shadow-primary/20"
                             >
                                 <PaperAirplaneIcon className="w-5 h-5 -rotate-45 translate-x-0.5 -translate-y-0.5" />
                             </button>
@@ -374,7 +374,7 @@ export function CommentSection({ comicId, chapterId, comments: initialComments, 
     return (
         <div className="mt-12 space-y-8">
             <h3 className="text-xl font-black uppercase tracking-tight text-gray-900 flex items-center gap-2">
-                <ChatBubbleLeftRightIcon className="w-6 h-6 text-blue-500" />
+                <ChatBubbleLeftRightIcon className="w-6 h-6 text-primary" />
                 Bình luận ({comments.length})
             </h3>
 
@@ -383,12 +383,12 @@ export function CommentSection({ comicId, chapterId, comments: initialComments, 
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     placeholder="Viết bình luận của bạn..."
-                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all resize-none h-28 text-sm shadow-sm"
+                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none h-28 text-sm shadow-sm"
                 />
                 <div className="absolute bottom-3 right-3">
                     <button
                         disabled={isSubmitting || !content.trim()}
-                        className="px-6 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-blue-200"
+                        className="px-6 py-2 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary/90 transition disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-primary/20"
                     >
                         {isSubmitting ? "Đang gửi..." : (
                             <>

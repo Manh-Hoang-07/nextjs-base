@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, isValidElement } from "react";
 import { usePathname } from "next/navigation";
 import FloatingContactChannels from "@/components/Layouts/Public/contact-channels/FloatingContactChannels";
+import { BackToTop } from "@/components/UI/Navigation/BackToTop";
 
 interface PublicLayoutWrapperProps {
     children: React.ReactNode;
@@ -34,6 +35,7 @@ export function PublicLayoutWrapper({
 
             {!isReadingPage && <React.Fragment key="footer-section">{footer}</React.Fragment>}
             {!isReadingPage && <FloatingContactChannels key="floating-channels" channels={contactChannels} />}
+            {!isReadingPage && <BackToTop />}
         </div>
     );
 }

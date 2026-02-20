@@ -178,7 +178,7 @@ export default function HomePageContent() {
                       {(comic.categories || []).slice(0, 5).map((category) => (
                         <span
                           key={category.id}
-                          className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
+                          className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full"
                         >
                           {category.name}
                         </span>
@@ -230,7 +230,7 @@ export default function HomePageContent() {
               <button
                 key={category.id}
                 onClick={() => filterByCategory(Number(category.id))}
-                className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-colors"
+                className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-primary/5 hover:border-primary/30 hover:text-primary transition-colors"
               >
                 {category.name}
               </button>
@@ -350,7 +350,7 @@ export default function HomePageContent() {
                     {comic.last_chapter && (
                       <Link
                         href={`/comics/${comic.slug}/chapters/${comic.last_chapter.id}`}
-                        className="text-blue-600 hover:text-blue-700 font-medium text-sm block mb-1"
+                        className="text-primary hover:text-primary/80 font-medium text-sm block mb-1"
                         onClick={(e) => e.stopPropagation()}
                       >
                         {comic.last_chapter.title || `Chương ${comic.last_chapter.chapter_index}`}
@@ -389,7 +389,7 @@ export default function HomePageContent() {
             <h2 className="text-xl font-bold text-gray-900">Truyện Hot</h2>
             <Link
               href="/comics?sort_by=view_count&sort_order=DESC"
-              className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center"
+              className="text-primary hover:text-primary/80 text-sm font-medium flex items-center"
             >
               Xem tất cả
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -425,7 +425,7 @@ export default function HomePageContent() {
             <h2 className="text-xl font-bold text-gray-900">Truyện Mới</h2>
             <Link
               href="/comics?sort_by=created_at&sort_order=DESC"
-              className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center"
+              className="text-primary hover:text-primary/80 text-sm font-medium flex items-center"
             >
               Xem tất cả
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

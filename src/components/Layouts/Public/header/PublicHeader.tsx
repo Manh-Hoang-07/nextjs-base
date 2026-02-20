@@ -160,7 +160,7 @@ export function PublicHeader({
             {/* Logo area */}
             <div className="flex items-center gap-3 shrink-0">
               <Link href="/" className="flex items-center gap-3 group">
-                <div className={`relative w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-105 overflow-hidden shrink-0`}>
+                <div className={`relative w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-red-600 flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-105 overflow-hidden shrink-0`}>
                   {systemConfig?.site_logo ? (
                     <Image
                       src={systemConfig.site_logo}
@@ -196,6 +196,7 @@ export function PublicHeader({
                 <button
                   className="lg:hidden p-3 rounded-full text-gray-500 hover:bg-gray-100 transition-all active:scale-95"
                   onClick={() => setIsSearchOpen(!isSearchOpen)}
+                  aria-label={mounted ? (isSearchOpen ? "Close search" : "Open search") : "Open search"}
                 >
                   {isSearchOpen ? (
                     <XMarkIcon className="w-6 h-6" />
@@ -210,7 +211,7 @@ export function PublicHeader({
               <button
                 className="p-3 rounded-xl text-gray-700 hover:bg-gray-100 transition-all active:scale-95 z-[70]"
                 onClick={handleToggle}
-                aria-label="Toggle menu"
+                aria-label={mounted ? (internalMobileMenuOpen ? "Close menu" : "Open menu") : "Open menu"}
               >
                 <Bars3Icon className="w-7 h-7" />
               </button>

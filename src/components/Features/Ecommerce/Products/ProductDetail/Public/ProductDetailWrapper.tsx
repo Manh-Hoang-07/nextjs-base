@@ -7,6 +7,7 @@ import { ProductGallery } from './ProductGallery';
 import { ProductInfo } from './ProductInfo';
 import { ProductTabs } from './ProductTabs';
 import { ProductCard } from '../../Shared/ProductCard';
+import { Breadcrumbs } from '@/components/UI/Navigation/Breadcrumbs';
 
 interface ProductDetailWrapperProps {
     product: Product;
@@ -17,14 +18,10 @@ export const ProductDetailWrapper: React.FC<ProductDetailWrapperProps> = ({ prod
     return (
         <div className="container mx-auto px-4 py-8 lg:py-12">
 
-            {/* Breadcrumb (simplified) */}
-            <nav className="flex items-center gap-2 text-sm text-gray-500 mb-8 overflow-x-auto whitespace-nowrap">
-                <a href="/" className="hover:text-black">Trang chủ</a>
-                <span>/</span>
-                <a href="/products" className="hover:text-black">Sản phẩm</a>
-                <span>/</span>
-                <span className="text-black font-semibold">{product.name}</span>
-            </nav>
+            <Breadcrumbs items={[
+                { label: "Sản phẩm", path: "/products" },
+                { label: product.name }
+            ]} />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
                 {/* Left: Gallery */}

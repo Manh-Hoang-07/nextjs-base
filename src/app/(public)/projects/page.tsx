@@ -7,6 +7,7 @@ import { Button } from "@/components/UI/Navigation/Button";
 import { Suspense } from "react";
 import { Metadata } from "next";
 import HeroBanner from "@/components/Features/Marketing/Banners/Public/HeroBanner";
+import { Breadcrumbs } from "@/components/UI/Navigation/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Dự án",
@@ -19,9 +20,9 @@ export const revalidate = 300;
 async function getProjects() {
   try {
     const { data, error } = await serverFetch(publicEndpoints.projects.list, {
-      skipCookies: true, // Public data doesn't need auth
+      skipCookies: true,
       next: {
-        revalidate: 300, // Cache for 5 minutes
+        revalidate: 300,
         tags: ['projects'],
       },
     });
@@ -45,15 +46,15 @@ async function ProjectList() {
 
 function ProjectSkeleton() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
       {[1, 2, 3, 4, 5, 6].map((i) => (
-        <div key={i} className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
-          <div className="h-48 bg-gray-200" />
-          <div className="p-6">
-            <div className="h-6 bg-gray-200 rounded w-3/4 mb-4" />
-            <div className="h-4 bg-gray-200 rounded w-full mb-2" />
-            <div className="h-4 bg-gray-200 rounded w-2/3 mb-4" />
-            <div className="h-10 bg-gray-200 rounded w-full" />
+        <div key={i} className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse">
+          <div className="h-48 bg-gray-100" />
+          <div className="p-5">
+            <div className="h-5 bg-gray-100 rounded w-3/4 mb-3" />
+            <div className="h-4 bg-gray-100 rounded w-full mb-2" />
+            <div className="h-4 bg-gray-100 rounded w-2/3 mb-4" />
+            <div className="h-9 bg-gray-100 rounded w-full" />
           </div>
         </div>
       ))}
@@ -63,16 +64,18 @@ function ProjectSkeleton() {
 
 export default function ProjectsPage() {
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-[#f8f9fa] pb-20 transition-colors duration-300">
       <HeroBanner locationCode="project" imageOnly={true} />
 
       <div className="container mx-auto px-4 mt-8 relative z-10">
+        <Breadcrumbs items={[{ label: "Dự án" }]} />
+        <h1 className="text-4xl font-extrabold text-gray-900 mb-10 border-l-8 border-primary pl-6">Dự án tiêu biểu</h1>
         <Suspense fallback={<ProjectSkeleton />}>
           <ProjectList />
         </Suspense>
 
         {/* CTA Section */}
-        <div className="mt-16 bg-gray-100 rounded-lg p-8 text-center">
+        <div className="mt-16 bg-white rounded-2xl p-10 text-center border border-gray-100 shadow-sm">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Cần giải pháp cho dự án của bạn?</h2>
           <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
             Chúng tôi luôn sẵn sàng lắng nghe và tư vấn những phương án tối ưu nhất cho dự án của bạn.
@@ -87,5 +90,3 @@ export default function ProjectsPage() {
     </div>
   );
 }
-
-

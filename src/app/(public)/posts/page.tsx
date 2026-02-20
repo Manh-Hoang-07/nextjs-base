@@ -3,6 +3,7 @@ import { PostList } from "@/components/Features/Posts/PostList/Public/PostList";
 import HeroBanner from "@/components/Features/Marketing/Banners/Public/HeroBanner";
 import { serverFetch } from "@/lib/api/server-client";
 import { Metadata } from "next";
+import { Breadcrumbs } from "@/components/UI/Navigation/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Tin tức",
@@ -47,10 +48,12 @@ export default async function PostsPage({ searchParams }: { searchParams: Promis
   const { posts, categories, meta } = await getPostsData(resolvedSearchParams);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col pb-20">
+    <div className="min-h-screen bg-[#f8f9fa] flex flex-col pb-20 transition-colors duration-300">
       <HeroBanner locationCode="post" imageOnly={true} />
 
       <div className="container mx-auto px-4 mt-8 relative z-10">
+        <Breadcrumbs items={[{ label: "Tin tức" }]} />
+        <h1 className="text-4xl font-extrabold text-gray-900 mb-10 border-l-8 border-primary pl-6">Tin tức & Sự kiện</h1>
         <PostList initialPosts={posts} categories={categories} meta={meta} />
       </div>
     </div>

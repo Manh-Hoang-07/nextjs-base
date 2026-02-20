@@ -72,8 +72,8 @@ export function ContactForm() {
     };
 
     return (
-        <div className="bg-white rounded-xl shadow-lg p-8 h-full">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 border-b pb-4">Gửi tin nhắn cho chúng tôi</h2>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 h-full">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 border-l-4 border-primary pl-4">Gửi tin nhắn cho chúng tôi</h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

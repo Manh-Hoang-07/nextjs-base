@@ -75,7 +75,7 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({ categories = [] })
                     <div className="relative h-2 flex items-center mb-4">
                         <div className="absolute w-full h-1.5 bg-gray-100 rounded-full" />
                         <div
-                            className="absolute h-1.5 bg-black rounded-full z-10"
+                            className="absolute h-1.5 bg-primary rounded-full z-10"
                             style={{
                                 left: `${(minPrice / 10000000) * 100}%`,
                                 right: `${100 - (maxPrice / 10000000) * 100}%`
@@ -117,7 +117,7 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({ categories = [] })
                 <button
                     onClick={applyPriceFilter}
                     data-pagination
-                    className="w-full py-3 bg-black text-white rounded-xl text-sm font-bold hover:bg-gray-800 active:scale-[0.98] transition-all shadow-sm shadow-black/10"
+                    className="w-full py-3 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary/90 active:scale-[0.98] transition-all shadow-sm"
                 >
                     Áp dụng
                 </button>
