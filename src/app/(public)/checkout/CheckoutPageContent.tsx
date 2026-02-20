@@ -42,9 +42,14 @@ export default function CheckoutPageContent() {
 
     const handleShippingChange = useCallback(({ method, cost }: any) => {
         setSelectedShippingMethod(method);
-        setShippingFee(cost);
+        // Backend handles shipping fee for digital, but we ensure FE reflects it
+        if (cart?.cart_type === "digital") {
+            setShippingFee(0);
+        } else {
+            setShippingFee(cost);
+        }
         setErrors(prev => ({ ...prev, shipping: "" }));
-    }, []);
+    }, [cart?.cart_type]);
 
     useEffect(() => {
         fetchCart();
@@ -79,8 +84,15 @@ export default function CheckoutPageContent() {
             setLoading(true);
             const response = await cartApi.getCart();
             if (response.data.success) {
-                setCart(response.data.data);
-                if (response.data.data.items.length === 0) {
+                const cartData = response.data.data;
+                setCart(cartData);
+
+                // If digital cart, ensure shipping fee is 0
+                if (cartData.cart_type === "digital") {
+                    setShippingFee(0);
+                }
+
+                if (cartData.items.length === 0) {
                     router.push("/cart");
                 }
             }
@@ -117,21 +129,34 @@ export default function CheckoutPageContent() {
         const discount = parseAmount(cart.discount_amount);
 
         // Per documentation: Total = Subtotal - Discount + Shipping Fee
-        // The API's total_amount usually already reflects Subtotal - Discount
         const netAmount = cart.total_amount ? parseAmount(cart.total_amount) : (subtotal - discount);
 
-        return Math.max(0, netAmount + shippingFee);
+        const currentShippingFee = cart.cart_type === "digital" ? 0 : shippingFee;
+        return Math.max(0, netAmount + currentShippingFee);
     };
 
     const validateForm = () => {
         const newErrors: Record<string, string> = {};
+        const isDigital = cart?.cart_type === "digital";
+
+        // Basic info (Always required)
         if (!shippingAddress.name.trim()) newErrors.name = "Họ tên không được để trống";
         if (!shippingAddress.phone.trim()) newErrors.phone = "Số điện thoại không được để trống";
-        if (!shippingAddress.address.trim()) newErrors.address = "Địa chỉ không được để trống";
-        if (!shippingAddress.city.trim()) newErrors.city = "Vui lòng nhập Tỉnh/Thành phố";
-        if (!shippingAddress.district.trim()) newErrors.district = "Vui lòng nhập Quận/Huyện";
+        if (!shippingAddress.email.trim()) {
+            newErrors.email = "Email là bắt buộc để nhận thông tin đơn hàng";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(shippingAddress.email)) {
+            newErrors.email = "Email không hợp lệ";
+        }
 
-        if (!selectedShippingMethod) newErrors.shipping = "Vui lòng chọn phương thức vận chuyển";
+        // Physical/Mixed specific requirements
+        if (!isDigital) {
+            if (!shippingAddress.address.trim()) newErrors.address = "Địa chỉ không được để trống";
+            if (!shippingAddress.city.trim()) newErrors.city = "Vui lòng nhập Tỉnh/Thành phố";
+            if (!shippingAddress.district.trim()) newErrors.district = "Vui lòng nhập Quận/Huyện";
+            if (!selectedShippingMethod) newErrors.shipping = "Vui lòng chọn phương thức vận chuyển";
+        }
+
+        // Payment is always required
         if (!selectedPaymentMethodId) newErrors.payment = "Vui lòng chọn phương thức thanh toán";
 
         setErrors(newErrors);
@@ -149,24 +174,28 @@ export default function CheckoutPageContent() {
 
         try {
             setProcessing(true);
+            const isDigital = cart.cart_type === "digital";
+
             const payload = {
                 cart_uuid: uuid,
-                cart_id: cart.cart_id, // Added cart_id as per doc suggestion
+                cart_id: cart.cart_id,
                 customer_name: shippingAddress.name,
                 customer_phone: shippingAddress.phone,
                 customer_email: shippingAddress.email,
-                shipping_address: {
+                shipping_address: isDigital ? {} : {
                     name: shippingAddress.name,
                     phone: shippingAddress.phone,
                     address: shippingAddress.address,
                     city: shippingAddress.city,
                     district: shippingAddress.district,
                     ward: shippingAddress.ward,
-                    // If we had IDs, they'd go here too
+                    province_id: shippingAddress.province_id,
+                    district_id: shippingAddress.district_id,
+                    ward_id: shippingAddress.ward_id,
                 },
-                shipping_method_id: selectedShippingMethod.id,
+                shipping_method_id: isDigital ? null : selectedShippingMethod?.id,
                 payment_method_id: selectedPaymentMethodId,
-                shipping_fee: shippingFee, // Send current calculated fee
+                shipping_fee: isDigital ? 0 : shippingFee,
                 notes: notes,
             };
 
@@ -223,7 +252,6 @@ export default function CheckoutPageContent() {
                 {/* Shipping Information */}
                 <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                     <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-sm">1</span>
                         Thông tin giao hàng
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -260,88 +288,98 @@ export default function CheckoutPageContent() {
                             {errors.phone && <p className="text-xs text-red-500">{errors.phone}</p>}
                         </div>
                         <div className="space-y-2 md:col-span-2">
-                            <label className="text-sm font-medium text-gray-700">Email (Không bắt buộc)</label>
+                            <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                                Email <span className="text-red-500">*</span>
+                            </label>
                             <input
                                 type="email"
                                 value={shippingAddress.email}
-                                onChange={(e) => setShippingAddress({ ...shippingAddress, email: e.target.value })}
-                                placeholder="Nhập email"
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                            />
-                        </div>
-                        <div className="space-y-2 md:col-span-2">
-                            <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                                Địa chỉ cụ thể <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                value={shippingAddress.address}
                                 onChange={(e) => {
-                                    setShippingAddress({ ...shippingAddress, address: e.target.value });
-                                    if (errors.address) setErrors({ ...errors, address: "" });
+                                    setShippingAddress({ ...shippingAddress, email: e.target.value });
+                                    if (errors.email) setErrors({ ...errors, email: "" });
                                 }}
-                                placeholder="Số nhà, tên đường..."
-                                className={`w-full px-4 py-3 rounded-xl border ${errors.address ? 'border-red-500' : 'border-gray-200'} focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all`}
+                                placeholder="Nhập email để nhận thông tin đơn hàng"
+                                className={`w-full px-4 py-3 rounded-xl border ${errors.email ? 'border-red-500' : 'border-gray-200'} focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all`}
                             />
-                            {errors.address && <p className="text-xs text-red-500">{errors.address}</p>}
+                            {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
                         </div>
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                                Tỉnh / Thành phố <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                value={shippingAddress.city}
-                                onChange={(e) => {
-                                    setShippingAddress({ ...shippingAddress, city: e.target.value });
-                                    if (errors.city) setErrors({ ...errors, city: "" });
-                                }}
-                                placeholder="Tỉnh / Thành phố"
-                                className={`w-full px-4 py-3 rounded-xl border ${errors.city ? 'border-red-500' : 'border-gray-200'} focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all`}
-                            />
-                            {errors.city && <p className="text-xs text-red-500">{errors.city}</p>}
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                                Quận / Huyện <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                value={shippingAddress.district}
-                                onChange={(e) => {
-                                    setShippingAddress({ ...shippingAddress, district: e.target.value });
-                                    if (errors.district) setErrors({ ...errors, district: "" });
-                                }}
-                                placeholder="Quận / Huyện"
-                                className={`w-full px-4 py-3 rounded-xl border ${errors.district ? 'border-red-500' : 'border-gray-200'} focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all`}
-                            />
-                            {errors.district && <p className="text-xs text-red-500">{errors.district}</p>}
-                        </div>
+                        {cart.cart_type !== "digital" && (
+                            <>
+                                <div className="space-y-2 md:col-span-2">
+                                    <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                                        Địa chỉ cụ thể <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={shippingAddress.address}
+                                        onChange={(e) => {
+                                            setShippingAddress({ ...shippingAddress, address: e.target.value });
+                                            if (errors.address) setErrors({ ...errors, address: "" });
+                                        }}
+                                        placeholder="Số nhà, tên đường..."
+                                        className={`w-full px-4 py-3 rounded-xl border ${errors.address ? 'border-red-500' : 'border-gray-200'} focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all`}
+                                    />
+                                    {errors.address && <p className="text-xs text-red-500">{errors.address}</p>}
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                                        Tỉnh / Thành phố <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={shippingAddress.city}
+                                        onChange={(e) => {
+                                            setShippingAddress({ ...shippingAddress, city: e.target.value });
+                                            if (errors.city) setErrors({ ...errors, city: "" });
+                                        }}
+                                        placeholder="Tỉnh / Thành phố"
+                                        className={`w-full px-4 py-3 rounded-xl border ${errors.city ? 'border-red-500' : 'border-gray-200'} focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all`}
+                                    />
+                                    {errors.city && <p className="text-xs text-red-500">{errors.city}</p>}
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                                        Quận / Huyện <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={shippingAddress.district}
+                                        onChange={(e) => {
+                                            setShippingAddress({ ...shippingAddress, district: e.target.value });
+                                            if (errors.district) setErrors({ ...errors, district: "" });
+                                        }}
+                                        placeholder="Quận / Huyện"
+                                        className={`w-full px-4 py-3 rounded-xl border ${errors.district ? 'border-red-500' : 'border-gray-200'} focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all`}
+                                    />
+                                    {errors.district && <p className="text-xs text-red-500">{errors.district}</p>}
+                                </div>
+                            </>
+                        )}
                     </div>
                 </section>
 
                 {/* Shipping Method */}
-                <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-sm">2</span>
-                        Phương thức vận chuyển
-                    </h2>
-                    <ShippingSelector
-                        cartValue={(() => {
-                            if (typeof cart.subtotal === 'number') return cart.subtotal;
-                            const cleaned = String(cart.subtotal || 0).replace(/[^\d-]/g, '');
-                            return parseInt(cleaned, 10) || 0;
-                        })()}
-                        destination={debouncedDestination}
-                        onShippingChange={handleShippingChange}
-                    />
-                    {errors.shipping && <p className="text-sm text-red-500 mt-2">{errors.shipping}</p>}
-                </section>
+                {cart.cart_type !== "digital" && (
+                    <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                        <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            Phương thức vận chuyển
+                        </h2>
+                        <ShippingSelector
+                            cartValue={(() => {
+                                if (typeof cart.subtotal === 'number') return cart.subtotal;
+                                const cleaned = String(cart.subtotal || 0).replace(/[^\d-]/g, '');
+                                return parseInt(cleaned, 10) || 0;
+                            })()}
+                            destination={debouncedDestination}
+                            onShippingChange={handleShippingChange}
+                        />
+                        {errors.shipping && <p className="text-sm text-red-500 mt-2">{errors.shipping}</p>}
+                    </section>
+                )}
 
                 {/* Payment Method */}
                 <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                     <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-sm">3</span>
                         Phương thức thanh toán
                     </h2>
                     <PaymentMethodSelector
@@ -350,7 +388,7 @@ export default function CheckoutPageContent() {
                             setSelectedPaymentMethodId(id);
                             if (errors.payment) setErrors({ ...errors, payment: "" });
                         }}
-                        disableCOD={cart.items.some(item => item.product?.is_digital)}
+                        disableCOD={cart.cart_type === "digital"}
                     />
                     {errors.payment && <p className="text-sm text-red-500 mt-2">{errors.payment}</p>}
                 </section>
@@ -433,7 +471,9 @@ export default function CheckoutPageContent() {
                                 <div className="flex justify-between text-gray-600">
                                     <span>Phí vận chuyển</span>
                                     <span className="font-medium">
-                                        {shippingFee > 0 ? formatCurrency(shippingFee) : "Chưa tính"}
+                                        {cart.cart_type === "digital"
+                                            ? "Miễn phí"
+                                            : shippingFee > 0 ? formatCurrency(shippingFee) : "Chưa tính"}
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-center pt-4 border-t border-gray-100">

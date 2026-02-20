@@ -49,7 +49,6 @@ export default function PaymentMethodSelector({
 
     return (
         <div className="space-y-4">
-            <h3 className="text-lg font-bold text-gray-900">Phương thức thanh toán</h3>
             <div className="grid gap-3">
                 {methods.map((method) => {
                     const isCOD = method.code === "cod";
@@ -61,8 +60,8 @@ export default function PaymentMethodSelector({
                             key={method.id}
                             onClick={() => !isDisabled && onSelect(method.id)}
                             className={`relative flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all ${isSelected
-                                    ? "border-primary bg-primary/5"
-                                    : "border-gray-100 hover:border-gray-200"
+                                ? "border-primary bg-primary/5"
+                                : "border-gray-100 hover:border-gray-200"
                                 } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
                         >
                             <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white rounded-lg border border-gray-100 p-2">

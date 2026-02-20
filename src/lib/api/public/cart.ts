@@ -46,6 +46,7 @@ export interface CartItem {
 export interface CartData {
     cart_id: number;
     cart_uuid: string;
+    cart_type: "digital" | "physical" | "mixed";
     subtotal: string | number;
     total_amount: string | number;
     discount_amount?: string | number;
