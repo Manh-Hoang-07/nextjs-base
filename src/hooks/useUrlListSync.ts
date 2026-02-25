@@ -86,7 +86,11 @@ export function useUrlListSync<T extends { id: any } = any>(config: {
         setPagination((prev) => ({
           page: metaData.page ?? metaData.current_page ?? prev.page,
           totalPages:
-            metaData.totalPages ?? metaData.lastPage ?? metaData.last_page ?? prev.totalPages,
+            metaData.totalPages ??
+            metaData.pageCount ??
+            metaData.lastPage ??
+            metaData.last_page ??
+            prev.totalPages,
           limit: metaData.limit ?? metaData.per_page ?? prev.limit,
           totalItems: metaData.totalItems ?? metaData.total ?? prev.totalItems,
         }));

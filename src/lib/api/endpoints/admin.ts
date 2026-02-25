@@ -360,6 +360,32 @@ export const adminEndpoints = {
         update: (id: Id) => `/api/admin/reviews/${id}`,
         delete: (id: Id) => `/api/admin/reviews/${id}`,
     },
+    location: {
+        countries: {
+            list: "/api/admin/location/countries",
+            simple: "/api/admin/location/countries/simple",
+            create: "/api/admin/location/countries",
+            show: (id: Id) => `/api/admin/location/countries/${id}`,
+            update: (id: Id) => `/api/admin/location/countries/${id}`,
+            delete: (id: Id) => `/api/admin/location/countries/${id}`,
+        },
+        provinces: {
+            list: "/api/admin/location/provinces",
+            simple: "/api/admin/location/provinces/simple",
+            create: "/api/admin/location/provinces",
+            show: (id: Id) => `/api/admin/location/provinces/${id}`,
+            update: (id: Id) => `/api/admin/location/provinces/${id}`,
+            delete: (id: Id) => `/api/admin/location/provinces/${id}`,
+        },
+        wards: {
+            list: "/api/admin/location/wards",
+            simple: "/api/admin/location/wards/simple",
+            create: "/api/admin/location/wards",
+            show: (id: Id) => `/api/admin/location/wards/${id}`,
+            update: (id: Id) => `/api/admin/location/wards/${id}`,
+            delete: (id: Id) => `/api/admin/location/wards/${id}`,
+        },
+    },
 } as const;
 
 
