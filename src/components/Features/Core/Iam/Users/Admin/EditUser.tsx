@@ -73,6 +73,9 @@ export default function EditUser({
           address: profile?.address || "",
           gender: profile?.gender || "",
           birthday: formatDate(profile?.birthday, "yyyy-MM-dd"),
+          country_id: profile?.country_id ? Number(profile.country_id) : null,
+          province_id: profile?.province_id ? Number(profile.province_id) : null,
+          ward_id: profile?.ward_id ? Number(profile.ward_id) : null,
           image: data?.image || null,
           about: profile?.about || "",
           roles: roles,
@@ -114,7 +117,7 @@ export default function EditUser({
 
     // Chỉ giữ các trường được API chấp nhận; password chỉ gửi khi có giá trị
     const baseKeys = ["username", "email", "phone", "status", "password", "name", "image"] as const;
-    const profileKeys = ["gender", "birthday", "address", "about"] as const;
+    const profileKeys = ["gender", "birthday", "address", "about", "country_id", "province_id", "ward_id"] as const;
 
     const payload: Record<string, any> = {};
 

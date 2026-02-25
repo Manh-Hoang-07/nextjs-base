@@ -31,7 +31,7 @@ export default function CreateUser({
 
     // Chỉ giữ các trường được API chấp nhận
     const baseKeys = ["username", "email", "phone", "status", "password", "name", "image"] as const;
-    const profileKeys = ["gender", "birthday", "address", "about"] as const;
+    const profileKeys = ["gender", "birthday", "address", "about", "country_id", "province_id", "ward_id"] as const;
 
     const payload: Record<string, any> = {};
 

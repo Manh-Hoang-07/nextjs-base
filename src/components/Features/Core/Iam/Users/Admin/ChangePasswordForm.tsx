@@ -1,9 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import Modal from "@/components/UI/Feedback/Modal";
-import FormWrapper from "@/components/UI/Forms/FormWrapper";
 import FormField from "@/components/UI/Forms/FormField";
+
+const changePasswordSchema = z.object({
+  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
+  password_confirmation: z.string().min(1, "Vui lòng xác nhận mật khẩu mới"),
+}).refine((data) => data.password === data.password_confirmation, {
+  message: "Mật khẩu xác nhận không khớp",
+  path: ["password_confirmation"],
+});
+
+type ChangePasswordFormValues = z.infer<typeof changePasswordSchema>;
 
 interface ChangePasswordFormProps {
   show: boolean;
@@ -22,41 +34,45 @@ export default function ChangePasswordForm({
 }: ChangePasswordFormProps) {
   const formTitle = `Đổi mật khẩu cho ${user?.username || "người dùng"}`;
 
-  const defaultValues = {
-    password: "",
-    password_confirmation: "",
-  };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<ChangePasswordFormValues>({
+    resolver: zodResolver(changePasswordSchema),
+    defaultValues: {
+      password: "",
+      password_confirmation: "",
+    },
+  });
 
-  const handleSubmit = (form: any) => {
-    // Validate
-    const errors: Record<string, string> = {};
-    if (!form.password || form.password.trim() === "") {
-      errors.password = "Mật khẩu mới là bắt buộc.";
-    } else if (form.password.length < 6) {
-      errors.password = "Mật khẩu phải có ít nhất 6 ký tự.";
+  // Reset form when modal opens/closes
+  useEffect(() => {
+    if (show) {
+      reset({
+        password: "",
+        password_confirmation: "",
+      });
     }
-    if (!form.password_confirmation || form.password_confirmation.trim() === "") {
-      errors.password_confirmation = "Vui lòng xác nhận mật khẩu mới.";
-    } else if (form.password !== form.password_confirmation) {
-      errors.password_confirmation = "Mật khẩu xác nhận không khớp.";
+  }, [show, reset]);
+
+  // Handle server-side errors
+  useEffect(() => {
+    if (apiErrors) {
+      Object.keys(apiErrors).forEach((key) => {
+        const message = Array.isArray(apiErrors[key]) ? apiErrors[key][0] : String(apiErrors[key]);
+        setError(key as any, { message });
+      });
     }
-
-    if (Object.keys(errors).length > 0) {
-      return;
-    }
-
-    onSubmit?.(form);
-  };
-
-  const handleClose = () => {
-    onCancel?.();
-  };
+  }, [apiErrors, setError]);
 
   if (!show) return null;
 
   return (
-    <Modal show={show} onClose={handleClose} title={formTitle} size="lg">
-      <div className="space-y-6">
+    <Modal show={show} onClose={onCancel || (() => { })} title={formTitle} size="lg" loading={isSubmitting}>
+      <form onSubmit={handleSubmit((data) => onSubmit?.(data))} className="space-y-6">
         <header className="border-b border-gray-200 pb-3 flex items-center gap-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,45 +90,42 @@ export default function ChangePasswordForm({
           </div>
         </header>
 
-        <FormWrapper
-          defaultValues={defaultValues}
-          apiErrors={apiErrors}
-          submitText="Đổi mật khẩu"
-          onSubmit={handleSubmit}
-          onCancel={handleClose}
-        >
-          {({ form, errors, clearError }: any) => (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                value={form.password}
-                onChange={(value: string) => {
-                  form.password = value;
-                  clearError("password");
-                }}
-                label="Mật khẩu mới"
-                name="password"
-                type="password"
-                error={errors.password || (apiErrors.password ? String(apiErrors.password) : undefined)}
-                required
-                autocomplete="new-password"
-              />
-              <FormField
-                value={form.password_confirmation}
-                onChange={(value: string) => {
-                  form.password_confirmation = value;
-                  clearError("password_confirmation");
-                }}
-                label="Xác nhận mật khẩu mới"
-                name="password_confirmation"
-                type="password"
-                error={errors.password_confirmation || (apiErrors.password_confirmation ? String(apiErrors.password_confirmation) : undefined)}
-                required
-                autocomplete="new-password"
-              />
-            </div>
-          )}
-        </FormWrapper>
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            {...register("password")}
+            label="Mật khẩu mới"
+            type="password"
+            error={errors.password?.message}
+            required
+            autocomplete="new-password"
+          />
+          <FormField
+            {...register("password_confirmation")}
+            label="Xác nhận mật khẩu mới"
+            type="password"
+            error={errors.password_confirmation?.message}
+            required
+            autocomplete="new-password"
+          />
+        </div>
+
+        <div className="flex justify-end space-x-4 pt-4 border-t border-gray-100">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-6 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-50 transition-all active:scale-95"
+          >
+            Hủy bỏ
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-sm font-semibold rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+          >
+            {isSubmitting ? "Đang xử lý..." : "Đổi mật khẩu"}
+          </button>
+        </div>
+      </form>
     </Modal>
   );
 }

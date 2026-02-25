@@ -1,11 +1,19 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import Modal from "@/components/UI/Feedback/Modal";
-import FormWrapper from "@/components/UI/Forms/FormWrapper";
 import MultipleSelect from "@/components/UI/Forms/MultipleSelect";
 import api from "@/lib/api/client";
 import { adminEndpoints } from "@/lib/api/endpoints";
+
+const assignRoleSchema = z.object({
+  role_ids: z.array(z.number()).min(1, "Vui lòng chọn ít nhất một vai trò"),
+});
+
+type AssignRoleValues = z.infer<typeof assignRoleSchema>;
 
 interface AssignRoleProps {
   show: boolean;
@@ -20,151 +28,126 @@ export default function AssignRole({
   onRoleAssigned,
   onClose,
 }: AssignRoleProps) {
-  const [showModal, setShowModal] = useState(false);
   const [userDetail, setUserDetail] = useState<any>(null);
   const [roles, setRoles] = useState<any[]>([]);
-  const [apiErrors, setApiErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    setError,
+    formState: { isSubmitting, errors },
+  } = useForm<AssignRoleValues>({
+    resolver: zodResolver(assignRoleSchema),
+    defaultValues: {
+      role_ids: [],
+    },
+  });
 
   const fetchUserDetail = useCallback(async () => {
     if (!user?.id) return;
     try {
+      setLoading(true);
       const response = await api.get(adminEndpoints.users.show(user.id));
       if (response.data?.success && response.data?.data) {
-        setUserDetail(response.data.data);
-      } else {
-        setUserDetail(user || {});
+        const data = response.data.data;
+        setUserDetail(data);
+
+        // Extract role IDs
+        let roleIds: number[] = [];
+
+        // 1. Prioritize flat role_ids from API
+        if (Array.isArray(data.role_ids)) {
+          roleIds = data.role_ids.map((id: number | string) => Number(id));
+        }
+        // 2. Fallback to user_role_assignments
+        else if (Array.isArray(data.user_role_assignments)) {
+          roleIds = data.user_role_assignments
+            .map((a: any) => Number(a.role_id || a.role?.id))
+            .filter((id: number) => !isNaN(id));
+        }
+        // 3. Fallback to roles array
+        else if (Array.isArray(data.roles)) {
+          roleIds = data.roles.map((r: any) => Number(r.id)).filter((id: number) => !isNaN(id));
+        }
+
+        reset({ role_ids: roleIds });
       }
     } catch (error) {
-      setUserDetail(user || {});
+      console.error("Failed to fetch user detail:", error);
+    } finally {
+      setLoading(false);
     }
-  }, [user]);
+  }, [user, reset]);
 
   const loadRoles = useCallback(async () => {
     try {
-      setLoading(true);
       const response = await api.get(adminEndpoints.roles.simple || `${adminEndpoints.roles.list}?limit=1000`);
       if (response.data?.success) {
         setRoles(response.data.data || []);
-      } else {
-        const fallbackResponse = await api.get(`${adminEndpoints.roles.list}?limit=1000`);
-        if (fallbackResponse.data?.success) {
-          setRoles(fallbackResponse.data.data || []);
-        } else {
-          const data = fallbackResponse.data?.data || fallbackResponse.data || [];
-          setRoles(Array.isArray(data) ? data : data.items || data.data || []);
-        }
       }
     } catch (error) {
-      setRoles([]);
-    } finally {
-      setLoading(false);
+      console.error("Failed to load roles:", error);
     }
   }, []);
 
   useEffect(() => {
-    setShowModal(show);
     if (show && user?.id) {
-      Promise.all([fetchUserDetail(), loadRoles()]);
+      fetchUserDetail();
+      loadRoles();
     } else if (!show) {
-      setApiErrors({});
       setUserDetail(null);
+      reset({ role_ids: [] });
     }
-  }, [show, user?.id, fetchUserDetail, loadRoles]);
-
-  const defaultValues = useMemo(() => {
-    const obj = userDetail || {};
-    let roleIds: any[] = [];
-
-    // Ưu tiên lấy từ user_role_assignments
-    if (obj.user_role_assignments && Array.isArray(obj.user_role_assignments)) {
-      roleIds = obj.user_role_assignments
-        .map((assignment: any) => {
-          const roleId = assignment.role_id || assignment.role?.id;
-          return typeof roleId === "string" ? parseInt(roleId, 10) : Number(roleId);
-        })
-        .filter((id: any) => !isNaN(id) && id !== null && id !== undefined);
-    }
-    // Fallback: lấy từ roles
-    else if (obj.roles && Array.isArray(obj.roles)) {
-      roleIds = obj.roles
-        .map((role: any) => {
-          const id = role.id;
-          return typeof id === "string" ? parseInt(id, 10) : Number(id);
-        })
-        .filter((id: any) => !isNaN(id) && id !== null && id !== undefined);
-    }
-
-    return {
-      role_ids: roleIds,
-    };
-  }, [userDetail]);
-
+  }, [show, user?.id, fetchUserDetail, loadRoles, reset]);
 
   const roleOptions = useMemo(() => {
     return (roles || [])
-      .map((opt: any) => {
-        const id: number = typeof opt.id === "string" ? parseInt(opt.id, 10) : Number(opt.id);
-        return {
-          value: id,
-          label: opt.name || opt.label || String(id),
-        };
-      })
+      .map((opt: any) => ({
+        value: Number(opt.id),
+        label: opt.name || opt.label || String(opt.id),
+      }))
       .filter((opt: any) => !isNaN(opt.value));
   }, [roles]);
 
-  const resetErrors = () => {
-    setApiErrors({});
-  };
-
-  const handleSubmit = async (formData: Record<string, any>) => {
+  const onFormSubmit = async (data: AssignRoleValues) => {
     if (!user?.id) return;
 
-    resetErrors();
-
     try {
-      const dataToSubmit: any = {
-        role_ids: Array.isArray(formData.role_ids) ? formData.role_ids : [formData.role_ids].filter(Boolean),
-      };
-
-      await api.put(adminEndpoints.users.assignRoles(user.id), dataToSubmit);
+      await api.put(adminEndpoints.users.assignRoles(user.id), {
+        role_ids: data.role_ids,
+      });
       onRoleAssigned?.();
       onClose?.();
     } catch (error: any) {
       const payload = error?.response?.data;
       if (payload?.errors) {
-        const errors: Record<string, string> = {};
         Object.keys(payload.errors).forEach((field) => {
           const value = payload.errors[field];
-          errors[field] = Array.isArray(value) ? value[0] : value;
+          setError(field as any, {
+            message: Array.isArray(value) ? value[0] : String(value)
+          });
         });
-        setApiErrors(errors);
-      } else if (Array.isArray(payload?.message) && payload.message.length) {
-        setApiErrors({ role_ids: payload.message.join(", ") });
-      } else if (typeof payload?.message === "string") {
-        setApiErrors({ role_ids: payload.message });
       }
     }
   };
 
-  const handleClose = () => {
-    onClose?.();
-  };
-
-  if (!showModal) return null;
+  if (!show) return null;
 
   return (
-    <Modal show={show} onClose={handleClose} title="Phân quyền người dùng" size="lg">
-      <div className="space-y-6">
+    <Modal
+      show={show}
+      onClose={onClose || (() => { })}
+      title="Phân quyền người dùng"
+      size="lg"
+      loading={loading || isSubmitting}
+    >
+      <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
         <header className="border-b border-gray-200 pb-3 flex items-center gap-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              ></path>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
           </span>
           <div>
@@ -173,39 +156,53 @@ export default function AssignRole({
           </div>
         </header>
 
-        <div className="mb-4 p-4 bg-gray-50 rounded-lg">
-          <div className="text-sm text-gray-600 space-y-1">
-            <div>
-              <span className="font-medium">Tên:</span> {userDetail?.name || userDetail?.username || "N/A"}
+        <div className="mb-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+          <div className="text-sm text-gray-600 space-y-2">
+            <div className="flex items-center">
+              <span className="w-20 font-medium text-gray-500">Họ tên:</span>
+              <span className="text-gray-900 font-semibold">{userDetail?.name || userDetail?.username || "..."}</span>
             </div>
-            <div>
-              <span className="font-medium">Email:</span> {userDetail?.email || "N/A"}
+            <div className="flex items-center">
+              <span className="w-20 font-medium text-gray-500">Email:</span>
+              <span className="text-gray-900">{userDetail?.email || "..."}</span>
             </div>
           </div>
         </div>
 
-        <FormWrapper
-          defaultValues={defaultValues}
-          apiErrors={apiErrors}
-          submitText="Cập nhật quyền"
-          onSubmit={handleSubmit}
-          onCancel={handleClose}
-        >
-          {({ form, errors, clearError }: any) => (
-            <MultipleSelect
-              value={form.role_ids || []}
-              onChange={(value: Array<string | number>) => {
-                form.role_ids = value;
-                clearError("role_ids");
-              }}
-              options={roleOptions}
-              label="Vai trò"
-              placeholder="Chọn vai trò..."
-              error={errors.role_ids}
-            />
-          )}
-        </FormWrapper>
-      </div>
+        <div className="space-y-4">
+          <Controller
+            name="role_ids"
+            control={control}
+            render={({ field }) => (
+              <MultipleSelect
+                value={field.value}
+                onChange={field.onChange}
+                options={roleOptions}
+                label="Danh sách vai trò"
+                placeholder="Chọn vai trò..."
+                error={errors.role_ids?.message}
+              />
+            )}
+          />
+        </div>
+
+        <div className="flex justify-end space-x-4 pt-6 border-t border-gray-100">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-bold rounded-xl hover:bg-gray-50 transition-all active:scale-95"
+          >
+            Hủy bỏ
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting || loading}
+            className="px-8 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+          >
+            {isSubmitting ? "Đang cập nhật..." : "Cập nhật quyền"}
+          </button>
+        </div>
+      </form>
     </Modal>
   );
 }
