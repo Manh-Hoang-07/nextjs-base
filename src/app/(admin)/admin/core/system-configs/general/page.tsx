@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import SystemConfigForm from "@/components/Features/Core/SystemConfig/Admin/SystemConfigForm";
 import ContactChannelsManager from "@/components/Features/Core/SystemConfig/Admin/ContactChannelsManager";
+import SystemLocationSelector from "@/components/Features/Core/SystemConfig/Admin/SystemLocationSelector";
 import PageMeta from "@/components/UI/Navigation/PageMeta";
 
 export const metadata: Metadata = {
@@ -16,7 +17,13 @@ export default function AdminSystemConfigGeneralPage() {
     { key: "site_favicon", label: "Favicon", type: "image", description: "Biểu tượng hiển thị trên tab trình duyệt" },
     { key: "site_email", label: "Email liên hệ", type: "email", placeholder: "contact@example.com" },
     { key: "site_phone", label: "Số điện thoại", type: "text", placeholder: "19001234" },
-    { key: "site_addres", label: "Địa chỉ", type: "textarea", placeholder: "Nhập địa chỉ trụ sở" },
+    {
+      key: "site_location",
+      label: "Vị trí trụ sở",
+      type: "custom",
+      component: SystemLocationSelector
+    },
+    { key: "site_address", label: "Địa chỉ chi tiết", type: "textarea", placeholder: "Số nhà, tên đường..." },
     { key: "site_copyright", label: "Thông tin bản quyền", type: "text", placeholder: "© 2024. All rights reserved." },
     { key: "timezone", label: "Múi giờ (Timezone)", type: "text", placeholder: "Asia/Ho_Chi_Minh" },
     { key: "locale", label: "Ngôn ngữ (Locale)", type: "text", placeholder: "vi" },

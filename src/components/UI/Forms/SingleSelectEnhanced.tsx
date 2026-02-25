@@ -22,6 +22,7 @@ interface SingleSelectEnhancedProps {
   options?: Option[];
   loading?: boolean;
   onChange?: (value: string | number | null) => void;
+  onSelectOption?: (option: Option | null) => void;
   name?: string;
   onBlur?: (e: any) => void;
 }
@@ -41,6 +42,7 @@ const SingleSelectEnhanced = forwardRef<HTMLSelectElement, SingleSelectEnhancedP
     options = [],
     loading: externalLoading,
     onChange,
+    onSelectOption,
     name,
     onBlur,
   }, ref) => {
@@ -57,12 +59,12 @@ const SingleSelectEnhanced = forwardRef<HTMLSelectElement, SingleSelectEnhancedP
       try {
         const response = await api.get(searchApi);
         let data: any[] = [];
-        
+
         // Hỗ trợ nhiều format response
         if (response.data?.success && response.data?.data) {
           // Format: { success: true, data: [...] }
-          data = Array.isArray(response.data.data) 
-            ? response.data.data 
+          data = Array.isArray(response.data.data)
+            ? response.data.data
             : (response.data.data.data || []);
         } else if (response.data?.data) {
           // Format: { data: [...] } hoặc { data: { data: [...], meta: {...} } }
@@ -73,7 +75,7 @@ const SingleSelectEnhanced = forwardRef<HTMLSelectElement, SingleSelectEnhancedP
           // Format: [...]
           data = response.data;
         }
-        
+
         setLocalOptions(
           data.map((item: any) => ({
             value: item[valueField],
@@ -97,15 +99,19 @@ const SingleSelectEnhanced = forwardRef<HTMLSelectElement, SingleSelectEnhancedP
       const rawValue = e.target.value;
       if (!rawValue || rawValue === "") {
         onChange?.(null);
+        onSelectOption?.(null);
       } else {
         const selectedOption = finalOptions.find(
           (opt) => String(opt.value) === String(rawValue)
         );
         if (selectedOption) {
           onChange?.(selectedOption.value);
+          onSelectOption?.(selectedOption);
         } else {
           const numValue = Number(rawValue);
-          onChange?.(isNaN(numValue) ? rawValue : numValue);
+          const finalVal = isNaN(numValue) ? rawValue : numValue;
+          onChange?.(finalVal);
+          onSelectOption?.({ value: finalVal, label: rawValue }); // Fallback
         }
       }
     };
@@ -128,8 +134,8 @@ const SingleSelectEnhanced = forwardRef<HTMLSelectElement, SingleSelectEnhancedP
             onChange={handleChange}
             disabled={disabled || loading}
             className={`w-full px-4 py-2.5 border rounded-xl shadow-sm transition-all duration-200 appearance-none cursor-pointer outline-none ${error
-                ? "border-red-500 bg-red-50 focus:ring-2 focus:ring-red-200"
-                : "border-gray-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 shadow-sm"
+              ? "border-red-500 bg-red-50 focus:ring-2 focus:ring-red-200"
+              : "border-gray-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 shadow-sm"
               } ${disabled ? "bg-gray-100 cursor-not-allowed opacity-60" : "bg-white"}`}
           >
             {placeholder && <option value="">{placeholder}</option>}

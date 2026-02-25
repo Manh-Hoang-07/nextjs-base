@@ -10,6 +10,7 @@ import { formatCurrency } from "@/utils/formatters";
 import { useToastContext } from "@/contexts/ToastContext";
 import apiClient from "@/lib/api/client";
 import { publicEndpoints } from "@/lib/api/endpoints";
+import SingleSelectEnhanced from "@/components/UI/Forms/SingleSelectEnhanced";
 import { Loader2, ArrowLeft, ShoppingBag } from "lucide-react";
 
 export default function CheckoutPageContent() {
@@ -151,8 +152,8 @@ export default function CheckoutPageContent() {
         // Physical/Mixed specific requirements
         if (!isDigital) {
             if (!shippingAddress.address.trim()) newErrors.address = "Địa chỉ không được để trống";
-            if (!shippingAddress.city.trim()) newErrors.city = "Vui lòng nhập Tỉnh/Thành phố";
-            if (!shippingAddress.district.trim()) newErrors.district = "Vui lòng nhập Quận/Huyện";
+            if (!shippingAddress.province_id) newErrors.city = "Vui lòng chọn Tỉnh/Thành phố";
+            if (!shippingAddress.ward_id) newErrors.ward = "Vui lòng chọn Phường/Xã";
             if (!selectedShippingMethod) newErrors.shipping = "Vui lòng chọn phương thức vận chuyển";
         }
 
@@ -321,37 +322,60 @@ export default function CheckoutPageContent() {
                                     />
                                     {errors.address && <p className="text-xs text-red-500">{errors.address}</p>}
                                 </div>
+
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
                                         Tỉnh / Thành phố <span className="text-red-500">*</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        value={shippingAddress.city}
-                                        onChange={(e) => {
-                                            setShippingAddress({ ...shippingAddress, city: e.target.value });
+                                    <SingleSelectEnhanced
+                                        value={shippingAddress.province_id}
+                                        searchApi={`${publicEndpoints.location.provinces}?limit=1000`}
+                                        labelField="name"
+                                        valueField="id"
+                                        placeholder="Chọn Tỉnh / Thành phố"
+                                        error={errors.city}
+                                        onChange={(val) => {
+                                            setShippingAddress(prev => ({
+                                                ...prev,
+                                                province_id: val as number,
+                                                ward_id: null,
+                                                ward: ""
+                                            }));
                                             if (errors.city) setErrors({ ...errors, city: "" });
                                         }}
-                                        placeholder="Tỉnh / Thành phố"
-                                        className={`w-full px-4 py-3 rounded-xl border ${errors.city ? 'border-red-500' : 'border-gray-200'} focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all`}
+                                        onSelectOption={(opt) => {
+                                            if (opt) {
+                                                setShippingAddress(prev => ({ ...prev, city: opt.label }));
+                                            }
+                                        }}
                                     />
-                                    {errors.city && <p className="text-xs text-red-500">{errors.city}</p>}
                                 </div>
+
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                                        Quận / Huyện <span className="text-red-500">*</span>
+                                        Phường / Xã <span className="text-red-500">*</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        value={shippingAddress.district}
-                                        onChange={(e) => {
-                                            setShippingAddress({ ...shippingAddress, district: e.target.value });
-                                            if (errors.district) setErrors({ ...errors, district: "" });
+                                    <SingleSelectEnhanced
+                                        value={shippingAddress.ward_id}
+                                        searchApi={shippingAddress.province_id ? `${publicEndpoints.location.wards}?filter[province_id]=${shippingAddress.province_id}&limit=1000` : undefined}
+                                        labelField="name"
+                                        valueField="id"
+                                        placeholder={shippingAddress.province_id ? "Chọn Phường / Xã" : "Vui lòng chọn Tỉnh trước"}
+                                        disabled={!shippingAddress.province_id}
+                                        error={errors.ward}
+                                        onChange={(val) => {
+                                            setShippingAddress(prev => ({
+                                                ...prev,
+                                                ward_id: val as number
+                                            }));
+                                            if (errors.ward) setErrors({ ...errors, ward: "" });
                                         }}
-                                        placeholder="Quận / Huyện"
-                                        className={`w-full px-4 py-3 rounded-xl border ${errors.district ? 'border-red-500' : 'border-gray-200'} focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all`}
+                                        onSelectOption={(opt) => {
+                                            if (opt) {
+                                                setShippingAddress(prev => ({ ...prev, ward: opt.label }));
+                                            }
+                                        }}
                                     />
-                                    {errors.district && <p className="text-xs text-red-500">{errors.district}</p>}
                                 </div>
                             </>
                         )}

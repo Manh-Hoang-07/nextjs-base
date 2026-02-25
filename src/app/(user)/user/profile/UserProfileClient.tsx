@@ -11,6 +11,7 @@ import Modal from "@/components/UI/Feedback/Modal";
 import { userService } from "@/lib/api/user";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useToastContext } from "@/contexts/ToastContext";
+import LocationSelector from "@/components/Features/Core/Locations/Shared/LocationSelector";
 
 // ===== TYPES =====
 interface UserProfile {
@@ -23,6 +24,9 @@ interface UserProfile {
     image?: string;
     birthday?: string;
     gender?: string;
+    country_id?: number | null;
+    province_id?: number | null;
+    ward_id?: number | null;
     created_at?: string;
 }
 
@@ -34,6 +38,9 @@ const updateProfileSchema = z.object({
     birthday: z.string().optional(),
     gender: z.string().optional(),
     address: z.string().max(255, "Địa chỉ tối đa 255 ký tự").optional(),
+    country_id: z.number().nullable().optional(),
+    province_id: z.number().nullable().optional(),
+    ward_id: z.number().nullable().optional(),
     about: z.string().max(1000, "Giới thiệu tối đa 1000 ký tự").optional(),
 });
 
@@ -69,6 +76,9 @@ export default function UserProfileClient() {
         register: registerProfile,
         handleSubmit: handleSubmitProfile,
         reset: resetProfile,
+        watch: watchProfile,
+        setValue: setValueProfile,
+        control: controlProfile,
         formState: { errors: profileErrors },
     } = useForm<UpdateProfileFormValues>({
         resolver: zodResolver(updateProfileSchema),
@@ -99,6 +109,9 @@ export default function UserProfileClient() {
                         birthday: response.data.profile?.birthday || response.data.birthday,
                         gender: response.data.profile?.gender || response.data.gender,
                         address: response.data.profile?.address || response.data.address,
+                        country_id: response.data.profile?.country_id ? Number(response.data.profile.country_id) : null,
+                        province_id: response.data.profile?.province_id ? Number(response.data.profile.province_id) : null,
+                        ward_id: response.data.profile?.ward_id ? Number(response.data.profile.ward_id) : null,
                         about: response.data.profile?.about || response.data.about,
                     };
                     setProfile(userData);
@@ -124,6 +137,9 @@ export default function UserProfileClient() {
                 birthday: data.birthday || undefined,
                 gender: data.gender || undefined,
                 address: data.address || undefined,
+                country_id: data.country_id || undefined,
+                province_id: data.province_id || undefined,
+                ward_id: data.ward_id || undefined,
                 about: data.about || undefined,
             });
 
@@ -136,6 +152,9 @@ export default function UserProfileClient() {
                     birthday: response.data.profile?.birthday || response.data.birthday,
                     gender: response.data.profile?.gender || response.data.gender,
                     address: response.data.profile?.address || response.data.address,
+                    country_id: response.data.profile?.country_id ? Number(response.data.profile.country_id) : null,
+                    province_id: response.data.profile?.province_id ? Number(response.data.profile.province_id) : null,
+                    ward_id: response.data.profile?.ward_id ? Number(response.data.profile.ward_id) : null,
                     about: response.data.profile?.about || response.data.about,
                 };
                 setProfile(updatedProfile);
@@ -182,17 +201,41 @@ export default function UserProfileClient() {
     };
 
     // Open edit modal và populate form
-    const openEditModal = () => {
-        if (!profile) return;
+    const openEditModal = async () => {
+        try {
+            // Refetch profile to get latest data
+            const response = await userService.getProfile();
+            if (response.success && response.data) {
+                const userData = {
+                    ...response.data,
+                    name: response.data.profile?.name || response.data.name,
+                    image: response.data.profile?.image || response.data.image,
+                    birthday: response.data.profile?.birthday || response.data.birthday,
+                    gender: response.data.profile?.gender || response.data.gender,
+                    address: response.data.profile?.address || response.data.address,
+                    country_id: response.data.profile?.country_id ? Number(response.data.profile.country_id) : null,
+                    province_id: response.data.profile?.province_id ? Number(response.data.profile.province_id) : null,
+                    ward_id: response.data.profile?.ward_id ? Number(response.data.profile.ward_id) : null,
+                    about: response.data.profile?.about || response.data.about,
+                };
+                setProfile(userData);
 
-        resetProfile({
-            name: profile.name || "",
-            birthday: profile.birthday || "",
-            gender: profile.gender || "",
-            address: profile.address || "",
-            about: profile.about || "",
-        });
-        setIsEditModalOpen(true);
+                resetProfile({
+                    name: userData.name || "",
+                    birthday: userData.birthday ? new Date(userData.birthday).toISOString().split('T')[0] : "",
+                    gender: userData.gender || "",
+                    address: userData.address || "",
+                    country_id: userData.country_id || null,
+                    province_id: userData.province_id || null,
+                    ward_id: userData.ward_id || null,
+                    about: userData.about || "",
+                });
+                setIsEditModalOpen(true);
+            }
+        } catch (error) {
+            console.error("Failed to refetch profile before edit:", error);
+            showError("Không thể tải thông tin mới nhất. Vui lòng thử lại.");
+        }
     };
 
     // Open password modal và reset form
@@ -346,9 +389,17 @@ export default function UserProfileClient() {
                         )}
                     </div>
 
+                    <LocationSelector
+                        control={controlProfile}
+                        errors={profileErrors}
+                        watch={watchProfile}
+                        setValue={setValueProfile}
+                        required
+                    />
+
                     <FormField
-                        label="Địa chỉ"
-                        placeholder="Nhập địa chỉ của bạn"
+                        label="Địa chỉ cụ thể"
+                        placeholder="Số nhà, tên đường..."
                         {...registerProfile("address")}
                         error={profileErrors.address?.message}
                     />

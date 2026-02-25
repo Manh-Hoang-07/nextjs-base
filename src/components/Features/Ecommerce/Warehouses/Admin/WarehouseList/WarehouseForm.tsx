@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Modal from "@/components/UI/Feedback/Modal";
 import FormField from "@/components/UI/Forms/FormField";
+import LocationSelector from "@/components/Features/Core/Locations/Shared/LocationSelector";
 
 // 1. Define Warehouse Schema
 const warehouseSchema = z.object({
@@ -20,6 +21,9 @@ const warehouseSchema = z.object({
   manager_name: z.string().max(255, "Tên quản lý tối đa 255 ký tự").optional().nullable(),
   priority: z.coerce.number().int().min(0, "Độ ưu tiên không được âm").default(0),
   is_active: z.boolean().default(true),
+  country_id: z.number().nullable().optional(),
+  province_id: z.number().nullable().optional(),
+  ward_id: z.number().nullable().optional(),
 });
 
 type WarehouseFormValues = z.infer<typeof warehouseSchema>;
@@ -37,6 +41,9 @@ interface Warehouse {
   manager_name?: string;
   priority?: number;
   is_active?: boolean;
+  country_id?: number | null;
+  province_id?: number | null;
+  ward_id?: number | null;
 }
 
 interface WarehouseFormProps {
@@ -60,6 +67,8 @@ export default function WarehouseForm({
     control,
     reset,
     setError,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<WarehouseFormValues>({
     resolver: zodResolver(warehouseSchema),
@@ -75,6 +84,9 @@ export default function WarehouseForm({
       manager_name: "",
       priority: 0,
       is_active: true,
+      country_id: 1, // Default country if appropriate, or null
+      province_id: null,
+      ward_id: null,
     },
   });
 
@@ -94,6 +106,9 @@ export default function WarehouseForm({
           manager_name: warehouse.manager_name || "",
           priority: warehouse.priority || 0,
           is_active: warehouse.is_active !== undefined ? warehouse.is_active : true,
+          country_id: warehouse.country_id ? Number(warehouse.country_id) : 1,
+          province_id: warehouse.province_id ? Number(warehouse.province_id) : null,
+          ward_id: warehouse.ward_id ? Number(warehouse.ward_id) : null,
         });
       } else {
         reset({
@@ -108,6 +123,9 @@ export default function WarehouseForm({
           manager_name: "",
           priority: 0,
           is_active: true,
+          country_id: 1,
+          province_id: null,
+          ward_id: null,
         });
       }
     }
@@ -182,14 +200,25 @@ export default function WarehouseForm({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
+              <LocationSelector
+                control={control}
+                errors={errors}
+                watch={watch}
+                setValue={setValue}
+                isAdmin={true}
+                required
+              />
+            </div>
+            <div className="md:col-span-2">
               <FormField
                 label="Địa chỉ chi tiết"
                 {...register("address")}
-                placeholder="Số nhà, tên đường, phường/xã..."
+                placeholder="Số nhà, tên đường..."
                 error={errors.address?.message}
               />
             </div>
-            <FormField
+            {/* Tạm thời ẩn input text cũ cho city/district vì đã có LocationSelector */}
+            {/* <FormField
               label="Thành phố / Tỉnh"
               {...register("city")}
               placeholder="Ví dụ: TP. Hồ Chí Minh"
@@ -200,7 +229,7 @@ export default function WarehouseForm({
               {...register("district")}
               placeholder="Ví dụ: Quận 7"
               error={errors.district?.message}
-            />
+            /> */}
             <FormField
               label="Vĩ độ (Latitude)"
               type="number"

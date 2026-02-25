@@ -14,7 +14,12 @@ interface ConfigField {
     type: "text" | "number" | "textarea" | "image" | "email" | "password" | "checkbox" | "custom";
     placeholder?: string;
     description?: string;
-    component?: React.ComponentType<{ value: any; onChange: (value: any) => void }>;
+    component?: React.ComponentType<{
+        value: any;
+        onChange: (value: any) => void;
+        formData?: Record<string, any>;
+        onUpdate?: (key: string, value: any) => void;
+    }>;
 }
 
 interface SystemConfigFormProps {
@@ -128,6 +133,8 @@ export default function SystemConfigForm({ group, fields }: SystemConfigFormProp
                             <field.component
                                 value={formData[field.key]}
                                 onChange={(value) => handleChange(field.key, value)}
+                                formData={formData}
+                                onUpdate={handleChange}
                             />
                         ) : (
                             <FormField

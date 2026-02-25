@@ -21,6 +21,9 @@ export interface UserData {
         birthday?: string;
         gender?: string;
         address?: string;
+        country_id?: number | string | bigint | null;
+        province_id?: number | string | bigint | null;
+        ward_id?: number | string | bigint | null;
         about?: string;
     };
     // Flattened properties for convenience/compatibility if needed
@@ -29,6 +32,9 @@ export interface UserData {
     birthday?: string;
     gender?: string;
     address?: string;
+    country_id?: number | string | bigint | null;
+    province_id?: number | string | bigint | null;
+    ward_id?: number | string | bigint | null;
     about?: string;
     created_at?: string;
     updated_at?: string;
@@ -40,6 +46,9 @@ export interface UpdateProfileRequest {
     birthday?: string; // YYYY-MM-DD
     gender?: string; // male, female, other
     address?: string;
+    country_id?: number | null;
+    province_id?: number | null;
+    ward_id?: number | null;
     about?: string;
 }
 

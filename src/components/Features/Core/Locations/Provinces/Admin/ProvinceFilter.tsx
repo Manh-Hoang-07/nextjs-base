@@ -53,6 +53,7 @@ export default function ProvinceFilter({
           <SelectFilter
             value={filters["country_id"] || ""}
             apiEndpoint={adminEndpoints.location.countries.simple}
+            apiParams={{ limit: 1000 }}
             placeholder="Quốc gia"
             labelField="name"
             valueField="id"

@@ -132,6 +132,11 @@ export const publicEndpoints = {
         remove: (id: Id) => `/api/public/cart/item/${id}`,
         clear: "/api/public/cart/clear",
     },
+    location: {
+        countries: "/api/public/location/countries",
+        provinces: "/api/public/location/provinces",
+        wards: "/api/public/location/wards",
+    },
 } as const;
 
 

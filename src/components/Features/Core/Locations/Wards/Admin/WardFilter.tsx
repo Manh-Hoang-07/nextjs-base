@@ -46,6 +46,7 @@ export default function WardFilter({
           <SelectFilter
             value={filters["province_id"] || ""}
             apiEndpoint={adminEndpoints.location.provinces.simple}
+            apiParams={{ limit: 1000 }}
             placeholder="Tỉnh/Thành phố"
             labelField="name"
             valueField="id"
