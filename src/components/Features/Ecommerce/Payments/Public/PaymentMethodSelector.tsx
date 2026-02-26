@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { usePayments } from "@/hooks/usePayments";
 import { Check } from "lucide-react";
 
@@ -37,7 +38,7 @@ export default function PaymentMethodSelector({
             }
         };
         loadMethods();
-    }, []);
+    }, [disableCOD, fetchPaymentMethods, onSelect, selectedId]);
 
     if (methods.length === 0 && !isLoading) {
         return (
@@ -64,9 +65,14 @@ export default function PaymentMethodSelector({
                                 : "border-gray-100 hover:border-gray-200"
                                 } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
                         >
-                            <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white rounded-lg border border-gray-100 p-2">
+                            <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white rounded-lg border border-gray-100 p-2 relative">
                                 {method.icon_url ? (
-                                    <img src={method.icon_url} alt={method.name} className="max-w-full max-h-full object-contain" />
+                                    <Image
+                                        src={method.icon_url}
+                                        alt={method.name}
+                                        fill
+                                        className="object-contain p-1"
+                                    />
                                 ) : (
                                     <div className="text-primary font-bold">{method.name[0]}</div>
                                 )}

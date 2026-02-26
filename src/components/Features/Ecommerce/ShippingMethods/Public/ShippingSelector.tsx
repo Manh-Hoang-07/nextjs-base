@@ -40,6 +40,8 @@ export default function ShippingSelector({
   }, [fetchActive, selectedId]);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function recalc() {
       if (!selectedId) return;
 
@@ -59,11 +61,18 @@ export default function ShippingSelector({
         detail: isCorrectCalc ? calculation : null,
       });
 
-      // Don't calculate if destination is empty
-      if (!destination) return;
+      // Don't calculate if destination is empty or too short
+      if (!destination || (typeof destination === 'string' && (destination.trim() === "," || destination.trim().length < 5))) {
+        return;
+      }
 
-      // If destination is string, check if it's too short
-      if (typeof destination === 'string' && (destination.trim() === "," || destination.trim().length < 5)) return;
+      // Avoid redundant calculations if params haven't changed relative to current calculation
+      if (isCorrectCalc &&
+        calculation?.destination === destination &&
+        calculation?.cart_value === cartValue &&
+        calculation?.weight === weight) {
+        return;
+      }
 
       const payload: CalculateShippingRequest = {
         shipping_method_id: selectedId,
@@ -73,8 +82,8 @@ export default function ShippingSelector({
       };
 
       const res = await calculateShipping(payload);
-      if (res) {
-        setCalculation(res);
+      if (res && isMounted) {
+        setCalculation({ ...res, destination, cart_value: cartValue, weight });
         // Fallback to res.shipping_fee if res.cost is not what we want (per doc)
         const finalCost = typeof res.shipping_fee === 'number' ? res.shipping_fee : res.cost;
         setShippingCost(finalCost);
@@ -87,7 +96,8 @@ export default function ShippingSelector({
     }
 
     recalc();
-  }, [selectedId, cartValue, weight, destination, calculateShipping, methods, onShippingChange]);
+    return () => { isMounted = false; };
+  }, [selectedId, cartValue, weight, destination, calculateShipping, methods, onShippingChange, calculation, shippingCost]);
 
   const renderCost = (method: ShippingMethod) => {
     const isSelected = selectedId === method.id;

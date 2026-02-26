@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -202,9 +203,14 @@ export default function CheckoutSuccessPage() {
                     <div className="divide-y divide-gray-50">
                         {order.items.map((item, i) => (
                             <div key={i} className="flex gap-4 px-6 py-4">
-                                <div className="w-16 h-16 rounded-xl bg-gray-50 border border-gray-100 flex-shrink-0 overflow-hidden">
+                                <div className="w-16 h-16 rounded-xl bg-gray-50 border border-gray-100 flex-shrink-0 overflow-hidden relative">
                                     {(item as any).image
-                                        ? <img src={(item as any).image} alt={item.product_name} className="w-full h-full object-cover" />
+                                        ? <Image
+                                            src={(item as any).image}
+                                            alt={item.product_name}
+                                            fill
+                                            className="object-cover"
+                                        />
                                         : <div className="w-full h-full flex items-center justify-center"><Package className="w-5 h-5 text-gray-300" /></div>
                                     }
                                 </div>

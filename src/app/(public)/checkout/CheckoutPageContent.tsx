@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { cartApi, getCartUuid, CartData } from "@/lib/api/public/cart";
 import ShippingSelector from "@/components/Features/Ecommerce/ShippingMethods/Public/ShippingSelector";
@@ -52,9 +53,33 @@ export default function CheckoutPageContent() {
         setErrors(prev => ({ ...prev, shipping: "" }));
     }, [cart?.cart_type]);
 
+    const fetchCart = useCallback(async () => {
+        try {
+            setLoading(true);
+            const response = await cartApi.getCart();
+            if (response.data.success) {
+                const cartData = response.data.data;
+                setCart(cartData);
+
+                // If digital cart, ensure shipping fee is 0
+                if (cartData.cart_type === "digital") {
+                    setShippingFee(0);
+                }
+
+                if (cartData.items.length === 0) {
+                    router.push("/cart");
+                }
+            }
+        } catch (error) {
+            showError("Không thể tải thông tin giỏ hàng");
+        } finally {
+            setLoading(false);
+        }
+    }, [router, showError]);
+
     useEffect(() => {
         fetchCart();
-    }, []);
+    }, [fetchCart]);
 
     // Debounce shipping calculation destination
     useEffect(() => {
@@ -79,30 +104,6 @@ export default function CheckoutPageContent() {
 
         return () => clearTimeout(timer);
     }, [shippingAddress.city, shippingAddress.district, shippingAddress.province_id, shippingAddress.district_id, shippingAddress.ward_id]);
-
-    const fetchCart = async () => {
-        try {
-            setLoading(true);
-            const response = await cartApi.getCart();
-            if (response.data.success) {
-                const cartData = response.data.data;
-                setCart(cartData);
-
-                // If digital cart, ensure shipping fee is 0
-                if (cartData.cart_type === "digital") {
-                    setShippingFee(0);
-                }
-
-                if (cartData.items.length === 0) {
-                    router.push("/cart");
-                }
-            }
-        } catch (error) {
-            showError("Không thể tải thông tin giỏ hàng");
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleApplyCoupon = (result: any) => {
         if (result.cart) {
@@ -445,11 +446,12 @@ export default function CheckoutPageContent() {
                             <div className="space-y-4 max-h-[300px] overflow-y-auto mb-6 pr-2 custom-scrollbar">
                                 {cart.items.map((item) => (
                                     <div key={item.id} className="flex gap-3">
-                                        <div className="w-16 h-16 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0 border border-gray-100">
-                                            <img
+                                        <div className="w-16 h-16 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0 border border-gray-100 relative">
+                                            <Image
                                                 src={item.product?.image || "/images/placeholder.svg"}
                                                 alt={item.product_name}
-                                                className="w-full h-full object-cover"
+                                                fill
+                                                className="object-cover"
                                             />
                                         </div>
                                         <div className="flex-grow min-w-0">

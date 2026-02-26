@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -62,18 +62,7 @@ export function PostList({ initialPosts, categories, meta }: PostListProps) {
         setSearchTerm(searchParams.get("search") || "");
     }, [searchParams]);
 
-    // Debounce search update to URL
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            const currentSearch = searchParams.get("search") || "";
-            if (searchTerm !== currentSearch) {
-                updateFilter("search", searchTerm);
-            }
-        }, 500);
-        return () => clearTimeout(timer);
-    }, [searchTerm]);
-
-    const updateFilter = (key: string, value: string) => {
+    const updateFilter = useCallback((key: string, value: string) => {
         const params = new URLSearchParams(searchParams.toString());
         if (value && value !== "") {
             params.set(key, value);
@@ -87,7 +76,18 @@ export function PostList({ initialPosts, categories, meta }: PostListProps) {
         }
 
         router.push(`?${params.toString()}`);
-    };
+    }, [router, searchParams]);
+
+    // Debounce search update to URL
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            const currentSearch = searchParams.get("search") || "";
+            if (searchTerm !== currentSearch) {
+                updateFilter("search", searchTerm);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [searchTerm, searchParams, updateFilter]);
 
     return (
         <>
