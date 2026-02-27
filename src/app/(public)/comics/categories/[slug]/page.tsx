@@ -1,196 +1,32 @@
-"use client";
+import { redirect } from "next/navigation";
+import { getComicCategories } from "@/lib/api/public/comic";
+import { ComicCategory } from "@/types/comic";
 
-import { useEffect, useState } from "react";
-import { useParams, useSearchParams, useRouter, usePathname } from "next/navigation";
-import { useProductCategories, ProductCategory } from "@/hooks/useProductCategories";
-import CategoryMenu from "@/components/Features/Ecommerce/Products/Categories/Public/CategoryMenu";
-import Image from "next/image";
-import { formatCurrency } from "@/utils/formatters";
-import { Pagination } from "@/components/UI/Navigation/Pagination";
-import { ContentWrapper } from "@/components/UI/Loading/ContentWrapper";
-
-interface Product {
-  id: number;
-  name: string;
-  slug?: string;
-  price?: number;
-  sale_price?: number | null;
-  thumbnail?: string | null;
-  [key: string]: any;
+interface Props {
+  params: Promise<{ slug: string }>;
 }
 
-export default function PublicCategoryPage() {
-  const params = useParams();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-  const slug = params.slug as string;
+export default async function ComicCategoryRedirectPage({ params }: Props) {
+  const { slug } = await params;
 
-  const {
-    isLoading,
-    fetchTree,
-    fetchCategoryBySlug,
-    fetchCategoryProducts,
-  } = useProductCategories();
+  if (!slug) {
+    redirect('/comics');
+  }
 
-  const [category, setCategory] = useState<ProductCategory | null>(null);
-  const [sidebarCategories, setSidebarCategories] = useState<ProductCategory[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [page, setPage] = useState<number>(() => {
-    const p = searchParams.get("page");
-    return p ? Number(p) || 1 : 1;
-  });
-  const [limit] = useState<number>(() => {
-    const l = searchParams.get("limit");
-    return l ? Number(l) || 12 : 12;
-  });
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [isMounted, setIsMounted] = useState(false);
+  try {
+    // getComicCategories uses serverFetch which is safe here in a Server Component
+    const categories = await getComicCategories();
+    const category = categories.find((c: ComicCategory) => c.slug === slug);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const p = searchParams.get("page");
-    if (p) {
-      setPage(Number(p) || 1);
+    if (category) {
+      redirect(`/comics?comic_category_id=${category.id}`);
     }
-  }, [searchParams]);
+  } catch (err) {
+    console.error("Redirect error in ComicCategoryRedirectPage:", err);
+  }
 
-  useEffect(() => {
-    async function loadData() {
-      const [tree, cat] = await Promise.all([
-        fetchTree({ status: "active" }),
-        fetchCategoryBySlug(slug, {
-          include_products: "true",
-          include_children: "true",
-        }),
-      ]);
-
-      if (tree?.items) {
-        setSidebarCategories(tree.items);
-      }
-
-      if (cat) {
-        setCategory(cat);
-        const productsData = (cat as any).products;
-        if (productsData?.items) {
-          setProducts(productsData.items || []);
-          setTotalPages(productsData.meta?.totalPages || 1);
-        } else if (Array.isArray(productsData)) {
-          setProducts(productsData);
-        } else {
-          setProducts([]);
-        }
-      }
-    }
-
-    loadData();
-  }, [slug, fetchTree, fetchCategoryBySlug]);
-
-  useEffect(() => {
-    async function loadProductsById() {
-      if (!category?.id) return;
-
-      const res = await fetchCategoryProducts<Product>(category.id, {
-        page,
-        limit,
-      });
-      if (res) {
-        setProducts(res.items || []);
-        setTotalPages(res.meta?.totalPages || 1);
-      }
-    }
-
-    if (category?.id) {
-      loadProductsById();
-    }
-  }, [category?.id, page, limit, fetchCategoryProducts]);
-
-  const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", String(newPage));
-    router.push(`${pathname}?${params.toString()}`);
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="mx-auto flex max-w-7xl gap-6 px-4 sm:px-6 lg:px-8">
-        <div className="hidden w-64 md:block">
-          <CategoryMenu
-            categories={sidebarCategories}
-            title="Danh mục sản phẩm"
-          />
-        </div>
-
-        <main className="flex-1">
-          <header className="mb-6 border-b pb-4">
-            <h1 className="text-2xl font-bold text-gray-900">
-              {category?.name || "Danh mục sản phẩm"}
-            </h1>
-            {category?.description && (
-              <p className="mt-2 text-sm text-gray-600">
-                {category.description}
-              </p>
-            )}
-          </header>
-
-          <ContentWrapper>
-            {isLoading && (!products || products.length === 0) ? (
-              <div className="py-12 text-center text-gray-500">Đang tải...</div>
-            ) : (!products || products.length === 0) ? (
-              <div className="py-12 text-center text-gray-500">
-                Chưa có sản phẩm trong danh mục này.
-              </div>
-            ) : (
-              <>
-                <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                  {products.map((product) => (
-                    <article
-                      key={product.id}
-                      className="flex flex-col overflow-hidden rounded-lg bg-white shadow-sm"
-                    >
-                      {product.thumbnail && (
-                        <div className="relative h-40 w-full">
-                          <Image
-                            src={product.thumbnail}
-                            alt={product.name}
-                            fill
-                            className="object-cover"
-                            unoptimized
-                          />
-                        </div>
-                      )}
-                      <div className="flex flex-1 flex-col p-3">
-                        <h3 className="line-clamp-2 text-sm font-semibold text-gray-900">
-                          {product.name}
-                        </h3>
-                        <div className="mt-2 text-sm font-semibold text-primary">
-                          {isMounted && (product.sale_price ?? product.price)
-                            ? formatCurrency(product.sale_price ?? product.price)
-                            : null}
-                        </div>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-
-                {totalPages > 1 && (
-                  <Pagination
-                    currentPage={page}
-                    totalPages={totalPages}
-                    hasNextPage={page < totalPages}
-                    hasPreviousPage={page > 1}
-                  />
-                )}
-              </>
-            )}
-          </ContentWrapper>
-        </main>
-      </div>
-    </div>
-  );
+  // Fallback to main comics list if category not found
+  redirect('/comics');
 }
 
 

@@ -16,7 +16,7 @@ export const CategorySidebar: React.FC<CategorySidebarProps> = ({ categories }) 
                 {categories.map((category) => (
                     <Link
                         key={category.id}
-                        href={`/comics/categories/${category.slug}`}
+                        href={`/comics?comic_category_id=${category.id}`}
                         className="category-item text-sm"
                     >
                         {category.name}
