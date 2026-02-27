@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compress: true,
   transpilePackages: ["ckeditor5", "@ckeditor/ckeditor5-react"],
   experimental: {
     optimizePackageImports: ["lucide-react", "date-fns", "lodash", "react-hook-form"],
@@ -31,6 +32,16 @@ const nextConfig = {
 
     return [
       { source: "/:path*", headers: securityHeaders },
+      {
+        source: "/",
+        headers: [
+          ...securityHeaders,
+          {
+            key: "Cache-Control",
+            value: "public, s-maxage=60, stale-while-revalidate=59",
+          },
+        ],
+      },
       {
         source: "/admin/:path*",
         headers: [

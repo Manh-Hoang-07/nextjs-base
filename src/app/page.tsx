@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     description: "Trang web đọc truyện tranh online lớn nhất với hàng ngàn đầu truyện hấp dẫn được cập nhật mỗi ngày.",
 };
 
+// Enable ISR: Revalidate every 60 seconds
+export const revalidate = 60;
+
 export default async function ComicHomePage() {
     const [data, systemConfig, menus] = await Promise.all([
         getComicHomepageData(),

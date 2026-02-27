@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 
 const getBaseUrl = () => {
     let baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
-    // Đảm bảo luôn có /api ở cuối nếu chưa có
     if (!baseUrl.endsWith("/api")) {
         baseUrl = `${baseUrl.replace(/\/$/, "")}/api`;
     }
@@ -14,7 +13,7 @@ const API_URL = getBaseUrl();
 interface FetchOptions extends RequestInit {
     revalidate?: number | false;
     tags?: string[];
-    skipCookies?: boolean; // New option
+    skipCookies?: boolean;
 }
 
 /**
@@ -29,50 +28,34 @@ export async function serverFetch<T = any>(
         let token: string | undefined;
         let groupId: string | undefined;
 
-        // Only try to access cookies if not explicitly skipped
-        // and if we are in a request context (try-catch prevents build-time crashes)
         if (!options.skipCookies) {
             try {
                 const cookieStore = await cookies();
                 token = cookieStore.get("auth_token")?.value;
                 groupId = cookieStore.get("group_id")?.value;
             } catch (e) {
-                // cookies() was called outside a request context (e.g. during static generation)
-                // This is fine for public data, we just won't have the token/groupId
+                // Outside request context (e.g. static generation)
             }
         }
 
-        // Chuẩn hóa endpoint: loại bỏ /api/ ở đầu nếu có vì đã có trong API_URL
         const cleanEndpoint = endpoint.replace(/^\/?api\//, "").replace(/^\//, "");
-
         const url = endpoint.startsWith("http")
             ? endpoint
             : `${API_URL}/${cleanEndpoint}`;
 
         const headers = new Headers(options.headers);
 
-        if (token) {
-            headers.set("Authorization", `Bearer ${token}`);
-        }
-
-        if (groupId) {
-            headers.set("X-Group-Id", groupId);
-        }
-
-        if (!headers.has("Content-Type")) {
-            headers.set("Content-Type", "application/json");
-        }
+        if (token) headers.set("Authorization", `Bearer ${token}`);
+        if (groupId) headers.set("X-Group-Id", groupId);
+        if (!headers.has("Content-Type")) headers.set("Content-Type", "application/json");
 
         const { revalidate, tags, ...restOptions } = options;
 
-        const start = Date.now();
-
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 sec timeout
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
-        let response;
         try {
-            response = await fetch(url, {
+            const response = await fetch(url, {
                 ...restOptions,
                 headers,
                 signal: controller.signal,
@@ -81,40 +64,22 @@ export async function serverFetch<T = any>(
                     tags: tags || [],
                 },
             });
+
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status} ${response.statusText}`);
+            }
+
+            const json = await response.json();
+            return { data: json.data, meta: json.meta, error: null };
         } finally {
             clearTimeout(timeoutId);
         }
-        console.log(url);
-        const duration = Date.now() - start;
-        const statusStr = response.ok ? 'SUCCESS' : `ERROR ${response.status}`;
-
-        // Chỉ log slow requests hoặc errors
-        if (duration > 1000 || !response.ok) {
-            const level = response.ok ? 'SLOW' : 'ERROR';
-            // console.log(`[API Fetch] ${level}: ${url} (${duration}ms) - Status: ${statusStr}`); // Removed debug log
-        }
-
-        if (!response.ok) {
-            if (response.status === 401) {
-                // Xử lý logic unauthorized nếu cần
-            }
-            throw new Error(`API error: ${response.status} ${response.statusText}`);
-        }
-
-        const json = await response.json();
-
-        // DEBUG LOG: Hữu ích để kiểm tra cấu trúc API khi integration
-        // console.log(`[API Debug] ${url}:`, JSON.stringify(json, null, 2).substring(0, 500) + "..."); // Removed debug log
-
-        return { data: json.data, meta: json.meta, error: null };
     } catch (error: any) {
         if (error.name === 'AbortError') {
-            console.error(`[API Fetch] TIMEOUT after 5000ms: ${endpoint}`);
+            console.error(`[API Fetch] TIMEOUT: ${endpoint}`);
             return { data: null, error: "Connection Timeout" };
         }
         console.error(`[Server Fetch Error] ${endpoint}:`, error.message);
         return { data: null, error: error.message };
     }
 }
-
-
